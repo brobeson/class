@@ -14,27 +14,16 @@ pause
 % =================================================
 % Problem 2
 B = rgb2gray(A);
-
-% second test case
-% TODO  make sure this is commented out, or deleted, before submitting
-%B = [64  2  3 61; ...
-%      9 55 54 12; ...
-%     17 47 46 20; ...
-%     40 26 27 37];
-
-% TODO  this is wrong. it works for the 4x4 test matrix, the explicit dimensions
-%       make it fail for the image.
-VB = [B(:, 3:4) B(:, 1:2)];
 TB = transpose(B);
+VB = circshift(B, [0, size(B, 2) / 2]); % circular shift by half the number of columns in B
 FB = fliplr(B);
-figure(2);
 
 % draw B in the upper left
+figure(2);
 subplot(2, 2, 1);
 imshow(B);
 title('B');
 
-% TODO  is this the best method to switch axes?
 % draw TB in the upper right
 subplot(2, 2, 2);
 imshow(TB);
