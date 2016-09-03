@@ -3,16 +3,17 @@
 % Assignment 1
 
 % =================================================
-% Problem 1
+% Problem 1 {{{
 A = imread('peppers.bmp');
 figure(1);
 imshow(A);
 title('RGB Original Image');
 disp('-----Finish Solving Problem 1-----')
 pause
+% }}}
 
 % =================================================
-% Problem 2
+% Problem 2 {{{
 B = rgb2gray(A);
 TB = transpose(B);
 VB = circshift(B, [0, size(B, 2) / 2]); % circular shift by half the number of columns in B
@@ -41,14 +42,28 @@ title('FB');
 
 disp('-----Finish Solving Problem 2-----')
 pause
+% }}}
 
 % =================================================
-% Problem 3
+% Problem 3 {{{
+% second test case with even number of entries for median calculation
+% TODO  make sure this is commented out, or deleted, before submitting
+%B = [ 64    2    3   61; ...
+%       9   55   54   12; ...
+%      17   47   46   20; ...
+%      40   26   27   37 ];
+
+% third test case with odd number of entries for median calculation
+% TODO  make sure this is commented out, or deleted, before submitting
+%B = [ 64    2    3; ...
+%       9   55   54; ...
+%      17   47   46 ];
+
 % Matlab results
-b_minimum = min(min(B));
-b_maximum = max(max(B));
-b_mean = mean(mean(B));
-b_median = median(median(B));
+b_minimum = min(B(:));
+b_maximum = max(B(:));
+b_mean = mean(B(:));
+b_median = median(B(:));
 
 % my FindInfo results
 [fi_b_maximum, fi_b_minimum, fi_b_mean, fi_b_median] = FindInfo(B);
@@ -88,23 +103,28 @@ end
 
 disp('-----Finish Solving Problem 3-----')
 pause
+% }}}
 
 % =================================================
-% Problem 4
-%disp('-----Finish Solving Problem 4-----')
-%pause
+% Problem 4 {{{
+disp('-----Finish Solving Problem 4-----')
+pause
+% }}}
 
 % =================================================
-% Problem 5
-%disp('-----Finish Solving Problem 5-----')
-%pause
+% Problem 5 {{{
+disp('-----Finish Solving Problem 5-----')
+pause
+% }}}
 
 % =================================================
-% Problem 6
-%disp('-----Finish Solving Problem 6-----')
-%pause
+% Problem 6 {{{
+disp('-----Finish Solving Problem 6-----')
+pause
+% }}}
 
 % =================================================
-% Problem 7
-%disp('-----Finish Solving Problem 7-----')
-%pause
+% Problem 7 {{{
+disp('-----Finish Solving Problem 7-----')
+pause
+% }}}
