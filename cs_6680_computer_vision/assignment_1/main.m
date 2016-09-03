@@ -128,6 +128,43 @@ pause
 
 % =================================================
 % Problem 5 {{{
+threshold = 0.3;
+
+% method 1
+bw1 = C;
+bw1(bw1 <= threshold) = 0.0;
+bw1(bw1 > threshold) = 1.0;
+
+% method 2
+bw2 = zeros(size(C));
+bw2(C > threshold) = 1.0;
+
+% Matlab method
+bw3 = im2bw(C, threshold);
+
+% check my results
+if isequal(bw1, bw3) && isequal(bw2, bw3)
+    disp('Both of my methods worked.');
+elseif isequal(bw1, bw3)
+    disp('My method 1 worked, but not my method 2.');
+elseif isequal(bw2, bw3)
+    disp('My method 2 worked, but not my method 1.');
+else
+    disp('Both of my methods did not work.');
+end
+
+% display all three side by side
+figure(5);
+subplot(1, 3, 1);
+imshow(bw1);
+title('My first method');
+subplot(1, 3, 2);
+imshow(bw2);
+title('My second method');
+subplot(1, 3, 3);
+imshow(bw1);
+title('Matlab method');
+
 disp('-----Finish Solving Problem 5-----')
 pause
 % }}}
