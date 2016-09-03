@@ -3,10 +3,9 @@ function [maxValue, minValue, meanValue, medianValue] = FindInfo(oriIm)
 %   [maxValue, minValue, meanValue, medianValue] = FINDINFO(oriIm)
 
 % sort the values into a single column. this will be immensely useful for
-% everything else. size() will return the number of rows, and 1 column. the
-% column isn't needed, thus store it in a trash variable
+% everything else.
 sorted_list = sort(oriIm(:));
-[len, trash] = size(sorted_list);
+len = size(sorted_list, 1);
 
 % min, max, and mean are straight forward
 minValue = sorted_list(1);
