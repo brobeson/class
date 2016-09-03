@@ -140,6 +140,8 @@ pause
 
 % =================================================
 % Problem 7 {{{
+close all force
+clear -all
 disp('-----Finish Solving Problem 7-----')
 pause
 % }}}
