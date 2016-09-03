@@ -107,6 +107,21 @@ pause
 
 % =================================================
 % Problem 4 {{{
+% normalize image B
+C = double(B - b_minimum) ./ double(b_maximum - b_minimum);
+figure(3);
+imshow(C);
+title('Normalized Grayscale Image');
+
+% process the right and left quarters of the image with a power function
+D = C;
+cols = size(D, 2);
+D(:, 3 * cols / 4:cols) = D(:, 3 * cols / 4:cols) .^ 1.5;
+D(:, 1:cols / 4) = D(:, 1:cols / 4) .^ 0.5;
+figure(4);
+imshow(D);
+title('Processed Grayscale Image');
+imwrite(D, 'Brendan_D.jpg')
 disp('-----Finish Solving Problem 4-----')
 pause
 % }}}
