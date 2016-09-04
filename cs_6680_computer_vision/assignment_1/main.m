@@ -171,6 +171,22 @@ pause
 
 % =================================================
 % Problem 6 {{{
+BA = BlurImage(A);
+BB = BlurImage(B);
+
+figure(6);
+subplot(2, 2, 1);
+imshow(A);
+title('Original A');
+subplot(2, 2, 2);
+imshow(B);
+title('Original B');
+subplot(2, 2, 3);
+imshow(BA);
+title('Blurred A');
+subplot(2, 2, 4);
+imshow(BB);
+title('Blurred B');
 disp('-----Finish Solving Problem 6-----')
 pause
 % }}}
