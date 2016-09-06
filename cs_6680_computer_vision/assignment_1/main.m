@@ -60,10 +60,10 @@ pause
 %      17   47   46 ];
 
 % Matlab results
-b_minimum = min(B(:));
-b_maximum = max(B(:));
-b_mean = mean(B(:));
-b_median = median(B(:));
+b_minimum = min(min(B)); % faster than min(B(:))
+b_maximum = max(max(B)); % faster than max(B(:))
+b_mean = mean2(B);       % on par with mean(mean(B)) and mean(B(:))
+b_median = median(B(:)); % only option to correctly calculate the median
 
 % my FindInfo results
 [fi_b_maximum, fi_b_minimum, fi_b_mean, fi_b_median] = FindInfo(B);
