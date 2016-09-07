@@ -3,7 +3,10 @@ function [blurredIm] = BlurImage(oriIm)
 % block.
 %   [blurredIm] = BlurImage(oriIm)
 
-% implementation 1
+% interesting...
+% i experimented with blockproc(), and it was significantly slower than these
+% loops
+
 blurredIm = oriIm;
 [rows cols] = size(blurredIm);
 for r = 1:4:rows
@@ -11,9 +14,4 @@ for r = 1:4:rows
         blurredIm(r:r + 3, c:c + 3) = mean(blurredIm(r:r + 3, c:c + 3)(:));
     end
 end
-
-% implementation 2
-% this does not work on octave, try matlab
-%fun = @(block_struct) uint8(mean2(block_struct.data) * ones(size(block_struct.data)));
-%blurredIm = blockproc(oriIm, [4 4], fun);
 end
