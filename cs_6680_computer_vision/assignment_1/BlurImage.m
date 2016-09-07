@@ -14,6 +14,6 @@ end
 
 % implementation 2
 % this does not work on octave, try matlab
-fun = @(block_struct) uint8(mean2(block_struct.data) * ones(size(block_struct.data)));
-blurredIm = blockproc(oriIm, [4 4], fun);
+%fun = @(block_struct) uint8(mean2(block_struct.data) * ones(size(block_struct.data)));
+%blurredIm = blockproc(oriIm, [4 4], fun);
 end

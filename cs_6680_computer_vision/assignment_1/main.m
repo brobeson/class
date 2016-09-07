@@ -85,7 +85,11 @@ else
     disp(['    FindInfo reports ' num2str(fi_b_maximum)]);
 end
 
-if b_mean == fi_b_mean
+% note that directly comparing two floating point values is poor practice. the
+% assignmnt doesn't state an acceptable "close enough" threshold. i think if the
+% two values are within 1/1000 of each other, it's acceptable for this
+% assignment. this applies to the median comparison, as well.
+if abs(b_mean - fi_b_mean) <= 0.001
     disp(['FindInfo and Matlab agree the mean is ' num2str(b_mean) '.']);
 else
     disp('Error in the mean caclulation:');
@@ -93,7 +97,7 @@ else
     disp(['    FindInfo reports ' num2str(fi_b_mean)]);
 end
 
-if b_median == fi_b_median
+if abs(b_median - fi_b_median) <= 0.001
     disp(['FindInfo and Matlab agree the median is ' num2str(b_median) '.']);
 else
     disp('Error in the median caclulation:');
@@ -171,6 +175,11 @@ pause
 
 % =================================================
 % Problem 6 {{{
+% test case 2
+% TODO  ensure this is commented, or removed, prior to submission
+%A = rand(4, 4)
+%mean2(A)
+
 BA = BlurImage(A);
 BB = BlurImage(B);
 
