@@ -1,3 +1,7 @@
+% Brendan Robeson
+% CS 6680
+% Assignment 1
+
 function [blurredIm] = BlurImage(oriIm)
 % BLURIMAGE Blur an image by setting 4x4 pixel blocks to the average of the
 % block.

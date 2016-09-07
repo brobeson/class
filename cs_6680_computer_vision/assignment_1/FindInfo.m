@@ -1,3 +1,7 @@
+% Brendan Robeson
+% CS 6680
+% Assignment 1
+
 function [maxValue, minValue, meanValue, medianValue] = FindInfo(oriIm)
 % FINDINFO  Calculate the minimum, maximum, mean, and median intensities of an image.
 %   [maxValue, minValue, meanValue, medianValue] = FINDINFO(oriIm)
