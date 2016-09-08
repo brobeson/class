@@ -12,7 +12,7 @@ function [blurredIm] = BlurImage(oriIm)
 % loops
 
 blurredIm = oriIm;
-[rows cols] = size(blurredIm);
+[rows, cols] = size(blurredIm);
 for r = 1:4:rows
     for c = 1:4:cols
         blurredIm(r:r + 3, c:c + 3) = mean(blurredIm(r:r + 3, c:c + 3)(:));
