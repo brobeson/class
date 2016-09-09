@@ -6,8 +6,23 @@ function [maxValue, minValue, meanValue, medianValue] = FindInfo(oriIm)
 % FINDINFO  Calculate the minimum, maximum, mean, and median intensities of an image.
 %   [maxValue, minValue, meanValue, medianValue] = FINDINFO(oriIm)
 
-% sort the values into a single column. this will be immensely useful for
-% everything else.
+[rows, cols] = size(oriIm);
+minValue = oriIm(1, 1);
+maxValue = oriIm(1, 1);
+total = double(oriIm(1, 1));
+for r = 2:rows
+    for c = 2:cols
+        if oriIm(r, c) < minValue
+            minValue = oriIm(r, c);
+        elseif maxValue < oriIm(r, c)
+            maxValue = oriIm(r, c);
+        end
+        total = total + double(oriIm(r, c));
+    end
+end
+meanValue = total / double(rows * cols);
+
+% sort the values into a single column
 sorted_list = sort(oriIm(:));
 len = size(sorted_list, 1);
 
