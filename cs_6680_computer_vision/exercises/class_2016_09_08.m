@@ -54,56 +54,77 @@ pause
 %
 % The curves are: negative, log, nth root, identity, nth power, and inverse log
 %
-% negative:    f(l) = L - 1 - l for l on [0, L - 1]
-% log:         f(l) = l^0.2     for l on [0, 1]
-% nth root:    f(l) = sqrt(l)   for l on [0, 1]
-% identity:    f(l) = l         for l on [0, L - 1]
-% nth power:   f(l) = l^2       for l on [0, 1]
-% inverse log: f(l) = l^5       for l on [0, 1]
+% negative:    s(r) = L - 1 - r for r on [0, L - 1]
+% log:         s(r) = r^0.2     for r on [0, 1]
+% nth root:    s(r) = sqrt(r)   for r on [0, 1]
+% identity:    s(r) = r         for r on [0, L - 1]
+% nth power:   s(r) = r^2       for r on [0, 1]
+% inverse log: s(r) = r^5       for r on [0, 1]
+%
+% for kicks, using perlin's bias function: s(b, r) = r^[ln(b) / ln(0.5)]
+% log:         s(b = 0.87, r)
+% nth root:    s(b = 0.70711, r)
+% nth power:   s(b = 0.25, r)
+% inverse log: s(b = 0.031250, r)
+%
+% n = ln(b) / ln(0.5)
+% ln(b) = n * ln(0.5)
+% b = e^[n * ln(0.5)]
 
 % define the X range. the power functions only work on [0, 1], so that's the
 % range used.
-x0 = 0.0;
-xN = 1.0;
+r0 = 0.0;
+rN = 1.0;
 steps = 100; % divide the range into 100 steps to get smooth curves
-x = [x0: (xN - x0) / steps: xN];
+r = [r0: (rN - r0) / steps: rN];
 
 % the six curves detailed above
-y_negative = 1.0 - x;
-y_log = x .^ 0.2;
-y_nth_root = x .^ 0.5;
-y_identity = x;
-y_nth_power = x .^ 2;
-y_inverse_log = x .^ 5;
+s_negative = 1.0 - r;
+s_log = r .^ 0.2;
+s_nth_root = r .^ 0.5;
+s_identity = r;
+s_nth_power = r .^ 2;
+s_inverse_log = r .^ 5;
+s_bias_log = r .^ (log(0.87) / log(0.5));
+s_bias_nth_root = r .^ (log(0.705) / log(0.5));
+s_bias_nth_power = r .^ (log(0.25) / log(0.5));
+s_bias_inverse_log = r .^ (log(0.03) / log(0.5));
 
 % draw the curves
 figure
-y = 0.75;
-plot(x, y_negative,
-     x, y_log,
-     x, y_nth_root,
-     x, y_identity,
-     x, y_nth_power,
-     x, y_inverse_log);
+plot(r, s_negative,
+     r, s_log,
+     r, s_nth_root,
+     r, s_identity,
+     r, s_nth_power,
+     r, s_inverse_log,
+     r, s_bias_log,
+     r, s_bias_nth_root,
+     r, s_bias_nth_power,
+     r, s_bias_inverse_log);
 xlabel('Input gray level, r');
-ylabel('Output gray level, s');
+ylabel('Output gray level, s(r)');
 title('Intensity Transformations');
 legend('s(r) = L - r',
-       's(r) = x^{0.2}',
-       's(r) = x^{0.5}',
+       's(r) = r^{0.2}',
+       's(r) = r^{0.5}',
        's(r) = r',
-       's(r) = x^2',
-       's(r) = x^5');
+       's(r) = r^2',
+       's(r) = r^5',
+       'b = 0.87',
+       'b = 0.71',
+       'b = 0.25',
+       'b = 0.03');
 axis square;
 ax = gca;
-set(ax, 'XTick', [x0: 0.1: xN]);
-set(ax, 'YTick', [x0: 0.1: xN]);
-%ax.XTick = [x0:0.1:xN];
-%ax.YTick = [x0:0.1:xN];
+set(ax, 'XTick', [r0: 0.1: rN]);
+set(ax, 'YTick', [r0: 0.1: rN]);
+%ax.XTick = [r0:0.1:rN];
+%ax.YTick = [r0:0.1:rN];
 
 % draw the same lines visible in the notes
-line([x0 xN], [0.5 0.5]);
-line([x0 xN], [0.75 0.75]);
+line([r0 rN], [0.5 0.5]);
+line([r0 rN], [0.75 0.75]);
 line([0.5 0.5], [0 1]);
 line([0.25 0.25], [0 1]);
 
