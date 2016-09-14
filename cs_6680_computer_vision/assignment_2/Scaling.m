@@ -26,18 +26,27 @@ assert(range(1) <= 255, 'range minimum (%u) must be less than or equal to 255.',
 assert(range(2) <= 255, 'range maximum (%u) must be less than or equal to 255.', range(2));
 assert(isa(inputIm, 'uint8') != 0, 'input image must be of type uint8, not %s', class(inputIm));
 
-% set up the transformation function
-%n = max(max(inputIm)) - min(min(inputIm)) + 1;
-%transFunc = zeros(n, 'uint8');
+% determine the minimum & maximum of the original image. check for equality; if
+% the image is entirely one value, scaling isn't possible.
+input_maximum = max(max(inputIm));
+input_minimum = min(min(inputIm));
+assert(input_minimum != input_maximum, 'input image has all the same values, resulting in division by 0');
 
-inputMax = max(max(inputIm));
-inputMin = min(min(inputIm));
-
-assert(inputMin != inputMax, 'input image has all the same values, resulting in division by 0');
-
-inputRange = double(inputMax - inputMin);
-outputRange = double(range(2) - range(1));
-scaledIm = (inputIm - inputMin) .* (outputRange / inputRange) + range(1);
+% here's the math:
+%                i - input minimum
+%   f(i) = ------------------------------- * (new maximum - new minimum) + new minimum
+%           input maximum - input minumum
+%
+% this can be simplified to 
+%   f(i) = k * (i - input minimum) + new minimum
+%
+% where
+%          new maximum - new minimum
+%   k = -------------------------------
+%        input maximum - input minimum
+k = double(range(2) - range(1)) / double(input_maximum - input_minimum);
+scaledIm = (inputIm - input_minimum) .* k + range(1);
+transFunc = ([input_minimum:input_maximum] - input_minimum) .* k + range(1);
 
 end
 
