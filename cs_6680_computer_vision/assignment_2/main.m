@@ -38,13 +38,8 @@ pause
 % }}}
 
 % Problem 3 {{{
-histogram = CalHist(scaled_food);
+[histogram norm_histogram] = CalHist(scaled_food, true);
 i = [0:255];
-
-% sanity check
-500 * 500
-sum(histogram)
-
 figure;
 bar(i, histogram, 1.0);
 axis([0 255]);
