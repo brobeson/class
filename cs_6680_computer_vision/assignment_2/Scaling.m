@@ -24,13 +24,13 @@ assert(0 <= range(1), 'range minimum (%u) must be non-negative.', range(1));
 assert(0 <= range(2), 'range maximum (%u) must be non-negative.', range(2));
 assert(range(1) <= 255, 'range minimum (%u) must be less than or equal to 255.', range(1));
 assert(range(2) <= 255, 'range maximum (%u) must be less than or equal to 255.', range(2));
-assert(isa(inputIm, 'uint8') != 0, 'input image must be of type uint8, not %s', class(inputIm));
+assert(isa(inputIm, 'uint8') ~= 0, 'input image must be of type uint8, not %s', class(inputIm));
 
 % determine the minimum & maximum of the original image. check for equality; if
 % the image is entirely one value, scaling isn't possible.
 input_maximum = max(max(inputIm));
 input_minimum = min(min(inputIm));
-assert(input_minimum != input_maximum, 'input image has all the same values, resulting in division by 0');
+assert(input_minimum ~= input_maximum, 'input image has all the same values, resulting in division by 0');
 
 % here's the math:
 %                i - input minimum
