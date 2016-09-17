@@ -2,30 +2,33 @@
 % CS 6680
 % Assignment 2
 
+clc
+%pause off
 food = imread('Food.jpg');
+new_range = [0 255];
 
-% Problem 1 {{{
-[scaled_food, scale_function] = Scaling(food, [0, 255]);
-r = [min(min(food)):max(max(food))];
-figure;
-plot(r, scale_function);
+%% Problem 1 {{{
+[scaled_food, scale_function] = Scaling(food, new_range);
+
+% plot the scale_function as a function of the intensties in 'food'
+figure(1);
+plot(min(min(food)):max(max(food)), scale_function);
 axis([0 255 0 255]);
 xlabel('Original image intensity, i');
 ylabel('ScaledIm image intensity, f(i)');
 title('Linear Scaling of an Image');
 
 disp('-----Finish Solving Problem 1-----')
+drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
 pause
 % }}}
 
-% Problem 2 {{{
-matScaledFood = imadjust(food);
-%matScaledFood = imadjust(food, [0; 255]) .* 255;
-%matScaledFood = imadjust(food, [min(min(food)); max(max(food))], [0; 255]);
-%class(matScaledFood)
-%min(min(matScaledFood))
-%max(max(matScaledFood))
-figure;
+%% Problem 2 {{{
+r_out = [double(new_range(1)); double(new_range(2))] ./ 255.0;
+r_in = [double(min(min(food))); double(max(max(food)))] ./ 255.0;
+matScaledFood = imadjust(food, r_in, r_out);
+
+figure(2);
 subplot(1, 2, 1);
 imshow(scaled_food);
 title('My scaled food');
@@ -35,21 +38,45 @@ imshow(matScaledFood);
 title('Matlab scaled food');
 
 disp('-----Finish Solving Problem 2-----')
+drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
 pause
 % }}}
 
-% Problem 3 {{{
-[histogram, norm_histogram] = CalHist(scaled_food, true);
-i = [0:255];
-figure;
-bar(i, histogram, 1.0);
-%axis([0 255]);
-xlabel('Intensity, i');
-ylabel('Occurances count');
-title('Histogram of an Image');
+%% Problem 3 {{{
+[histogram, norm_histogram] = CalHist(scaled_food);
+mat_norm_histogram = CalHist(matScaledFood, true);
+i = 0:255;
+figure(3);
+subplot(1, 2, 1);
+bar(i, norm_histogram, 1.0);
+xlabel('Intensity');
+ylabel('Occurance proportion');
+title('Histogram of my scaled food');
+xlim([-1 256]); % set X axis limits to show the counts for i=0 and i=255
+
+subplot(1, 2, 2);
+bar(i, mat_norm_histogram, 1.0);
+xlabel('Intensity');
+ylabel('Occurance proportion');
+title('Histogram of Matlab scaled food');
+xlim([-1 256]); % set X axis limits to show the counts for i=0 and i=255
 
 disp('-----Finish Solving Problem 3-----')
+drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
 pause
+%}}}
+
+%pause on
+
+%% Problem 4 {{{
+tic
+[equalizedFood, transformation] = HistEqualization(food);
+time = toc;
+printf('HistEqualization(food) took %f seconds\n', time);
+
+disp('-----Finish Solving Problem 4-----')
+drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
+%pause
 %}}}
 
 clear -all
