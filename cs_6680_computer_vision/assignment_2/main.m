@@ -3,9 +3,12 @@
 % Assignment 2
 
 clc
-%pause off
+pause off
 food = imread('Food.jpg');
 new_range = [0 255];
+
+% to use fprintf to standard output
+std_out = 1;
 
 %% Problem 1 {{{
 [scaled_food, scale_function] = Scaling(food, new_range);
@@ -66,13 +69,13 @@ drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
 pause
 %}}}
 
-%pause on
+pause on
 
 %% Problem 4 {{{
 tic
 [equalizedFood, transformation] = HistEqualization(food);
 time = toc;
-printf('HistEqualization(food) took %f seconds\n', time);
+fprintf(std_out, 'HistEqualization(food) took %f seconds\n', time);
 
 disp('-----Finish Solving Problem 4-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
@@ -83,13 +86,13 @@ pause
 tic
 [mat_equalizedFood, mat_transformation] = histeq(food);
 mat_time = toc;
-printf('[J, T] = histeq(food) took %f seconds\n', mat_time);
+fprintf(std_out, '[J, T] = histeq(food) took %f seconds\n', mat_time);
 
 % compare the run time of histeq() to HistEqualization()
 if (mat_time < my_time)
-    printf('histeq() ran %f seconds faster than HistEqualization().\n', my_time - mat_time);
+    fprintf(std_out, 'histeq() ran %f seconds faster than HistEqualization().\n', my_time - mat_time);
 elseif (my_time < mat_time)
-    printf('HistEqualization() ran %f seconds faster than histeq().\n', my_time - mat_time);
+    fprintf(std_out, 'HistEqualization() ran %f seconds faster than histeq().\n', my_time - mat_time);
 else
     disp('HistEqualization() and histeq() ran in equal time.');
 end
