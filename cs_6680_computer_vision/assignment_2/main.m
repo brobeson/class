@@ -76,7 +76,58 @@ printf('HistEqualization(food) took %f seconds\n', time);
 
 disp('-----Finish Solving Problem 4-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
-%pause
+pause
+%}}}
+
+%% Problem 5 {{{
+tic
+[mat_equalizedFood, mat_transformation] = histeq(food);
+mat_time = toc;
+printf('[J, T] = histeq(food) took %f seconds\n', mat_time);
+
+% compare the run time of histeq() to HistEqualization()
+if (mat_time < my_time)
+    printf('histeq() ran %f seconds faster than HistEqualization().\n', my_time - mat_time);
+elseif (my_time < mat_time)
+    printf('HistEqualization() ran %f seconds faster than histeq().\n', my_time - mat_time);
+else
+    disp('HistEqualization() and histeq() ran in equal time.');
+end
+
+% compare the transformation functions
+if (isequal(mat_transformation, transformation))
+    disp('HistEqualization() and histeq() found identical transformation functions');
+else
+    disp('HistEqualization() and histeq() found different transformation functions');
+end
+
+% todo lessons learned after reading the implementation of histeq()
+
+figure(4);
+subplot(1, 2, 1);
+imshow(equalizedFood);
+title('My equalized food');
+
+subplot(1, 2, 2);
+imshow(mat_equalizedFood);
+title('Matlabs equalized food');
+
+figure(5);
+subplot(1, 2, 1);
+bar(-1:size(transformation), transformation, 1.0);
+xlabel('Original intensity');
+ylabel('Transformed intensity');
+title('My transformation function');
+
+subplot(1, 2, 2);
+bar(-1:size(mat_transformation), mat_transformation, 1.0);
+xlabel('Original intensity');
+ylabel('Transformed intensity');
+title('Matlabs transformation function');
+
+disp('-----Finish Solving Problem 5-----')
+drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
+pause
 %}}}
 
 clear -all
