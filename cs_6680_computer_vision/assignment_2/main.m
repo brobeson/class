@@ -2,8 +2,8 @@
 % CS 6680
 % Assignment 2
 
-clc
 pause off
+clc
 food = imread('Food.jpg');
 new_range = [0 255];
 
@@ -27,9 +27,9 @@ pause
 % }}}
 
 %% Problem 2 {{{
-r_out = [double(new_range(1)); double(new_range(2))] ./ 255.0;
-r_in = [double(min(min(food))); double(max(max(food)))] ./ 255.0;
-matScaledFood = imadjust(food, r_in, r_out);
+output_range = [double(new_range(1)); double(new_range(2))] ./ 255.0;
+input_range = [double(min(min(food))); double(max(max(food)))] ./ 255.0;
+matScaledFood = imadjust(food, input_range, output_range);
 
 figure(2);
 subplot(1, 2, 1);
@@ -69,13 +69,11 @@ drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
 pause
 %}}}
 
-pause on
-
 %% Problem 4 {{{
 tic
 [equalizedFood, transformation] = HistEqualization(food);
-time = toc;
-fprintf(std_out, 'HistEqualization(food) took %f seconds\n', time);
+my_time = toc;
+fprintf(std_out, 'HistEqualization(food) took %f seconds\n', my_time);
 
 disp('-----Finish Solving Problem 4-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
@@ -92,19 +90,27 @@ fprintf(std_out, '[J, T] = histeq(food) took %f seconds\n', mat_time);
 if (mat_time < my_time)
     fprintf(std_out, 'histeq() ran %f seconds faster than HistEqualization().\n', my_time - mat_time);
 elseif (my_time < mat_time)
-    fprintf(std_out, 'HistEqualization() ran %f seconds faster than histeq().\n', my_time - mat_time);
+    fprintf(std_out, 'HistEqualization() ran %f seconds faster than histeq().\n', mat_time - my_time);
 else
     disp('HistEqualization() and histeq() ran in equal time.');
 end
 
 % compare the transformation functions
-if (isequal(mat_transformation, transformation))
-    disp('HistEqualization() and histeq() found identical transformation functions');
-else
-    disp('HistEqualization() and histeq() found different transformation functions');
-end
+disp('HistEqualization() returns a look up table mapping the original intensity to an output intensity.');
+disp('histeq() returns the cumulative normalized histogram (CNH). However, we can see from the graphs');
+disp('that both functions are similar. Completing the operation with histeq()''s CNH will produce a look');
+disp('up table similar to mine.');
+%if (isequal(mat_transformation, transformation))
+%    disp('HistEqualization() and histeq() found identical transformation functions');
+%else
+%    disp('HistEqualization() and histeq() found different transformation functions');
+%end
 
-% todo lessons learned after reading the implementation of histeq()
+disp('Reading histeq(), I learned how MathWorks analyzes the propertiess of the input parameters');
+disp('to determine which version of the function the user requested. For example, histeq()');
+disp('checks the number fo columns in the second parameter to determine if the user invoked');
+disp('histeq(img, histgram) or histeq(img, color_map). This seems pretty handy to know, given');
+disp('that function overloading is not possible.');
 
 figure(4);
 subplot(1, 2, 1);
@@ -117,19 +123,20 @@ title('Matlabs equalized food');
 
 figure(5);
 subplot(1, 2, 1);
-bar(-1:size(transformation), transformation, 1.0);
+bar(0:length(transformation) - 1, transformation, 1.0);
 xlabel('Original intensity');
 ylabel('Transformed intensity');
 title('My transformation function');
 
 subplot(1, 2, 2);
-bar(-1:size(mat_transformation), mat_transformation, 1.0);
+bar(0:length(mat_transformation) - 1, mat_transformation, 1.0);
 xlabel('Original intensity');
 ylabel('Transformed intensity');
 title('Matlabs transformation function');
 
 disp('-----Finish Solving Problem 5-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
+pause on
 pause
 %}}}
 
