@@ -2,7 +2,6 @@
 % CS 6680
 % Assignment 2
 
-pause off
 clc
 food = imread('Food.jpg');
 new_range = [0 255];
@@ -136,7 +135,6 @@ title('Matlabs transformation function');
 
 disp('-----Finish Solving Problem 5-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
-pause on
 pause
 %}}}
 

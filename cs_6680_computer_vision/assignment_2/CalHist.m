@@ -14,11 +14,12 @@ function [histogram, norm_histogram] = CalHist(img, normalized)
         end
     end
 
+    % default class for histogram is double
     histogram = zeros(1, 256);
 
     % loop through the image. increment the histogram bin corresponding to the
-    % intensity. remember that intensity on [ 0, 255], but Matlab requires
-    % indexing on [1, 256]. so ad 1 to the histogram index.
+    % intensity. remember that intensity is on [0, 255], but Matlab requires
+    % indexing on [1, 256]. so add 1 to the histogram index.
     lngth = size(img, 1) * size(img, 2);
     for i = 1:lngth
         histogram(img(i) + 1) = histogram(img(i) + 1) + 1;
