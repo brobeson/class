@@ -3,6 +3,18 @@
 % Assignment 2
 
 function [enhancedIm, transFunc] = HistEqualization(inputIm)
+% HISTEQUALIZATION  Perform histogram equalization on an image.
+%   [enhancedIm, transFunc] = HistEqualization(inputIm)
+%
+%   inputIm is the original image, on which histogram equalization is performed.
+%
+%   enhancedIm is the resulting image after histogram equalization.
+%
+%   transFunc is the transformation function from inputIm to enhanceIm. This is
+%   a look up table. A table index is an original intensity value on [0, 255],
+%   and the table value is the corresponding output intensity value, also on [0,
+%   255].
+
     % verify the input and expected output
     assert(isa(inputIm, 'uint8') ~= 0, 'input image must be of type uint8, not %s', class(inputIm));
 

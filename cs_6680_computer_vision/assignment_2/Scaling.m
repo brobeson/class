@@ -14,7 +14,10 @@ function [scaledIm, transFunc] = Scaling(inputIm, range)
 %   scaledIm is the result of scaling inputIm to the given range. It will be the
 %   same size as inputIm and intensity values of the same data type.
 %
-%   transFunc TODO
+%   transFunc is the transformation function from inputIm to enhanceIm. This is
+%   a look up table. A table index is an original intensity value on [0, 255],
+%   and the table value is the corresponding output intensity value, also on [0,
+%   255].
 
 % verify the input
 assert(size(range, 1) == 1, 'range must have exactly one row, not %u.', size(range, 1));

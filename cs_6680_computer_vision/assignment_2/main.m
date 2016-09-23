@@ -99,15 +99,10 @@ disp('HistEqualization() returns a look up table mapping the original intensity 
 disp('histeq() returns the cumulative normalized histogram (CNH). However, we can see from the graphs');
 disp('that both functions are similar. Completing the operation with histeq()''s CNH will produce a look');
 disp('up table similar to mine.');
-%if (isequal(mat_transformation, transformation))
-%    disp('HistEqualization() and histeq() found identical transformation functions');
-%else
-%    disp('HistEqualization() and histeq() found different transformation functions');
-%end
 
-disp('Reading histeq(), I learned how MathWorks analyzes the propertiess of the input parameters');
+disp('Reading histeq(), I learned how MathWorks analyzes the properties of the input parameters');
 disp('to determine which version of the function the user requested. For example, histeq()');
-disp('checks the number fo columns in the second parameter to determine if the user invoked');
+disp('checks the number of columns in the second parameter to determine if the user invoked');
 disp('histeq(img, histgram) or histeq(img, color_map). This seems pretty handy to know, given');
 disp('that function overloading is not possible.');
 
