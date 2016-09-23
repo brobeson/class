@@ -118,20 +118,20 @@ title('My equalized food');
 
 subplot(1, 2, 2);
 imshow(mat_equalizedFood);
-title('Matlabs equalized food');
+title('Matlab''s equalized food');
 
 figure(5);
 subplot(1, 2, 1);
-bar(0:length(transformation) - 1, transformation, 1.0);
+plot(0:length(transformation) - 1, transformation);
 xlabel('Original intensity');
 ylabel('Transformed intensity');
 title('My transformation function');
 
 subplot(1, 2, 2);
-bar(0:length(mat_transformation) - 1, mat_transformation, 1.0);
+plot(0:length(mat_transformation) - 1, mat_transformation .* 255);
 xlabel('Original intensity');
 ylabel('Transformed intensity');
-title('Matlabs transformation function');
+title('Matlab''s transformation function');
 
 disp('-----Finish Solving Problem 5-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang

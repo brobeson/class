@@ -44,7 +44,7 @@ assert(input_minimum ~= input_maximum, 'input image has all the same values, res
 %          new maximum - new minimum
 %   k = -------------------------------
 %        input maximum - input minimum
-k = double(range(2) - range(1)) / input_maximum - input_minimum;
+k = double(range(2) - range(1)) / double(input_maximum - input_minimum);
 scaledIm = (inputIm - input_minimum) .* k + range(1);
 transFunc = ([input_minimum:input_maximum] - input_minimum) .* k + range(1);
 
