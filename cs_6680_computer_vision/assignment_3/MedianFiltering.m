@@ -18,7 +18,8 @@ assert(mod(size(mask, 1), 2) ~= 0, 'the filter mask must have an odd number of r
 
 % compute the amount by which to pad the image. also compute the start and end
 % indices for the actual image rows and columns within the padded image
-pad_amount = floor(size(mask, 1) / 2);
+mask_size = size(mask, 1);
+pad_amount = floor(mask_size / 2);
 image_size = size(im);
 r0 = 1 + pad_amount;
 rN = image_size(1) + pad_amount;
@@ -32,18 +33,8 @@ padded(r0:rN, c0:cN) = im(1:image_size(1), 1:image_size(2));
 % apply the average filter, using the supplied mask
 filteredIm = zeros(image_size, 'uint8');
 for r = 1:image_size(1)
-    % r0 is the initial row in the padded image, rN is the last row in the
-    % padded image FOR APPLICATION OF THE MASK. thus,
-    % rN - r0 + 1 = size(mask, 1). accessing the padded image, and destination
-    % image, use the same r0: writing to filteredIm row 1 requires reading from
-    % padded at rows 1 through the mask height. the same concept applies to the
-    % columns.
-    r0 = r;
-    rN = r0 + 2 * pad_amount;
     for c = 1:image_size(2)
-        c0 = c;
-        cN = c0 + 2 * pad_amount;
-        filteredIm(r, c) = median(padded(r0:rN, c0:cN)(:));
+        filteredIm(r, c) = median(padded(r:r + mask_size - 1, c:c + mask_size - 1)(:));
     end
 end
 

@@ -41,18 +41,8 @@ padded(r0:rN, c0:cN) = im(1:image_size(1), 1:image_size(2));
 % apply the average filter, using the supplied mask
 filteredIm = zeros(image_size, 'uint8');
 for r = 1:image_size(1)
-    % r0 is the initial row in the padded image, rN is the last row in the
-    % padded image FOR APPLICATION OF THE MASK. thus,
-    % rN - r0 + 1 = size(mask, 1). accessing the padded image, and destination
-    % image, use the same r0: writing to filteredIm row 1 requires reading from
-    % padded at rows 1 through the mask height. the same concept applies to the
-    % columns.
-    r0 = r;
-    rN = r0 + 2 * pad_amount;
     for c = 1:image_size(2)
-        c0 = c;
-        cN = c0 + 2 * pad_amount;
-        filteredIm(r, c) = sum(sum(mask .* padded(r0:rN, c0:cN)));
+        filteredIm(r, c) = sum(sum(mask .* padded(r:r + mask_size - 1, c:c + mask_size - 1)));
     end
 end
 
