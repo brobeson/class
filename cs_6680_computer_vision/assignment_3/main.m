@@ -3,6 +3,7 @@
 % Assignment 3
 
 clc
+pause off
 circuit = imread('Circuit.jpg');
 
 %% Problem I {{{
@@ -31,7 +32,7 @@ subplot(1, 3, 3);
 imshow(standard_image);
 title('5x5 Standard average');
 
-disp('-----Finish Solving Problem I.1-----')
+disp('-----Finish Solving Problem I part 1-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
 pause
 % }}}
@@ -58,7 +59,40 @@ subplot(1, 3, 3);
 imshow(standard_image);
 title('5x5 Standard median');
 
-disp('-----Finish Solving Problem I.2-----')
+disp('-----Finish Solving Problem I part 2-----')
+drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
+pause
+% }}}
+
+pause on
+
+%% Part 3 {{{
+moon = imread('Moon.jpg');
+strong_laplacian = [ 1  1 1;
+                     1 -8 1;
+                     1  1 1 ];
+filtered_moon = conv2(double(moon), strong_laplacian, 'same');
+m = min(filtered_moon(:));
+M = max(filtered_moon(:));
+scaled_moon = uint8((filtered_moon - m) ./ (M - m) * 255.0);
+enhanced_moon = uint8(double(moon) - filtered_moon);
+
+% show the moon images
+figure(3);
+subplot(2, 2, 1);
+imshow(moon);
+title('Original moon.jpg');
+subplot(2, 2, 2);
+imshow(filtered_moon, [0 255]);
+title('Filtered moon');
+subplot(2, 2, 3);
+imshow(scaled_moon);
+title('Filtered & scaled moon');
+subplot(2, 2, 4);
+imshow(enhanced_moon);
+title('Enhanced moon');
+
+disp('-----Finish Solving Problem I part 3-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
 pause
 % }}}
