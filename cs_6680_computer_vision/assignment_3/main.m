@@ -3,18 +3,21 @@
 % Assignment 3
 
 clc
-warning('off');
 circuit = imread('Circuit.jpg');
 
 %% Problem I {{{
 %% Part 1 {{{
 weighted_mask = [1 2 1; 2 4 2; 1 2 1];
 weighted_mask = weighted_mask ./ sum(weighted_mask(:));
+tic
 weighted_image = AverageFiltering(circuit, weighted_mask);
+toc
 
 standard_mask = ones(5, 5);
 standard_mask = standard_mask ./ sum(standard_mask(:));
+tic
 standard_image = AverageFiltering(circuit, standard_mask);
+toc
 
 % show the circuit images
 figure(1);
@@ -39,7 +42,9 @@ pause
 %weighted_image = AverageFiltering(circuit, weighted_mask);
 
 standard_mask = ones(5, 5);
+tic
 standard_image = MedianFiltering(circuit, standard_mask);
+toc
 
 % show the circuit images
 figure(2);
@@ -59,6 +64,6 @@ pause
 % }}}
 % }}}
 
-%clear -all
-%close all force
+clear -all
+close all force
 

@@ -13,11 +13,11 @@ function [filteredIm] = AverageFiltering(im, mask)
 
 % verify the input
 assert(isa(im, 'uint8') ~= 0, 'input image must be of type uint8, not %s', class(im));
-assert(issquare(mask), 'the filter mask must be square');
-assert(mod(size(mask, 1), 2) ~= 0, 'the filter mask must have an odd number of rows');
+assert(size(mask, 1) == size(mask, 2), 'the filter mask must be square');
+mask_size = size(mask, 1);
+assert(mod(mask_size, 2) ~= 0, 'the filter mask must have an odd number of rows');
 
 % verify that the mask is symmetrical
-mask_size = size(mask, 1);
 half_size = uint8(mask_size / 2);
 for r = 1:half_size
     for c = 1:mask_size
@@ -35,7 +35,7 @@ c0 = r0;
 cN = image_size(2) + pad_amount;
 
 % create a padded image of 0s, then fill the center area with the source image
-padded = zeros(image_size + (2 * pad_amount), class(im));
+padded = zeros(image_size + (2 * pad_amount), 'double');
 padded(r0:rN, c0:cN) = im(1:image_size(1), 1:image_size(2));
 
 % apply the average filter, using the supplied mask

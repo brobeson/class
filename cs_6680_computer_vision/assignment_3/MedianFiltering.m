@@ -13,7 +13,7 @@ function [filteredIm] = MedianFiltering(im, mask)
 
 % verify the input
 assert(isa(im, 'uint8') ~= 0, 'input image must be of type uint8, not %s', class(im));
-assert(issquare(mask), 'the filter mask must be square');
+assert(size(mask, 1) == size(mask, 2), 'the filter mask must be square');
 assert(mod(size(mask, 1), 2) ~= 0, 'the filter mask must have an odd number of rows');
 
 % compute the amount by which to pad the image. also compute the start and end
@@ -34,7 +34,8 @@ padded(r0:rN, c0:cN) = im(1:image_size(1), 1:image_size(2));
 filteredIm = zeros(image_size, 'uint8');
 for r = 1:image_size(1)
     for c = 1:image_size(2)
-        filteredIm(r, c) = median(padded(r:r + mask_size - 1, c:c + mask_size - 1)(:));
+        values = padded(r:r + mask_size - 1, c:c + mask_size - 1);
+        filteredIm(r, c) = median(values(:));
     end
 end
 
