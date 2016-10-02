@@ -105,31 +105,23 @@ normalized_rice = im2double(rice);
 Gx = [ -1 -2 -1;
         0  0  0;
         1  2  1 ];
-Gx = Gx ./ 8.0;
 Gy = Gx';
 Fx = imfilter(normalized_rice, Gx, 'replicate');
 Fy = imfilter(normalized_rice, Gy, 'replicate');
-F = (Fx .* Fx) + (Fy .* Fy);
-c = 4 * mean2(F);
-t = sqrt(c);
+F = abs(Fx) + abs(Fy);
+c = max(F(:)) * 0.4375;
 rice_edges = zeros(size(F), 'double');
 rice_edges = double(F > c);
 
-disp('I first tried using the RMS method as in the Matlab function edge(). This');
-disp('resulted in white rice on a black field. Instead, I started with half of the');
-disp('maximum of F, and binary searched until I arrived at a suitable threshold.');
-disp('This method did not produce an edge image similar to Matlab''s edge() function.');
-disp('Also, it was not an automatic option; it required user intervention. I went back');
-disp('to edge() and implemented that, learning my mistakes from the first attempt.');
+disp('I started with half of the maximum of F. I compared my edges image to that');
+disp('produced by Matlab''s edge() function. I repeated this method, using a binary');
+disp('search until I was satisfied with my edge image. My threshold value is 0.4375 of');
+disp('the maximum of F.');
 
 disp('-----Finish Solving Problem II part 1-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
 pause
 % }}}
-
-%[matlab_rice, mt] = edge(rice, 'sobel');
-%mt
-%t
 
 pause on
 % Part 2 {{{
@@ -138,10 +130,7 @@ figure(4);
 subplot(1, 3, 1);
 imshow(rice);
 title('Original rice.jpg');
-%subplot(1, 3, 2);
-%imshow(edge(rice, 'nothinning'));
-%title('Matlab edges');
-subplot(1, 3, 3);
+subplot(1, 3, 2);
 imshow(rice_edges);
 title('My edges');
 
