@@ -66,9 +66,9 @@ pause
 
 %% Part 3 {{{
 moon = imread('Moon.jpg');
-strong_laplacian = [ 1  1 1;
-                     1 -8 1;
-                     1  1 1 ];
+strong_laplacian = [ 1  1  1;
+                     1 -8  1;
+                     1  1  1 ];
 filtered_moon = conv2(double(moon), strong_laplacian, 'same');
 m = min(filtered_moon(:));
 M = max(filtered_moon(:));
@@ -101,27 +101,35 @@ rice = imread('Rice.jpg');
 
 % Part 1 {{{
 % construct the sobel masks
+normalized_rice = im2double(rice);
 Gx = [ -1 -2 -1;
         0  0  0;
         1  2  1 ];
-Gy = [ -1 0 1;
-       -2 0 2;
-       -1 0 1 ];
-Fx = conv2(double(rice), Gx);
-Fy = conv2(double(rice), Gy);
-F = abs(Fx) + abs(Fy);
-t = max(F(:)) * 0.1875;
-rice_edges = zeros(size(F), 'uint8');
-rice_edges(F > t) = 255;
+Gx = Gx ./ 8.0;
+Gy = Gx';
+Fx = imfilter(normalized_rice, Gx, 'replicate');
+Fy = imfilter(normalized_rice, Gy, 'replicate');
+F = (Fx .* Fx) + (Fy .* Fy);
+c = 4 * mean2(F);
+t = sqrt(c);
+rice_edges = zeros(size(F), 'double');
+rice_edges = double(F > c);
 
 disp('I first tried using the RMS method as in the Matlab function edge(). This');
 disp('resulted in white rice on a black field. Instead, I started with half of the');
 disp('maximum of F, and binary searched until I arrived at a suitable threshold.');
+disp('This method did not produce an edge image similar to Matlab''s edge() function.');
+disp('Also, it was not an automatic option; it required user intervention. I went back');
+disp('to edge() and implemented that, learning my mistakes from the first attempt.');
 
 disp('-----Finish Solving Problem II part 1-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
 pause
 % }}}
+
+%[matlab_rice, mt] = edge(rice, 'sobel');
+%mt
+%t
 
 pause on
 % Part 2 {{{
@@ -131,11 +139,11 @@ subplot(1, 3, 1);
 imshow(rice);
 title('Original rice.jpg');
 %subplot(1, 3, 2);
-%imshow(F);
-%title('F');
+%imshow(edge(rice, 'nothinning'));
+%title('Matlab edges');
 subplot(1, 3, 3);
 imshow(rice_edges);
-title('Rice edges');
+title('My edges');
 
 disp('-----Finish Solving Problem II part 2-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
