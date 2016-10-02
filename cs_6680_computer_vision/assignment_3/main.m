@@ -123,8 +123,8 @@ drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
 pause
 % }}}
 
-pause on
 % Part 2 {{{
+edge_histogram = CalEdgeHist(rice, 20);
 % show the rice images
 figure(4);
 subplot(1, 3, 1);
@@ -133,6 +133,9 @@ title('Original rice.jpg');
 subplot(1, 3, 2);
 imshow(rice_edges);
 title('My edges');
+subplot(1, 3, 3);
+bar([1:360/20:360], edge_histogram);
+title('Edge histogram');
 
 disp('-----Finish Solving Problem II part 2-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
@@ -140,6 +143,6 @@ pause
 % }}}
 % }}}
 
-clear -all
-close all force
+%clear -all
+%close all force
 
