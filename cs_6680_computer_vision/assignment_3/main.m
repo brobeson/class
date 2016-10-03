@@ -7,7 +7,14 @@ pause off
 
 Destreak(imread('Text.gif'));
 Destreak(imread('Text1.gif'));
-Destreak(imread('Text2.jpg'));
+%Destreak(imread('Text2.jpg'));
+t0 = imread('Text.gif');
+t1 = imread('Text1.gif');
+t2 = imread('Text2.jpg');
+%ndims(t0)
+%ndims(t1)
+ndims(t2)
+size(t2)
 return
 
 %% Problem I {{{
