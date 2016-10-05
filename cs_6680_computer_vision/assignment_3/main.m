@@ -5,25 +5,23 @@
 clc
 pause off
 
-Destreak(imread('Text.gif'));
-Destreak(imread('Text1.gif'));
-%Destreak(imread('Text2.jpg'));
-return
+%Destreak(imread('Text.gif'));
+%Destreak(imread('Text1.gif'));
+%%Destreak(imread('Text2.jpg'));
+%return
 
 %% Problem I {{{
 circuit = imread('Circuit.jpg');
 %% Part 1 {{{
-weighted_mask = [1 2 1; 2 4 2; 1 2 1];
+weighted_mask = [ 1 2 1;
+                  2 4 2;
+                  1 2 1 ];
 weighted_mask = weighted_mask ./ sum(weighted_mask(:));
-tic
 weighted_circuit = AverageFiltering(circuit, weighted_mask);
-toc
 
 standard_mask = ones(5, 5);
 standard_mask = standard_mask ./ sum(standard_mask(:));
-tic
 standard_circuit = AverageFiltering(circuit, standard_mask);
-toc
 
 % show the circuit images
 figure(1);
@@ -43,23 +41,22 @@ pause
 % }}}
 
 %% Part 2 {{{
-%weighted_mask = [1 2 1; 2 4 2; 1 2 1];
-%weighted_mask = weighted_mask ./ sum(weighted_mask(:));
-%weighted_circuit = AverageFiltering(circuit, weighted_mask);
+weighted_mask = [ 1 2 1;
+                  2 4 2;
+                  1 2 1 ];
+weighted_circuit = MedianFiltering(circuit, weighted_mask);
 
 standard_mask = ones(5, 5);
-tic
 standard_circuit = MedianFiltering(circuit, standard_mask);
-toc
 
 % show the circuit images
 figure(2);
 subplot(1, 3, 1);
 imshow(circuit);
 title('Original circuit.jpg');
-%subplot(1, 3, 2);
-%imshow(weighted_circuit);
-%title('3x3 Weighted average');
+subplot(1, 3, 2);
+imshow(weighted_circuit);
+title('3x3 Weighted median');
 subplot(1, 3, 3);
 imshow(standard_circuit);
 title('5x5 Standard median');
