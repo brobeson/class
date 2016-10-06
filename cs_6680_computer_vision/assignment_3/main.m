@@ -3,12 +3,6 @@
 % Assignment 3
 
 clc
-pause off
-
-%Destreak(imread('Text.gif'));
-%Destreak(imread('Text1.gif'));
-%Destreak(imread('Text2.jpg'));
-%return
 
 %% Problem I {{{
 circuit = imread('Circuit.jpg');
@@ -146,6 +140,12 @@ pause
 % }}}
 % }}}
 
-%clear -all
-%close all force
+%% Problem III {{{
+Destreak(imread('Text.gif'));
+Destreak(imread('Text1.gif'));
+Destreak(imread('Text2.jpg'));
+%}}}
+
+clear -all
+close all force
 
