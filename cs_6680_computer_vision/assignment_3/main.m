@@ -7,7 +7,7 @@ pause off
 
 %Destreak(imread('Text.gif'));
 %Destreak(imread('Text1.gif'));
-%%Destreak(imread('Text2.jpg'));
+%Destreak(imread('Text2.jpg'));
 %return
 
 %% Problem I {{{
@@ -111,14 +111,15 @@ Gy = Gx';
 Fx = imfilter(normalized_rice, Gx, 'replicate');
 Fy = imfilter(normalized_rice, Gy, 'replicate');
 F = abs(Fx) + abs(Fy);
-c = max(F(:)) * 0.4375;
+c = 4 * mean2(F)^2;
 rice_edges = zeros(size(F), 'double');
 rice_edges = double(F > c);
 
-disp('I started with half of the maximum of F. I compared my edges image to that');
-disp('produced by Matlab''s edge() function. I repeated this method, using a binary');
-disp('search until I was satisfied with my edge image. My threshold value is 0.4375 of');
-disp('the maximum of F.');
+disp('I followed the example of Matlab''s edge() function. That function uses four');
+disp('times the square of the image average. My edges appear a bit thicker than those');
+disp('produced by edge(), even with ''nothinning''. My hypothesis is that the');
+disp('difference is due to the fact that my F is calculated with the absolute values');
+disp('of Fx and Fy. Matlab uses the square root of the sum of the squares.');
 
 disp('-----Finish Solving Problem II part 1-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
