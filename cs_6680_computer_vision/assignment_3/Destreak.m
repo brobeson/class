@@ -3,9 +3,22 @@
 % Assignment 3
 
 function output_image = Destreak(image)
+    % figure out how many channels on which we need to operate
+    dimensions = ndims(image);
+
     normalized = im2double(image);
     negated = 1.0 - normalized;
-    med = medfilt2(negated, [7 7]);
+
+    % medfilt2() only works on a 2D matrix. if this image has multiple channels,
+    % medfilt2() needs to be invoked on each channel.
+    if dimensions == 2
+        med = medfilt2(negated, [7 7]);
+    elseif dimensions == 3
+        for channel = 1:size(image, 3)
+            med(:,:,channel) = medfilt2(negated(:,:,channel), [7 7]);
+        end
+    end
+
     diff = negated - med;
     avg = imfilter(diff, [1 2 1; 2 4 2; 1 2 1]);
     m = min(avg(:));
