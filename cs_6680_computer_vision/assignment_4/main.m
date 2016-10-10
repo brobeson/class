@@ -9,20 +9,23 @@ pause off
 sample = imread('Sample.jpg');
 
 %% Part 1 - Gaussian low pass filter {{{
-filter = zeros(size(sample));
-filter_size = size(filter);
-center = [ floor(filter_size(1) / 2 + 1), floor(filter_size(2) / 2 + 1) ];
 D0 = 25;
 %D0 = 50;
-two_d_square = 2 * D0^2;
-for r = 1:size(filter, 1)
-    for c = 1:size(filter, 2)
-        % no reason to take square root, only to square it in the next operation
-        distance_squared = (r - center(1)) ^ 2 + (c - center(2)) ^ 2;
-        filter(r, c) = exp(-distance_squared / two_d_square);
-    end
-end
+two_d0_squared = 2 * D0^2;
 
+% build a matrix such that the value of each element is the negative of the
+% square distance from the center. the gaussian low-pass filter equation is
+%   H(u,v) = e^(-D(u,v) * D(u,v) / 2 * D0^2)
+% this matrix is the numerator of the exponent.
+sz = size(sample);
+rws = repmat([1:sz(1)]',     1, sz(2)); % a matrix of row numbers
+cls = repmat([1:sz(2)],  sz(1),     1); % a matrix of column numbers
+center = [ floor(sz(1) / 2 + 1), floor(sz(2) / 2 + 1) ];
+neg_d_squared = -((rws - center(1)).^2 + (cls - center(2)).^2);
+
+% complete the filter, combining the matrix of exponent numerators, and the
+% scalar denominator. then apply the filter.
+filter = exp(neg_d_squared ./ two_d0_squared);
 filtered_sample = ifft2(ifftshift(fftshift(fft2(sample)) .* filter));
 
 % show the images
