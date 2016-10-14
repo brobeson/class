@@ -20,10 +20,11 @@ center = [ floor(sz(1) / 2 + 1), floor(sz(2) / 2 + 1) ];
 filter = exp(-k .* ((rws - center(1)).^2 + (cls - center(2)).^2) .^ (5/6));
 
 % apply the filter in the frequency domain, then convert back to spatial
-blur_city = ifft2(ifftshift(fftshift(fft2(city)) .* filter));
+blur_city = uint8(ifft2(ifftshift(fftshift(fft2(city)) .* filter)));
+imwrite(blur_city, 'BlurCity.bmp');
 
 % show the images
-figure(1);
+figure(3);
 subplot(1, 3, 1);
 imshow(city);
 title('Original city.jpg');
@@ -31,10 +32,27 @@ subplot(1, 3, 2);
 imshow(filter, []);
 title('Filter H');
 subplot(1, 3, 3);
-imshow(blur_city, []);
+imshow(blur_city);
 title('Blurred city');
 
 disp('-----Finish Solving Problem II part 1-----')
+drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
+pause
+% }}}
+
+%% Part 2 - Restoration {{{
+g = 0.0001;
+blur_city = imread('BlurCity.bmp');
+filter_sq = filter.^2;
+wiener_filter = filter_sq ./ (filter .* (filter_sq + g));
+restored_city = ifft2(ifftshift(fftshift(fft2(blur_city)) .* wiener_filter));
+
+% show the images
+figure(4);
+imshow(restored_city, []);
+title('Restored city');
+
+disp('-----Finish Solving Problem II part 2-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
 pause
 % }}}
