@@ -5,6 +5,53 @@
 clc
 pause off
 
+%% Problem III - Frequency domain {{{
+% todo  remove this before submission
+sample = imread('Sample.jpg');
+
+capitol = imread('Capitol.jpg');
+
+%% Part 1 - Visualizing magnitude & phase {{{
+capitol_fft = fftshift(fft2(capitol));
+capitol_mag = abs(capitol_fft);
+capitol_mag_display = log10(capitol_mag - min(capitol_mag(:)) + 1);
+
+%cp = atan2(imag(capitol_fft), real(capitol_fft));
+%mn = min(cp(:))
+%mx = max(cp(:))
+capitol_phase = angle(capitol_fft);
+%mn = min(capitol_phase(:))
+%mx = max(capitol_phase(:))
+
+sample_fft = fftshift(fft2(sample));
+sample_mag = abs(sample_fft);
+sample_mag_display = log10(sample_mag - min(sample_mag(:)) + 1);
+sample_phase = angle(sample_fft);
+
+% show the images
+figure(3);
+subplot(2, 2, 1);
+imshow(capitol_mag_display, []);
+title('Capitol magnitude');
+subplot(2, 2, 2);
+imshow(capitol_phase, []);
+title('Capitol phase');
+subplot(2, 2, 3);
+imshow(sample_mag_display, []);
+title('Sample magnitude');
+subplot(2, 2, 4);
+imshow(sample_phase, []);
+title('Sample phase');
+
+return
+
+disp('-----Finish Solving Problem II part 1-----')
+drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
+pause
+% }}}
+
+% }}}
+
 %% Problem II - Noise modeling {{{
 city = imread('City.jpg');
 
@@ -58,8 +105,6 @@ pause
 % }}}
 
 % }}}
-
-return
 
 %% Problem I - FFT filters {{{
 sample = imread('Sample.jpg');
