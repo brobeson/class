@@ -43,9 +43,42 @@ subplot(2, 2, 4);
 imshow(sample_phase, []);
 title('Sample phase');
 
-return
+disp('-----Finish Solving Problem III part 1-----')
+drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
+pause
+% }}}
 
-disp('-----Finish Solving Problem II part 1-----')
+%% Part 2 - Swapping phase {{{
+% swap the two magnitude matrices
+tmp = capitol_mag;
+capitol_mag = sample_mag;
+sample_mag = tmp;
+
+% changing the phase, necessitates recalculating the FFT result.
+% transforming the equations given in the notes results in the these equations
+% to calculate the real and imaginary components:
+%   R^2 = F^2 / (1 + tan^2(phi))
+%   I = R tan(phi)
+R = sqrt(capitol_mag.^2 ./ (1 + tan(capitol_phase).^2));
+I = R .* tan(capitol_phase);
+capitol_fft = complex(R, I);
+new_capitol = ifft2(ifftshift(capitol_fft));
+
+R = sqrt(sample_mag.^2 ./ (1 + tan(sample_phase).^2));
+I = R .* tan(sample_phase);
+sample_fft = complex(R, I);
+new_sample = ifft2(ifftshift(sample_fft));
+
+% show the images
+figure(6);
+subplot(1, 2, 1);
+imshow(new_capitol, []);
+title('Capitol phase');
+subplot(1, 2, 2);
+imshow(new_sample, []);
+title('Sample phase');
+
+disp('-----Finish Solving Problem III part 2-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
 pause
 % }}}
