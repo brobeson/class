@@ -5,6 +5,58 @@
 clc
 pause off
 
+%% Problem IV - Noise removal {{{
+noisy_boy = imread('boy_noisy.gif');
+
+% step 1
+noisy_boy_dft = fftshift(fft2(noisy_boy));
+
+% step 2
+% extract the magnitudes from the DFT data. only the lower right corner of the
+% matrix is required at the moment
+full_magnitude = abs(noisy_boy_dft);
+cnter = floor(size(full_magnitude) ./ 2) + 1;
+magnitude = full_magnitude(cnter(1):size(full_magnitude, 1), cnter(2):size(full_magnitude, 2));
+% sort the magnitude data, and extract the hightest four after the highest
+sorted = sort(magnitude(:));
+fin = size(magnitude, 1) * size(magnitude, 2);
+highest_mags = sorted(fin - 4:fin - 1);
+% find the indices of the highest magnitudes. use the full magnitude matrix,
+% because the complex conjugates also need to be adjusted
+h = (full_magnitude == highest_mags(1)) + ...
+    (full_magnitude == highest_mags(2)) + ...
+    (full_magnitude == highest_mags(3)) + ...
+    (full_magnitude == highest_mags(4));
+[rows, cols] = find(h);
+
+% step 3
+% a filter to average a pixel's 8 neighbors
+avg_filter = [ 0.125 0.125 0.125;
+               0.125 0     0.125;
+               0.125 0.125 0.125 ];
+% for the high frequencies, replace the magnitude with the average of their
+% neighbors. don't use imfilter here, because that will apply the filter to all
+% nine elements (the magnitude of interest, and its neighbors).
+for r = 1:8
+    for c = 1:8
+        full_magnitude(rows(r), cols(c)) = sum(sum(full_magnitude(rows(r) - 1:rows(r) + 1, cols(c) - 1:cols(c) + 1) .* avg_filter));
+        noisy_boy_dft(rows(r), cols(c)) = make_dft(full_magnitude(rows(r), cols(c)), ...
+                                                   angle(noisy_boy_dft(rows(r), cols(c))));       
+    end
+end
+
+% step 4
+boy = ifft2(ifftshift(noisy_boy_dft));
+figure(7);
+subplot(1, 2, 1);
+imshow(noisy_boy);
+title('Noisy boy');
+subplot(1, 2, 2);
+imshow(boy, []);
+title('Boy');
+
+% }}}
+
 %% Problem III - Frequency domain {{{
 % todo  remove this before submission
 sample = imread('Sample.jpg');
