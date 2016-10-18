@@ -46,7 +46,7 @@ for r = 1:8
 end
 
 % step 4
-boy = ifft2(ifftshift(noisy_boy_dft));
+boy = ifft2(ifftshift(noisy_boy_dft), 'symmetric');
 figure(7);
 subplot(1, 2, 1);
 imshow(noisy_boy);
