@@ -92,7 +92,6 @@ pause
 % }}}
 
 % }}}
-return
 
 %% Problem II - Noise modeling {{{
 city = imread('City.jpg');
@@ -102,11 +101,13 @@ k = 0.0025;
 
 % build the filter according to the formula
 %   H(u,v) = e^(-k D(u,v)^5/3)
-sz = size(city);
-row_matrix = repmat([1:rows]',     1, cols); % a matrix of row numbers
-col_matrix = repmat([1:cols],  rows,     1); % a matrix of column numbers
-center = [ floor(rows / 2 + 1), floor(cols / 2 + 1) ];
-filter = exp(-k .* ((row_matrix - center(1)).^2 + (col_matrix - center(2)).^2) .^ (5/6));
+[rows, cols] = size(city);
+row_matrix = repmat([1:rows]',    1, cols); % a matrix of row numbers
+col_matrix = repmat([1:cols] , rows,    1); % a matrix of column numbers
+center_row = floor(rows / 2) + 1;
+center_col = floor(cols / 2) + 1;
+% note that sqrt(x)^5/3 == x^5/6
+filter = exp(-k .* ((row_matrix - center_row).^2 + (col_matrix - center_col).^2) .^ (5/6));
 
 % apply the filter in the frequency domain, then convert back to spatial
 blur_city = uint8(ifft2(ifftshift(fftshift(fft2(city)) .* filter)));
