@@ -56,15 +56,22 @@ n = 2;
 %                 1 + [D(u,v) / Do]^2n
 % note that the alternate form introduces a division by 0 for the center pixel,
 % so this form is used.
-sz = size(sample);
-rws = repmat([1:sz(1)]',     1, sz(2)); % a matrix of row numbers
-cls = repmat([1:sz(2)],  sz(1),     1); % a matrix of column numbers
-center = [ floor(sz(1) / 2 + 1), floor(sz(2) / 2 + 1) ];
-D = sqrt((rws - center(1)).^2 + (cls - center(2)).^2);
+% note also, that the number of operations can be reduced by transforming the
+% math a little bit:
+%     [D(u,v) / Do]^2n
+%   = D(u,v)^2n / Do^2n
+%   = sqrt((p_u - c_u)^2 + (p_v - c_v)^2)^2n / Do^2n
+%   = ((p_u - c_u)^2 + (p_v - c_v)^2)^n / Do^2n
+[rows, cols] = size(sample);
+center_row = floor(rows / 2) + 1;
+center_col = floor(cols / 2) + 1;
+row_matrix = repmat([1:rows]',     1, cols); % a matrix of row numbers
+col_matrix = repmat([1:cols] ,  rows,    1); % a matrix of column numbers
+D = ((row_matrix - center_row).^2 + (col_matrix - center_col).^2).^n;
 
 % complete the filter, combining the matrix of exponent numerators, and the
 % scalar denominator. then apply the filter.
-filter = 1 - 1 ./ (1 + (D ./ Do).^(2*n));
+filter = 1 - 1 ./ (1 + (D ./ Do.^(2*n)));
 filtered_sample = ifft2(ifftshift(fftshift(fft2(sample)) .* filter));
 
 % show the images
@@ -96,10 +103,10 @@ k = 0.0025;
 % build the filter according to the formula
 %   H(u,v) = e^(-k D(u,v)^5/3)
 sz = size(city);
-rws = repmat([1:sz(1)]',     1, sz(2)); % a matrix of row numbers
-cls = repmat([1:sz(2)],  sz(1),     1); % a matrix of column numbers
-center = [ floor(sz(1) / 2 + 1), floor(sz(2) / 2 + 1) ];
-filter = exp(-k .* ((rws - center(1)).^2 + (cls - center(2)).^2) .^ (5/6));
+row_matrix = repmat([1:rows]',     1, cols); % a matrix of row numbers
+col_matrix = repmat([1:cols],  rows,     1); % a matrix of column numbers
+center = [ floor(rows / 2 + 1), floor(cols / 2 + 1) ];
+filter = exp(-k .* ((row_matrix - center(1)).^2 + (col_matrix - center(2)).^2) .^ (5/6));
 
 % apply the filter in the frequency domain, then convert back to spatial
 blur_city = uint8(ifft2(ifftshift(fftshift(fft2(city)) .* filter)));
