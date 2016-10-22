@@ -9,23 +9,23 @@ pause off
 sample = imread('Sample.jpg');
 
 %% Part 1 - Gaussian low pass filter {{{
-Do = 25;
-%Do = 50;
-two_d0_squared = 2 * Do^2;
+Dx = 25;
+Dy = 50;
 
-% build a matrix such that the value of each element is the negative of the
-% square distance from the center. the gaussian low-pass filter equation is
-%   H(u,v) = e^(-D(u,v) * D(u,v) / 2 * Do^2)
-% this matrix is the numerator of the exponent.
-sz = size(sample);
-rws = repmat([1:sz(1)]',     1, sz(2)); % a matrix of row numbers
-cls = repmat([1:sz(2)],  sz(1),     1); % a matrix of column numbers
-center = [ floor(sz(1) / 2 + 1), floor(sz(2) / 2 + 1) ];
-neg_d_squared = -((rws - center(1)).^2 + (cls - center(2)).^2);
+% build up the gaussian low-pass filter:
+%     e^(-D(u,v)^2 /  2Do^2)
+%   = e^( D(u,v)^2 / -2Do^2)
+denominators = [ -2 * Dy^2, -2 * Dx^2 ];
+[rows, cols] = size(sample);
+center_row = floor(rows / 2) + 1;
+center_col = floor(cols / 2) + 1;
+% each row is the square distance from the center row
+row_matrix = repmat(([1:rows] - center_row).^2',    1, cols);
+% each column is the square distance from the center column
+col_matrix = repmat(([1:cols] - center_col).^2,  rows,    1);
+filter = exp(row_matrix ./ denominators(1) + col_matrix ./ denominators(2));
 
-% complete the filter, combining the matrix of exponent numerators, and the
-% scalar denominator. then apply the filter.
-filter = exp(neg_d_squared ./ two_d0_squared);
+% transform to shifted frequency, apply the filter, and convert back to spatial
 filtered_sample = ifft2(ifftshift(fftshift(fft2(sample)) .* filter));
 
 % show the images
@@ -85,6 +85,7 @@ pause
 % }}}
 
 % }}}
+return
 
 %% Problem II - Noise modeling {{{
 city = imread('City.jpg');
