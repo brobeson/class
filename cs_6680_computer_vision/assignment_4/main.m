@@ -279,6 +279,55 @@ title('Boy');
 
 % }}}
 
+%% Problem V - Wavelets {{{
+lena = imread('Lena.jpg');
+wavelet_type = 'db2';
+
+% Part 1 - Deconstruction & reconstruction {{{
+max_level = wmaxlev(size(lena), wavelet_type);
+[coefficients, sizes] = wavedec2(double(lena), max_level, wavelet_type);
+reconstructed_lena = uint8(waverec2(coefficients, sizes, wavelet_type));
+if (isequal(lena, reconstructed_lena))
+    disp('Original Lena and reconstructed Lena are equal.');
+else
+    disp('Original Lena and reconstructed Lena are not equal.');
+end
+
+disp('-----Finish Solving Problem V part 1-----')
+drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
+pause
+% }}}
+
+% Part 2 - Deconstruction & reconstruction {{{
+level = floor(max_level / 2);
+[coefficients, sizes] = wavedec2(double(lena), level, wavelet_type);
+
+% part a - set approximation coefficients to 0, and reconstruct
+coefficients_a = coefficients;
+coefficients_a(1:sizes(1)*sizes(2)) = 0;
+lena_a = uint8(waverec2(coefficients_a, sizes, wavelet_type));
+
+% part b - set 2nd level horizontal coefficients to 0, and reconstruct
+coefficients_b = coefficients;
+start_index = (sizes(3, 1) * sizes(3, 2)) + 1;
+stop_index = start_index + (sizes(3, 1) * sizes(3, 2));
+coefficients_b(start_index:stop_index) = 0;
+lena_b = uint8(waverec2(coefficients_b, sizes, wavelet_type));
+
+figure;
+subplot(1, 2, 1);
+imshow(lena_a);
+title('0 approximation');
+subplot(1, 2, 2);
+imshow(lena_b);
+title('0 horizontal');
+
+disp('-----Finish Solving Problem V part 2-----')
+drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
+pause
+% }}}
+% }}}
+
 clear -all
 %close all force
 
