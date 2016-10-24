@@ -328,6 +328,83 @@ pause
 % }}}
 % }}}
 
+%% Problem VI - Denoise via wavelets {{{
+% step 1 - add noise to lena.jpg
+lena = imread('Lena.jpg');
+noisy_lena = imnoise(lena, 'gaussian', 0, 0.01);
+
+% step 2 - wavelet decomposition
+wavelet_type = 'db2';
+level = 3;
+[coefficients, sizes] = wavedec2(noisy_lena, level, wavelet_type);
+
+% step 3 - noise variance estimation
+stop_index = size(coefficients, 2);
+start_index = stop_index - (sizes(4, 1) * sizes(4, 2) * 3) + 1;
+subband = coefficients(start_index:stop_index);
+variance = (median(abs(subband)) / 0.6745)^2;
+
+% step 4 - adaptive threshold
+t = sqrt(variance * 2 * log10(size(subband, 2)));
+
+% step 5 - wavelet coefficient modification
+for idx = start_index:stop_index
+    if t <= coefficients(idx)
+        coefficients(idx) = coefficients(idx) - t;
+    elseif coefficients(idx) <= -t
+        coefficients(idx) = coefficients(idx) + t;
+    else
+        coefficients(idx) = 0;
+    end
+end
+
+% step 6 - repeat 3, 4, and 5 for level 2
+start_index = sizes(1, 1) * sizes(1, 2)     ... % by pass the approximation coeff.
+            + sizes(2, 1) * sizes(2, 2) * 3 ... % bypass the level 3 approximation coeff.
+            + 1;
+stop_index = start_index + sizes(3, 1) * sizes(3, 2) * 3 - 1;
+subband = coefficients(start_index:stop_index);
+variance = (median(abs(subband)) / 0.6745)^2;
+t = sqrt(variance * 2 * log10(size(subband, 2)));
+for idx = start_index:stop_index
+    if t <= coefficients(idx)
+        coefficients(idx) = coefficients(idx) - t;
+    elseif coefficients(idx) <= -t
+        coefficients(idx) = coefficients(idx) + t;
+    else
+        coefficients(idx) = 0;
+    end
+end
+
+% step 7 - repeat 3, 4, and 5 for level 3
+start_index = sizes(1, 1) * sizes(1, 2) + 1; % by pass the approximation coeff.
+stop_index = start_index + sizes(2, 1) * sizes(2, 2) * 3 - 1;
+subband = coefficients(start_index:stop_index);
+variance = (median(abs(subband)) / 0.6745)^2;
+t = sqrt(variance * 2 * log10(size(subband, 2)));
+for idx = start_index:stop_index
+    if t <= coefficients(idx)
+        coefficients(idx) = coefficients(idx) - t;
+    elseif coefficients(idx) <= -t
+        coefficients(idx) = coefficients(idx) + t;
+    else
+        coefficients(idx) = 0;
+    end
+end
+
+% step 8 - reconstruct the image
+clean_lena = uint8(waverec2(coefficients, sizes, wavelet_type));
+
+% step 9 - display
+figure(9);
+subplot(1, 2, 1);
+imshow(noisy_lena);
+title('Noisy lena');
+subplot(1, 2, 2);
+imshow(clean_lena);
+title('Clean lena');
+% }}}
+
 clear -all
 %close all force
 
