@@ -272,6 +272,11 @@ subplot(1, 2, 2);
 imshow(boy, []);
 title('Boy');
 
+% step 5
+disp('It''s very evident that the noise is periodic in nature, which is produced by');
+disp('high amplitudes in the frequency domain. Blending those frequencies with');
+disp('adjacent ones smooths out the noise.');
+
 disp('-----Finish Solving Problem IV-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
 pause
