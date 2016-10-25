@@ -2,9 +2,6 @@
 % CS 6680
 % Assignment 4
 
-clc
-pause off
-
 %% Problem I - FFT filters {{{
 sample = imread('Sample.jpg');
 
@@ -32,7 +29,7 @@ filtered_sample = ifft2(ifftshift(fftshift(fft2(sample)) .* filter));
 figure(1);
 subplot(1, 3, 1);
 imshow(sample);
-title('Original sample.jpg');
+title('Original sample');
 subplot(1, 3, 2);
 imshow(filter);
 title('Gaussian low-pass filter');
@@ -78,7 +75,7 @@ filtered_sample = ifft2(ifftshift(fftshift(fft2(sample)) .* filter));
 figure(2);
 subplot(1, 3, 1);
 imshow(sample);
-title('Original sample.jpg');
+title('Original sample');
 subplot(1, 3, 2);
 imshow(filter);
 title('Butterworth high-pass filter');
@@ -150,9 +147,7 @@ pause
 % }}}
 
 %% Problem III - Frequency domain {{{
-% todo  remove this before submission
 sample = imread('Sample.jpg');
-
 capitol = imread('Capitol.jpg');
 
 %% Part 1 - Visualizing magnitude & phase {{{
@@ -242,7 +237,7 @@ magnitude = abs(noisy_boy_dft);
 % sort the magnitude data, and extract the highest four after the highest.
 % using unique() gives us distinct magnitudes as requested in the problem.
 sorted = sort(unique(magnitude(:), 'stable'), 'descend');
-highest_mags = sorted(2:5)
+highest_mags = sorted(2:5);
 % find the indices of the highest magnitudes. use the full magnitude matrix,
 % because the complex conjugates also need to be adjusted
 h = (magnitude == highest_mags(1)) + ...
@@ -277,6 +272,9 @@ subplot(1, 2, 2);
 imshow(boy, []);
 title('Boy');
 
+disp('-----Finish Solving Problem IV-----')
+drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
+pause
 % }}}
 
 %% Problem V - Wavelets {{{
@@ -298,7 +296,7 @@ drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
 pause
 % }}}
 
-% Part 2 - Deconstruction & reconstruction {{{
+% Part 2 - Wavelet modification {{{
 level = floor(max_level / 2);
 [coefficients, sizes] = wavedec2(double(lena), level, wavelet_type);
 
@@ -308,6 +306,7 @@ coefficients_a(1:sizes(1)*sizes(2)) = 0;
 lena_a = uint8(waverec2(coefficients_a, sizes, wavelet_type));
 
 % part b - set 2nd level horizontal coefficients to 0, and reconstruct
+% todo  calculation of start and stop index are probably incorrect
 coefficients_b = coefficients;
 start_index = (sizes(3, 1) * sizes(3, 2)) + 1;
 stop_index = start_index + (sizes(3, 1) * sizes(3, 2));
@@ -403,8 +402,12 @@ title('Noisy lena');
 subplot(1, 2, 2);
 imshow(clean_lena);
 title('Clean lena');
+
+disp('-----Finish Solving Problem VI-----')
+drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
+pause
 % }}}
 
 clear -all
-%close all force
+close all force
 
