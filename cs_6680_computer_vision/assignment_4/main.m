@@ -306,11 +306,19 @@ coefficients_a(1:sizes(1)*sizes(2)) = 0;
 lena_a = uint8(waverec2(coefficients_a, sizes, wavelet_type));
 
 % part b - set 2nd level horizontal coefficients to 0, and reconstruct
-% todo  calculation of start and stop index are probably incorrect
+% calculate the start and end index for the horizontal coefficients. start at
+% the end of the coefficients and work backwards: pass the 1st level
+% coefficients, and the vertical & diagonal 2nd level coefficients.
+lvl_1_row = size(sizes, 1) - 1;                                 % row of the 1st level coefficient sizes
+lvl_2_row = lvl_1_row - 1;                                      % row of the 2nd level coefficient sizes
+wavelet_length = 3 * sizes(lvl_1_row, 1) * sizes(lvl_1_row, 2); % # of 1st level coefficients
+lvl_2_stop = size(coefficients, 2) - wavelet_length;            % last index of the 2nd level coefficients
+lvl_2_stop = lvl_2_stop - (2 * sizes(lvl_2_row, 1) * sizes(lvl_2_row, 2));  % last index of the 2nd lvl hor. coeff.
+lvl_2_start = lvl_2_stop - (sizes(lvl_2_row, 1) * sizes(lvl_2_row, 2)) + 1; % first index of the 2nd lvl hor. coeff.
+
+% modify the coefficients and reconstruct
 coefficients_b = coefficients;
-start_index = (sizes(3, 1) * sizes(3, 2)) + 1;
-stop_index = start_index + (sizes(3, 1) * sizes(3, 2));
-coefficients_b(start_index:stop_index) = 0;
+coefficients_b(lvl_2_start:lvl_2_stop) = 0;
 lena_b = uint8(waverec2(coefficients_b, sizes, wavelet_type));
 
 figure;
