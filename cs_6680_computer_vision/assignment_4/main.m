@@ -329,6 +329,11 @@ subplot(1, 2, 2);
 imshow(lena_b);
 title('0 horizontal');
 
+disp('Part A set the intensity information to 0, which propagates up to the');
+disp('reconstruction, giving a predominantly black appearance. Setting the horizontal');
+disp('coefficients to 0 removes any difference between horizontally adjacent pixels,');
+disp('creating small horizontal streaks.');
+
 disp('-----Finish Solving Problem V part 2-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
 pause
