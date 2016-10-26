@@ -198,15 +198,11 @@ sample_mag = tmp;
 % to calculate the real and imaginary components:
 %   R^2 = F^2 / (1 + tan^2(phi))
 %   I = R tan(phi)
-R = sqrt(capitol_mag.^2 ./ (1 + tan(capitol_phase).^2));
-I = R .* tan(capitol_phase);
-capitol_fft = complex(R, I);
-new_capitol = ifft2(ifftshift(capitol_fft));
+capitol_fft = capitol_mag .* exp(capitol_phase .* sqrt(-1));
+new_capitol = ifft2(ifftshift(capitol_fft), 'symmetric');
 
-R = sqrt(sample_mag.^2 ./ (1 + tan(sample_phase).^2));
-I = R .* tan(sample_phase);
-sample_fft = complex(R, I);
-new_sample = ifft2(ifftshift(sample_fft));
+sample_fft = sample_mag .* exp(sample_phase .* sqrt(-1));
+new_sample = ifft2(ifftshift(sample_fft), 'symmetric');
 
 % show the images
 figure(6);
@@ -221,7 +217,6 @@ disp('-----Finish Solving Problem III part 2-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
 pause
 % }}}
-
 % }}}
 
 %% Problem IV - Noise removal {{{
@@ -328,10 +323,10 @@ lena_b = uint8(waverec2(coefficients_b, sizes, wavelet_type));
 
 figure;
 subplot(1, 2, 1);
-imshow(lena_a);
+imshow(lena_a, []);
 title('0 approximation');
 subplot(1, 2, 2);
-imshow(lena_b);
+imshow(lena_b, []);
 title('0 horizontal');
 
 disp('Part A set the intensity information to 0, which propagates up to the');
