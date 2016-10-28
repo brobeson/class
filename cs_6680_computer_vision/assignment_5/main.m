@@ -34,9 +34,37 @@ disp('-----Finish Solving Problem I part 2-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
 pause
 % }}}
-% }}}
 
-return
+%% Part 3 {{{
+wire_bond = imread('Wirebond.tif');
+
+se = strel('square', 15);
+wire_bond_b = imerode(wire_bond, se);
+
+se = strel('square', 8);
+wire_bond_c = imerode(wire_bond, se);
+
+se = strel('square', 37);
+wire_bond_d = imerode(wire_bond, se);
+
+figure(3);
+subplot(1, 3, 1);
+imshow(wire_bond_b);
+title('Desired image 1');
+
+subplot(1, 3, 2);
+imshow(wire_bond_c);
+title('Desired image 2');
+
+subplot(1, 3, 3);
+imshow(wire_bond_d);
+title('Desired image 3');
+
+disp('-----Finish Solving Problem I part 2-----')
+drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
+pause
+% }}}
+% }}}
 
 clear -all
 close all force
