@@ -60,7 +60,33 @@ subplot(1, 3, 3);
 imshow(wire_bond_d);
 title('Desired image 3');
 
-disp('-----Finish Solving Problem I part 2-----')
+disp('-----Finish Solving Problem I part 3-----')
+drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
+pause
+% }}}
+
+%% Part 4 {{{
+shapes = imread('Shapes.tif');
+se = strel('square', 20);
+
+shapes_b = imopen(shapes, se);
+shapes_c = imclose(shapes, se);
+shapes_d = imclose(imopen(shapes, se), se);
+
+figure(1);
+subplot(1, 3, 1);
+imshow(shapes_b);
+title('Desired image 1');
+
+subplot(1, 3, 2);
+imshow(shapes_c);
+title('Desired image 2');
+
+subplot(1, 3, 3);
+imshow(shapes_d);
+title('Desired image 3');
+
+disp('-----Finish Solving Problem I part 4-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
 pause
 % }}}
