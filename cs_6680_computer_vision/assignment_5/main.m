@@ -136,6 +136,33 @@ pause
 % }}}
 % }}}
 
+%% Problem II - Applications of morphological operations {{{
+%% Part 1 {{{
+ball = imread('Ball.tif');
+
+figure(1);
+imshow(ball);
+title('Ball');
+
+disp('-----Finish Solving Problem II part 1-----')
+drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
+pause
+% }}}
+
+%% Part 2 {{{
+[L, num] = bwlabel(ball);
+
+fprintf(1, 'Matlab found %d components\n', num);
+figure(8);
+imshow(L, []);
+title('Matlab''s labels');
+
+disp('-----Finish Solving Problem II part 1-----')
+drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
+pause
+% }}}
+% }}}
+
 clear -all
 close all force
 
