@@ -73,7 +73,7 @@ shapes_b = imopen(shapes, se);
 shapes_c = imclose(shapes, se);
 shapes_d = imclose(imopen(shapes, se), se);
 
-figure(1);
+figure(4);
 subplot(1, 3, 1);
 imshow(shapes_b);
 title('Desired image 1');
@@ -87,6 +87,50 @@ imshow(shapes_d);
 title('Desired image 3');
 
 disp('-----Finish Solving Problem I part 4-----')
+drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
+pause
+% }}}
+
+%% Part 5 {{{
+dowels = imread('Dowels.tif');
+
+% open-close with a disk SE, and a close-open
+se = strel('disk', 5);
+dowels_oc = imclose(imopen(dowels, se), se);
+dowels_co = imopen(imclose(dowels, se), se);
+
+figure(5);
+subplot(1, 2, 1);
+imshow(dowels_oc);
+title('Open-close');
+
+subplot(1, 2, 2);
+imshow(dowels_co);
+title('Close-open');
+
+disp('Opening an image exposes more black background, dimming the image. Closing');
+disp('increases the foreground, brightening the image. The first operation used');
+disp('dominates, hence open-close appears dimmer than close-open.');
+
+% open-close series
+dowels_oc = dowels;
+dowels_co = dowels;
+for i = 2:5
+    se = strel('disk', i);
+    dowels_oc = imclose(imopen(dowels_oc, se), se);
+    dowels_co = imopen(imclose(dowels_co, se), se);
+end
+
+figure(6);
+subplot(1, 2, 1);
+imshow(dowels_oc);
+title('Open-close');
+
+subplot(1, 2, 2);
+imshow(dowels_co);
+title('Close-open');
+
+disp('-----Finish Solving Problem I part 5-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
 pause
 % }}}
