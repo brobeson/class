@@ -8,10 +8,8 @@ pause off
 %% Problem I - Problem solving using morphological operations {{{
 %% Part 1 {{{
 city = imread('City.jpg');
-se = [ 1 1 1;
-       1 1 1;
-       1 1 1 ];
-city_gradient = imdilate(city, se) - imerode(city, se);
+se = strel('square', 3);
+city_gradient = imsubtract(imdilate(city, se), imerode(city, se));
 
 figure(1);
 imshow(city_gradient);
@@ -25,7 +23,20 @@ disp('-----Finish Solving Problem I part 1-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
 pause
 % }}}
+
+%% Part 2 {{{
+squares = imread('SmallSquares.tif');
+
+figure(2);
+imshow(squares);
+
+disp('-----Finish Solving Problem I part 2-----')
+drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
+pause
 % }}}
+% }}}
+
+return
 
 clear -all
 close all force
