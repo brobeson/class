@@ -139,10 +139,13 @@ pause
 %% Problem II - Applications of morphological operations {{{
 %% Part 1 {{{
 ball = imread('Ball.tif');
+[labelIm, num] = FindComponentLabels(ball, strel('square', 3));
 
-figure(1);
-imshow(ball);
-title('Ball');
+fprintf(1, '%d connected objects were found.\n', num);
+
+figure(7);
+imshow(labelIm, []);
+title('Labeled objects');
 
 disp('-----Finish Solving Problem II part 1-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
