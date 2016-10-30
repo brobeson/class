@@ -177,7 +177,7 @@ initial_points = ball;
 initial_points(2:size(ball, 1) - 1, 2:size(ball, 2) - 1) = 0;
 
 % initialize to no objects
-objects = zeros(size(ball), 'logical');
+A = zeros(size(ball), 'logical');
 
 % loop while there are unprocessed initial_points. each iteration of the loop
 % will remove a point from the initial points.
@@ -193,7 +193,7 @@ while sum(initial_points(:)) ~= 0
 
     % only record the object if a component was found
     if (any(Xk(:)))
-        objects = objects + Xk;
+        A = A + Xk;
 
         % remove the found component from the input image. we don't want to
         % find it again
@@ -206,10 +206,26 @@ subplot(1, 2, 1);
 imshow(ball);
 title('Balls');
 subplot(1, 2, 2);
-imshow(objects);
+imshow(A);
 title('Border objects');
 
 disp('-----Finish Solving Problem II part 3-----')
+drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
+pause
+% }}}
+
+%% Part 4 {{{
+B = ball & ~A;
+
+figure(10);
+subplot(1, 2, 1);
+imshow(ball);
+title('Balls');
+subplot(1, 2, 2);
+imshow(B);
+title('Interior objects');
+
+disp('-----Finish Solving Problem II part 4-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
 pause
 % }}}
