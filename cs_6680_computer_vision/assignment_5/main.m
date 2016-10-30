@@ -143,8 +143,15 @@ ball = imread('Ball.tif');
 
 fprintf(1, '%d connected objects were found.\n', num);
 
+% convert the labels to HSV. the labels are converted to hue. saturation and
+% value are fixed at 1
+labels = ones(size(labelIm, 1), size(labelIm, 2), 3, 'double');
+labels(:, :, 1) = double(labelIm) ./ num;
+labels(:, :, 2) = ball;
+labels(:, :, 2) = ball;
+
 figure(7);
-imshow(labelIm, []);
+imshow(hsv2rgb(labels));
 title('Labeled objects');
 
 disp('-----Finish Solving Problem II part 1-----')
