@@ -167,7 +167,49 @@ figure(8);
 imshow(L, []);
 title('Matlab''s labels');
 
-disp('-----Finish Solving Problem II part 1-----')
+disp('-----Finish Solving Problem II part 2-----')
+drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
+pause
+% }}}
+
+%% Part 3 {{{
+initial_points = ball;
+initial_points(2:size(ball, 1) - 1, 2:size(ball, 2) - 1) = 0;
+
+% initialize to no objects
+objects = zeros(size(ball), 'logical');
+
+% loop while there are unprocessed initial_points. each iteration of the loop
+% will remove a point from the initial points.
+while sum(initial_points(:)) ~= 0
+    Xk_1 = zeros(size(ball), 'logical');
+    Xk = Xk_1;
+    idx = find(initial_points, 1);
+    Xk(idx(1)) = 1;
+    while ~isequal(Xk, Xk_1)
+        Xk_1 = Xk;
+        Xk = imdilate(Xk_1, se) & ball;
+    end
+
+    % only record the object if a component was found
+    if (any(Xk(:)))
+        objects = objects + Xk;
+
+        % remove the found component from the input image. we don't want to
+        % find it again
+        initial_points = ~Xk & initial_points;
+    end
+end
+
+figure(9);
+subplot(1, 2, 1);
+imshow(ball);
+title('Balls');
+subplot(1, 2, 2);
+imshow(objects);
+title('Border objects');
+
+disp('-----Finish Solving Problem II part 3-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
 pause
 % }}}
