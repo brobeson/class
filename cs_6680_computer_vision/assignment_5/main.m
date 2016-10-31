@@ -27,8 +27,16 @@ pause
 %% Part 2 {{{
 squares = imread('SmallSquares.tif');
 
+se = strel([ 0 1 1;
+             0 1 1;
+             0 0 0 ]);
+res = imerode(squares, se);
+
 figure(2);
-imshow(squares);
+imshow(res);
+title('Result');
+
+fprintf(1, '%d pixels have north, east, and northeast neighbors.\n', sum(res(:)));
 
 disp('-----Finish Solving Problem I part 2-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
