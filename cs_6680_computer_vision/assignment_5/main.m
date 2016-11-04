@@ -27,10 +27,15 @@ pause
 %% Part 2 {{{
 squares = imread('SmallSquares.tif');
 
-se = strel([ 0 1 1;
-             0 1 1;
-             0 0 0 ]);
-res = imerode(squares, se);
+se1 = [ 0 1 0;
+        0 1 1;
+        0 0 0 ];
+
+se2 = [ 1 0 0;
+        1 0 0;
+        1 1 1 ];
+
+res = bwhitmiss(squares, strel(se1), strel(se2));
 
 figure(2);
 imshow(res);
