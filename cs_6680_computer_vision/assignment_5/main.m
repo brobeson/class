@@ -121,9 +121,9 @@ subplot(1, 2, 2);
 imshow(dowels_co);
 title('Close-open');
 
-disp('Opening an image exposes more black background, dimming the image. Closing');
-disp('increases the foreground, brightening the image. The first operation used');
-disp('dominates, hence open-close appears dimmer than close-open.');
+fprintf(1, 'Opening an image exposes more black background, dimming the image. Closing\n');
+fprintf(1, 'increases the foreground, brightening the image. The first operation used\n');
+fprintf(1, 'dominates, hence open-close appears dimmer than close-open.\n\n');
 
 % open-close series
 dowels_oc = dowels;
@@ -142,6 +142,9 @@ title('Open-close');
 subplot(1, 2, 2);
 imshow(dowels_co);
 title('Close-open');
+
+fprintf(1, 'Progressively increasing the SE radius appears to make smoother transitions\n');
+fprintf(1, 'between regions of varying intensity.\n\n');
 
 disp('-----Finish Solving Problem I part 5-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
