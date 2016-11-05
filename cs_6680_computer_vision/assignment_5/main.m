@@ -191,6 +191,7 @@ pause
 %% Part 3 {{{
 initial_points = ball;
 initial_points(2:size(ball, 1) - 1, 2:size(ball, 2) - 1) = 0;
+se = strel('square', 3);
 
 % initialize to no objects
 A = zeros(size(ball), 'logical');
@@ -231,15 +232,41 @@ pause
 % }}}
 
 %% Part 4 {{{
+% remove the border items found in part 3. then label the remaining particles
 B = ball & ~A;
+[B, num] = FindComponentLabels(B, strel('square', 3));
+
+% find the labeled item with the smalled area. this is used to estimate the size
+% of single items. recall that no border items are present, so no partial items
+% are present. if they were, this would not be a robust method.
+areas = zeros(1, num, 'int32');
+for n = 1:num
+    comp = B == n;
+    areas(n) = sum(comp(:));
+end
+
+% grow the minimum area by 2% to account for size error due to manipulating
+% discrete data (instead of continuous).
+minimum_area = min(areas);
+minimum_area = minimum_area * 1.02;
+
+% remove any items with mn area
+rejected_labels = find(areas <= minimum_area);
+to_remove = B == rejected_labels(1);
+for r = 2:size(rejected_labels, 2)
+    to_remove = to_remove | B == rejected_labels(r);
+end
+B = B & ~to_remove;
 
 figure(10);
 subplot(1, 2, 1);
 imshow(ball);
 title('Balls');
 subplot(1, 2, 2);
-imshow(B);
-title('Interior objects');
+imshow(B, []);
+title('Interior overlapping');
+
+fprintf(1, 'There are %d interior overlapping components.\n', num - size(rejected_labels, 2));
 
 disp('-----Finish Solving Problem II part 4-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
