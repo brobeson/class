@@ -2,9 +2,6 @@
 % CS 6680
 % Assignment 5
 
-clc
-pause off
-
 %% Problem I - Problem solving using morphological operations {{{
 %% Part 1 {{{
 city = imread('City.jpg');
