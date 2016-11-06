@@ -66,6 +66,46 @@ disp('-----Finish Solving Problem 2 part 1-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
 pause
 % }}}
+
+%% Part 2 {{{
+elephant_1 = imread('Elephant1.jpg');
+elephant_2 = imread('Elephant2.jpg');
+horse_1    = imread('Horse1.jpg');
+horse_2    = imread('Horse2.jpg');
+
+elephant_1_histogram = CalNormalizedHSVHist(elephant_1, 4, 4, 4);
+elephant_2_histogram = CalNormalizedHSVHist(elephant_2, 4, 4, 4);
+horse_1_histogram    = CalNormalizedHSVHist(horse_1,    4, 4, 4);
+horse_2_histogram    = CalNormalizedHSVHist(horse_2,    4, 4, 4);
+
+figure(5);
+subplot(2, 2, 1);
+bar(1:size(elephant_1_histogram, 2), elephant_1_histogram, 1.0);
+title('Elephant1 histogram');
+
+subplot(2, 2, 2);
+bar(1:size(elephant_2_histogram, 2), elephant_2_histogram, 1.0);
+title('Elephant2 histogram');
+
+subplot(2, 2, 3);
+bar(1:size(horse_1_histogram, 2), horse_1_histogram, 1.0);
+title('Horse1 histogram');
+
+subplot(2, 2, 4);
+bar(1:size(horse_2_histogram, 2), horse_2_histogram, 1.0);
+title('Horse2 histogram');
+
+image_db = { elephant_1, elephant_2, horse_1, horse_2 };
+histogram_db = { elephant_1_histogram, elephant_2_histogram, horse_1_histogram horse_2_histogram };
+QueryImages(6, elephant_1, elephant_1_histogram, image_db, histogram_db);
+QueryImages(7, elephant_2, elephant_2_histogram, image_db, histogram_db);
+QueryImages(8, horse_1, horse_1_histogram, image_db, histogram_db);
+QueryImages(9, horse_2, horse_2_histogram, image_db, histogram_db);
+
+disp('-----Finish Solving Problem 2 part 2-----')
+drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
+pause
+% }}}
 % }}}
 
 %% Problem 3 - Watermarking {{{
