@@ -2,7 +2,7 @@
 % CS 6680
 % Assignment 6
 
-clc
+%clc
 pause off
 
 %% Problem 1 - Color image processing {{{
@@ -52,6 +52,38 @@ imshow(ball);
 title('Ball with centroid');
 
 disp('-----Finish Solving Problem 1 part 1-----')
+drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
+pause
+% }}}
+% }}}
+
+%% Problem 3 - Watermarking {{{
+%% Part 1 {{{
+lena = imread('Lena.jpg');
+figure(10);
+subplot(2, 3, 1);
+imshow(lena);
+title('Lena');
+
+marked_30 = EmbedWatermark(lena, 30);
+subplot(2, 3, 2);
+imshow(marked_30);
+title('𝛽 = 30');
+
+subplot(2, 3, 3);
+imshow(abs(marked_30 - lena), []);
+title('𝛽 = 30 - lena');
+
+marked_90 = EmbedWatermark(lena, 90);
+subplot(2, 3, 5);
+imshow(marked_90);
+title('𝛽 = 90');
+
+subplot(2, 3, 6);
+imshow(abs(marked_90 - lena), []);
+title('𝛽 = 90 - lena');
+
+disp('-----Finish Solving Problem 3 part 1-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
 pause
 % }}}
