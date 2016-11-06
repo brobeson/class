@@ -1,4 +1,4 @@
-function marked = EmbedWatermark(img, beta)
+function [marked_image, watermark] = EmbedWatermark(img, beta)
 [C, S] = wavedec2(img, 3, 'db9');
 
 % save the current random engine state, then reset the engine to default. this
@@ -7,7 +7,7 @@ function marked = EmbedWatermark(img, beta)
 % operations.
 original_engine = rng;
 rng('default');
-b = randi([0, 1], [1, S(1) * S(1, 2)]);
+b = logical(randi([0, 1], [1, S(1) * S(1, 2)]));
 rng(original_engine);
 
 % extract the approximation coefficients
@@ -48,5 +48,6 @@ for i = 1:S(1)
 end
 
 C(1:S(1) * S(1, 2)) = H(:);
-marked = uint8(waverec2(C, S, 'db9'));
+marked_image = uint8(waverec2(C, S, 'db9'));
+watermark = logical(b);
 end
