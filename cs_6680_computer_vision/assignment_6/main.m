@@ -57,6 +57,17 @@ pause
 % }}}
 % }}}
 
+%% Problem 2 - Color image retrieval {{{
+%% Part 1 {{{
+
+% implemented in CalNormalizedHSVHist.m
+
+disp('-----Finish Solving Problem 2 part 1-----')
+drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
+pause
+% }}}
+% }}}
+
 %% Problem 3 - Watermarking {{{
 %% Part 1 {{{
 lena = imread('Lena.jpg');
