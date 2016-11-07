@@ -14,13 +14,13 @@ imshow(ball);
 title('Original ball');
 
 ball_hsv = rgb2hsv(ball);
-hue = ball_hsv(:, :, 1);
+hue = medfilt2(ball_hsv(:, :, 1), [7 7]);
 subplot(2, 2, 2);
 imshow(hue);
-title('Hue');
+title('Blurred hue');
 
 % pick out the red ball using threshold
-red = hue < 0.075;
+red = hue < 0.085;
 subplot(2, 2, 3);
 imshow(red);
 title('Red');
@@ -48,6 +48,7 @@ ball(r, c-10:c+10, :) = 0;
 %ball(max(rows), :, :) = 0;
 
 figure(2);
+subplot(1, 1, 1);
 imshow(ball);
 title('Ball with centroid');
 
