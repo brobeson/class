@@ -114,7 +114,6 @@ colored_shadow = hsv2rgb(colored_shadow_hsv);
 figure(4);
 imshow(colored_shadow);
 title('Shadow colored bright red');
-return
 
 disp('-----Finish Solving Problem 1 part 2-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
