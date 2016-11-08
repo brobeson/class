@@ -2,9 +2,6 @@
 % CS 6680
 % Assignment 6
 
-%clc
-pause off
-
 %% Problem 1 - Color image processing {{{
 %% Part 1 {{{
 ball = imread('ball.bmp');
@@ -35,12 +32,15 @@ title('Red de-noised');
 % get the indices of the remaining pixels. the average of the min & max of each
 % dimension gives the centroid
 [rows, cols] = find(red);
-c = floor((min(cols) + max(cols)) / 2);
-r = floor((min(rows) + max(rows)) / 2);
+bounding_box = [ min(rows) max(rows);
+                 min(cols) max(cols) ];
+c = floor((bounding_box(2,1) + bounding_box(2,2)) / 2);
+r = floor((bounding_box(1,1) + bounding_box(1,2)) / 2);
 
 % add a cross hair to the original image where the centroid
-ball(r-10:r+10, c, :) = 0;
-ball(r, c-10:c+10, :) = 0;
+marked_ball = ball;
+marked_ball(r-10:r+10, c, :) = 0;
+marked_ball(r, c-10:c+10, :) = 0;
 
 %ball(:, min(cols), :) = 0;
 %ball(:, max(cols), :) = 0;
@@ -48,11 +48,75 @@ ball(r, c-10:c+10, :) = 0;
 %ball(max(rows), :, :) = 0;
 
 figure(2);
-subplot(1, 1, 1);
-imshow(ball);
+imshow(marked_ball);
 title('Ball with centroid');
 
 disp('-----Finish Solving Problem 1 part 1-----')
+drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
+pause
+% }}}
+
+%% Part 2 {{{
+% grab the value channel, and apply a median filter a couple times to smooth out
+% the shadow
+value = medfilt2(medfilt2(ball_hsv(:,:,3), [7 7]), [7 7]);
+figure(3);
+subplot(2, 2, 1);
+imshow(value, []);
+title('Smoothed value');
+
+% pick out the area around the ball
+just_ball = value(bounding_box(1,1):bounding_box(1,2), bounding_box(2,1):bounding_box(2,2));
+subplot(2, 2, 2);
+imshow(just_ball, []);
+title('Just the ball');
+
+% find the minimum value in the vicinity of the ball. use this as the shadow
+% value. pad it out to find shadow values a bit more than the minimum
+shadow_value = min(just_ball(:)) * 1.5;
+shadow = value <= shadow_value;
+subplot(2, 2, 3);
+imshow(shadow);
+title('All ''shadows''');
+
+% 1) label the remaining connected components
+% 2) find just the shadow elements in the ball cut-out.
+% 3) stick the ball cut-out shadow into a black field
+% 4) remove all elements of the shadow labels for which the corresponding
+%    element in step 3 is 0. this leaves only shadow label elements from the
+%    ball
+% 5) remove everything from the shadows image that has a different label
+%    this leaves just the ball's shadow!
+labeled_shadow = bwlabel(shadow);
+just_ball = just_ball <= shadow_value;
+shadow_bit = zeros(size(labeled_shadow));
+shadow_bit(bounding_box(1,1):bounding_box(1,2), bounding_box(2,1):bounding_box(2,2)) = just_ball;
+desired_label = labeled_shadow;
+desired_label(find(shadow_bit == 0)) = 0;
+labeled_shadow(labeled_shadow ~= max(desired_label(:))) = 0;
+subplot(2, 2, 4);
+imshow(labeled_shadow);
+title('Ball shadow');
+
+% set the shadow to brilliant red
+colored_shadow_hsv = ball_hsv;
+channel = ball_hsv(:,:,1);
+channel(labeled_shadow ~= 0) = 0; % set the hue to red
+colored_shadow_hsv(:,:,1) = channel;
+channel = ball_hsv(:,:,2);
+channel(labeled_shadow ~= 0) = 1; % set full saturation
+colored_shadow_hsv(:,:,2) = channel;
+channel = ball_hsv(:,:,3);
+channel(labeled_shadow ~= 0) = 1; % set full value
+colored_shadow_hsv(:,:,3) = channel;
+colored_shadow = hsv2rgb(colored_shadow_hsv);
+
+figure(4);
+imshow(colored_shadow);
+title('Shadow colored bright red');
+return
+
+disp('-----Finish Solving Problem 1 part 2-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
 pause
 % }}}
