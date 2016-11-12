@@ -183,20 +183,20 @@ title('Lena');
 [marked_30, water_30] = EmbedWatermark(lena, 30);
 subplot(2, 3, 2);
 imshow(marked_30);
-title('𝛽 = 30');
+title('Watermarked 𝛽 = 30');
 
 subplot(2, 3, 3);
 imshow(abs(marked_30 - lena), []);
-title('𝛽 = 30 - lena');
+title('Watermarked - lena');
 
 [marked_90, water_90] = EmbedWatermark(lena, 90);
 subplot(2, 3, 5);
 imshow(marked_90);
-title('𝛽 = 90');
+title('Watermarked 𝛽 = 90');
 
 subplot(2, 3, 6);
 imshow(abs(marked_90 - lena), []);
-title('𝛽 = 90 - lena');
+title('Watermarked - lena');
 
 disp('-----Finish Solving Problem 3 part 1-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang
@@ -207,8 +207,8 @@ pause
 ex_water_30 = ExtractWatermark(marked_30, 30);
 ex_water_90 = ExtractWatermark(marked_90, 90);
 
-fprintf(1, 'For 𝛽=30, %.2f%% of extracted bits match embedded bits.\n', 100 * sum(water_30 ~= ex_water_30) / size(water_30, 2));
-fprintf(1, 'For 𝛽=90, %.2f%% of extracted bits match embedded bits.\n', 100 * sum(water_90 ~= ex_water_90) / size(water_90, 2));
+fprintf(1, 'For 𝛽=30, %.0f%% of extracted bits match embedded bits.\n', 100 * sum(water_30 == ex_water_30) / size(water_30, 2));
+fprintf(1, 'For 𝛽=90, %.0f%% of extracted bits match embedded bits.\n', 100 * sum(water_90 == ex_water_90) / size(water_90, 2));
 
 disp('-----Finish Solving Problem 3 part 2-----')
 drawnow; % work around Matlab R2016a bug that can cause 'pause' to hang

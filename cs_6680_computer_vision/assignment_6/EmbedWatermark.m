@@ -1,5 +1,9 @@
 function [marked_image, watermark] = EmbedWatermark(img, beta)
-[C, S] = wavedec2(img, 3, 'db9');
+
+% extract the approximation coefficients
+[CA1, CH1, CV1, CD1] = dwt2(img, 'db9');
+[CA2, CH2, CV2, CD2] = dwt2(CA1, 'db9');
+[H, CH3, CV3, CD3] = dwt2(CA2, 'db9');
 
 % save the current random engine state, then reset the engine to default. this
 % ensures the subsequent call to randi() always produces the same result. then
@@ -7,11 +11,8 @@ function [marked_image, watermark] = EmbedWatermark(img, beta)
 % operations.
 original_engine = rng;
 rng('default');
-b = logical(randi([0, 1], [1, S(1) * S(1, 2)]));
+b = logical(randi([0, 1], [1, size(H,1) * size(H,2)]));
 rng(original_engine);
-
-% extract the approximation coefficients
-H = reshape(C(1:S(1) * S(1, 2)), S(1), S(1, 2));
 
 % prep some values that need to be initialized prior to looping, or which remain
 % constant for all iterations.
@@ -28,8 +29,8 @@ beta_5  = 0.5  * beta;
 %   H(i,j) = /  H(i,j) - 0.25𝛽 - [H(i,j) - 0.25𝛽]%𝛽 + 0.75𝛽   b(k)=1 and H(i,j)%𝛽 < 0.25𝛽
 %            \  H(i,j) - H(i,j)%𝛽 + 0.25𝛽                     b(k)=0 and H(i,j)%𝛽 ≤ 0.75𝛽
 %             \ H(i,j) + 0.5𝛽 - [H(i,j) - 0.5𝛽]%𝛽 + 0.25𝛽     b(k)=0 and H(i,j)%𝛽 > 0.75𝛽
-for i = 1:S(1)
-    for j = 1:S(1, 2)
+for i = 1:size(H, 1)
+    for j = 1:size(H, 2)
         if b(k) == 1
             if H_mod_beta(i,j) < beta_25
                 H(i,j) = (H(i,j) - beta_25) - mod(H(i,j) - beta_25, beta) + beta_75;
@@ -47,7 +48,9 @@ for i = 1:S(1)
     end
 end
 
-C(1:S(1) * S(1, 2)) = H(:);
-marked_image = uint8(waverec2(C, S, 'db9'));
-watermark = logical(b);
+rec = idwt2(H, CH3, CV3, CD3, 'db9');
+rec = idwt2(rec, CH2, CV2, CD2, 'db9');
+marked_image = uint8(idwt2(rec, CH1, CV1, CD1, 'db9'));
+watermark = b;
+
 end
