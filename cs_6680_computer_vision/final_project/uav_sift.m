@@ -1,4 +1,30 @@
 function [frames, descriptors] = uav_sift(img)
+    % uav_sift  Perform a SIFT [1] operation on an image, suitable for UAV imagery.
+    %   [frames, descriptors] = uav_sift(img)
+    %
+    %   img         The image for which to calculate SIFT information. The image
+    %               must be an RGB image of class uint8.
+    %   frames      The SIFT frames [1]. This is a matrix of class double, with
+    %               four rows, and one column for each frame.
+    %   descriptors The SIFT frame descriptors [1]. These are enhanced with
+    %               color information as described in [2]. The descriptors are a
+    %               matrix of class double, with 152 rows, and one column for
+    %               each frame. Each descriptor contains standard SIFT
+    %               information, and the additional color information as
+    %               described in [2].
+    %
+    %   This function will calculate the normal SIFT information (frames and
+    %   descriptors). Each frame is a four component column in the matrix
+    %   'frames'. Each frame descriptor is a 152 component column in the matrix
+    %   'descriptors'. This function requires that the VLFeat toolbox is
+    %   installed; see http://www.vlfeat.org/.
+    %
+    %   [1] D. Lowe, "Distinctive image features form scale-invariant
+    %       keypoints," Int. J. Comput. Vis., vol. 60, no. 2, pp. 91–110, 2004.
+    %   [2] T. Moranduzzo and F. Melgani, "Automatic Car Counting Method for
+    %       Unmanned Aerial Vehicle Images," in IEEE Transactions on Geoscience
+    %       and Remote Sensing, vol. 52, no. 3, pp. 1635-1647, March 2014. doi:
+    %       10.1109/TGRS.2013.2253108
 
     % TODO  make this more robust. i know my test data is uint8 RGB. this
     %       function should appropriately handle grayscale and floating point
@@ -13,20 +39,23 @@ function [frames, descriptors] = uav_sift(img)
     % HSV information will be appended to the basic descriptor, so convert the
     % image. also, hue is typically described on [0,1] or [1,360], neither of
     % which can be represented by a uint8. so convert the entire descriptor to
-    % single.
+    % double.
     img_hsv = rgb2hsv(img);
-    descriptors = single(descriptors);
+    descriptors = double(descriptors);
 
     % cascaded image dilations & erosions
-    img_d1 = imdilate(img,    strel('disk', 3));
-    img_d2 = imdilate(img_d1, strel('disk', 4));
-    img_d3 = imdilate(img_d2, strel('disk', 5));
-    img_e1 = imerode(img,    strel('disk', 3));
-    img_e2 = imerode(img_e1, strel('disk', 4));
-    img_e3 = imerode(img_e2, strel('disk', 5));
+    se_1 = strel('disk', 3);
+    se_2 = strel('disk', 4);
+    se_3 = strel('disk', 5);
+    dilated_1 = imdilate(img,       se_1);
+    dilated_2 = imdilate(dilated_1, se_2);
+    dilated_3 = imdilate(dilated_2, se_3);
+    eroded_1  = imerode (img,       se_1);
+    eroded_2  = imerode (eroded_1,  se_2);
+    eroded_3  = imerode (eroded_2,  se_3);
 
     % expand the descriptors to make room for the color information as described
-    % in [1]. then fill in the data.
+    % in [2]. then fill in the data.
     descriptors(129:152, 1) = 0;
     for d = 1:size(descriptors, 2)
         % get the RGB color. the frame has fractional coordinates; for now,
@@ -39,13 +68,13 @@ function [frames, descriptors] = uav_sift(img)
         descriptors(132:134, d) = img_hsv(y, x, :);
 
         % the 3 dilations
-        descriptors(135:137, d) = img_d1(y, x, :);
-        descriptors(138:140, d) = img_d2(y, x, :);
-        descriptors(141:143, d) = img_d3(y, x, :);
+        descriptors(135:137, d) = dilated_1(y, x, :);
+        descriptors(138:140, d) = dilated_2(y, x, :);
+        descriptors(141:143, d) = dilated_3(y, x, :);
 
         % the 3 erosions
-        descriptors(144:146, d) = img_e1(y, x, :);
-        descriptors(147:149, d) = img_e2(y, x, :);
-        descriptors(150:152, d) = img_e3(y, x, :);
+        descriptors(144:146, d) = eroded_1(y, x, :);
+        descriptors(147:149, d) = eroded_2(y, x, :);
+        descriptors(150:152, d) = eroded_3(y, x, :);
     end
 end
