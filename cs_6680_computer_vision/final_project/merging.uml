@@ -1,0 +1,22 @@
+@startuml
+
+start
+:K_c = {k_1, k_2, ..., k_N};
+:T_m <- distance threshold;
+Create an NxN matrix D
+fork
+    :Asphalt segmentation;
+    -> Binary image;
+fork again
+    :Keypoint extraction;
+    -> Keypoints;
+    :Keypoint classification;
+    -> Car keypoints;
+end fork
+:Keypoint reduction;
+-> Car keypoints in asphalt;
+:Keypoint merging;
+-> One keypoint/car;
+stop
+
+@enduml

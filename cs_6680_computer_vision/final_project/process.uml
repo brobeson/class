@@ -1,0 +1,20 @@
+@startuml
+
+start
+-> Original image;
+fork
+    :Asphalt segmentation (SVM);
+    -> Binary image;
+fork again
+    :Keypoint extraction (SIFT);
+    -> Keypoints & descriptors;
+    :Keypoint classification (SVM);
+    -> Car keypoints;
+end fork
+:Keypoint reduction;
+-> Car keypoints in asphalt;
+:Keypoint merging;
+-> One keypoint/car;
+stop
+
+@enduml
