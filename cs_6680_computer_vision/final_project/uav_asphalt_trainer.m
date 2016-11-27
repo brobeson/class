@@ -1,14 +1,13 @@
-function asphalt_svm = uav_asphalt_trainer(training_img, asphalt_filename)
-    % UAV_ASPHALT_TRAINER() Train the SVM necessary for finding asphalt in UAV imagery.
-    %   asphalt_svm = UAV_ASPHALT_TRAINER(training_img, asphalt_filename)
+function svm = uav_train_asphalt(training_img, filename)
+    % UAV_TRAIN_ASPHALT() Train the SVM necessary for finding asphalt in UAV imagery.
+    %   svm = UAV_TRAIN_ASPHALT(training_img, filename)
     %
-    %   training_img        The image used for training the SVM. This should be
-    %                       an RGB image.
-    %   asphalt_filename    The name of the file to use for saving the asphalt
-    %                       classification SVM. If the file already exists, it
-    %                       will be overwritten. This should be a character
-    %                       array.
-    %   asphalt_svm         The trained SVM is returned.
+    %   training_img    The image used for training the SVM. This should be an
+    %                   RGB image.
+    %   filename        The name of the file to use for saving the asphalt
+    %                   classification SVM. If the file already exists, it will
+    %                   be overwritten. This should be a character array.
+    %   svm             The trained SVM is returned.
     %
     %   This function will train the asphalt classification support vector
     %   machine (SVM) used for counting cars in UAV imagery. Training the SVM is
@@ -17,7 +16,7 @@ function asphalt_svm = uav_asphalt_trainer(training_img, asphalt_filename)
     %   constantly training an SVM.
 
     assert(nargin == 2, 'uav_trainer() requires a filename for saving the asphalt SVM');
-    assert(isa(asphalt_filename,  'char'), 'for uav_trainer(), asphalt_filename must be a character array');
+    assert(isa(filename,  'char'), 'for uav_trainer(), filename must be a character array');
 
     % prep the asphalt training data {{{
     % non-asphalt - dirt & grass
@@ -61,7 +60,7 @@ function asphalt_svm = uav_asphalt_trainer(training_img, asphalt_filename)
 
     % train and save the SVM {{{
     log_message('training the asphalt SVM');
-    asphalt_svm = fitcsvm(double(observations), asphalt_classes)
-    save(asphalt_filename, 'asphalt_svm');
+    svm = fitcsvm(double(observations), asphalt_classes)
+    save(filename, 'svm');
     % }}}
 end

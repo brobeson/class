@@ -1,32 +1,30 @@
-function svm = uav_trainer(training_img, keypoint_filename)
-    % UAV_TRAINER() Train the SVMs necessary for counting cars in UAV imagery
-    %   svm = UAV_TRAINER(training_img, keypoint_filename)
+function svm = uav_train_keypoints(training_img, filename)
+    % UAV_TRAIN_KEYPOINTS() Train the SVM necessary for finding car keypoints in UAV imagery.
+    %   svm = UAV_TRAIN_KEYPOINTS(training_img, filename)
     %
-    %   training_img        The image used for training the SVMs. See uav_sift()
-    %                       for image requirements.
-    %   keypoint_filename   The name of the file to use for saving the keypoint
-    %                       classification SVM. If the file already exists, it
-    %                       will be overwritten. This should be a character
-    %                       array.
-    %   svm                 The trained SVM is returned.
+    %   training_img    The image used for training the SVM. This must be a
+    %                   uint8 RGB image.
+    %   filename        The name of the file to use for saving the keypoint
+    %                   classification SVM. If the file already exists, it will
+    %                   be overwritten. This should be a character array.
+    %   svm             The trained SVM is returned.
     %
-    %   This function will train the support vector machines (SVM) used for
-    %   counting cars in UAV imagery. Training these SVMs is a lengthy process,
-    %   so the trained SVMs are saved so they can be reused. Thus, multiple
+    %   This function will train the support vector machine (SVM) used for
+    %   classifying keypoints in UAV imagery. Training the SVM is a lengthy
+    %   process, so the trained SVM is saved so it can be reused. Thus, multiple
     %   images can be run through the counting process without constantly
-    %   training SVMs.
+    %   training the SVM.
 
     assert(nargin == 2, 'uav_trainer() requires a filename for saving the keypoint SVM');
-    assert(isa(keypoint_filename, 'char'), 'for uav_trainer(), keypoint_filename must be a character array');
+    assert(isa(filename, 'char'), 'for uav_trainer(), filename must be a character array');
 
     % extract frames and descriptors {{{
-    log_message('extracting keypoints. this typically takes around 30 seconds...');
+    log_message('extracting keypoints. this typically takes around 30 seconds');
     [frames, descriptors] = uav_sift(training_img);
-    log_message('done extracting keypoints.');
     % }}}
 
     % prep the training dataG. the known classes were determined by manually analyzing the image {{{
-    log_message('preparing the training data...');
+    log_message('preparing the training data');
     t = 1;
     for f = 1:size(frames, 2)
         x = frames(1, f);
@@ -91,13 +89,11 @@ function svm = uav_trainer(training_img, keypoint_filename)
         % no other frames are used for the SVM training
         end
     end
-    log_message('done preparing the training data.');
     % }}}
 
     % train and save the SVM {{{
-    log_message('training the keypoint data...');
+    log_message('training the keypoint data');
     svm = fitcsvm(training_set', classes)
-    save(keypoint_filename, 'svm');
-    log_message('done training the keypoint data.');
+    save(filename, 'svm');
     % }}}
 end
