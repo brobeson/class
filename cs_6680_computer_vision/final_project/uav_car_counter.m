@@ -1,15 +1,31 @@
 clear
 
+% if the asphalt SVM has already been trained, just load it. otherwise, train it. {{{
+asphalt_svm_filename = 'uav_asphalt_svm.mat';
+if exist(asphalt_svm_filename, 'file') == 2
+    log_message('loading the asphalt SVM');
+    svm_struct = load('uav_asphalt_svm.mat');
+    asphalt_svm = svm_struct.svm_struct;
+    assert(isa(asphalt_svm, 'ClassificationSVM'), 'loaded SVM is not really an SVM');
+else
+    log_message('training the asphalt SVM');
+    asphalt_svm = uav_asphalt_trainer(imread('trainer.jpg'), asphalt_svm_filename);
+    log_message('done training the UAV counter');
+end
+% }}}
+
+return
+
 % if the keypoint SVM has already been trained, just load it. otherwise, train it. {{{
-svm_filename = 'uav_keypoint_svm.mat';
-if exist(svm_filename, 'file') == 2
+keypoint_svm_filename = 'uav_keypoint_svm.mat';
+if exist(keypoint_svm_filename, 'file') == 2
     log_message('loading the keypoint SVM');
-    svm = load('uav_keypoint_svm.mat');
-    svm = svm.svm;
-    assert(isa(svm, 'ClassificationSVM'), 'loaded SVM is not really an SVM');
+    svm_struct = load('uav_keypoint_svm.mat');
+    keypoint_svm = svm_struct.svm_struct;
+    assert(isa(keypoint_svm, 'ClassificationSVM'), 'loaded SVM is not really an SVM');
 else
     log_message('begin training the UAV counter');
-    svm = uav_trainer(imread('trainer.jpg'), svm_filename);
+    keypoint_svm = uav_trainer(imread('trainer.jpg'), keypoint_svm_filename);
     log_message('done training the UAV counter');
 end
 % }}}
@@ -36,7 +52,7 @@ warning on all
 
 % classify the keypoints {{{
 log_message('classifying the keypoints');
-classes = predict(svm, descriptors');
+classes = predict(keypoint_svm, descriptors');
 
 % only keep the points corresponding to class 1. also, at this point, the
 % descriptors are no longer needed, only the frames.
