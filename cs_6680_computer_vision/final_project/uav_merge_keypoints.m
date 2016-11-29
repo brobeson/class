@@ -30,14 +30,8 @@ function merged_keypoints = uav_merge_keypoints(key_points, t_distance) % {{{
     distances = eye(N, N) .* realmax;
     distances = zeros(N, N);
     for n1 = 1:N
-        x1 = key_points(1, n1);
-        y1 = key_points(2, n1);
-
         for n2 = (n1+1):N
-            x2 = key_points(1, n2);
-            y2 = key_points(2, n2);
-            d = sqrt((x1 - x2)^2 + (y1 - y2)^2);
-
+            d = uav_distance(key_points(:, n1), key_points(:, n2));
             distances(n1, n2) = d;
             distances(n2, n1) = d;
         end
@@ -51,17 +45,11 @@ function merged_keypoints = uav_merge_keypoints(key_points, t_distance) % {{{
             r = rows(1)
             c = cols(1)
             p = uav_merge(key_points(:, r), key_points(:, c));
-            %merged_keypoints(:, 1) = key_points(:, r);
-            %merged_keypoints(:, 2) = key_points(:, c);
-            %merged_keypoints(:, 3) = p;
-            %return
 
             % remove the two merged key points, and append the new key_point
             key_points(:, r) = [];
             key_points(:, c) = [];
             key_points(:, size(key_points, 2) + 1) = p;
-            %merged_keypoints = key_points;
-            %return;
 
             % the two merged key points no longer exist, thus their distances
             % are meaningless. for both points, remove the corresponding row &
@@ -77,21 +65,15 @@ function merged_keypoints = uav_merge_keypoints(key_points, t_distance) % {{{
 
             % for each other point, calculate the distance to the new point, and
             % fill both locations in the matrix
-            x1 = p(1);
-            y1 = p(2);
             for k = 1:size(key_points, 2) - 1
-                x2 = key_points(1, k);
-                y2 = key_points(2, k);
-                d = sqrt((x1 - x2)^2 + (y1 - y2)^2);
+                d = uav_distance(p, key_points(:, k));
                 distances(k, size(distances, 2)) = d;
                 distances(size(distances, 1), k) = d;
             end
-            merged_keypoints = distances;
-            return
         end
     end
 
-    merged_keypoints = p;
+    merged_keypoints = distances;
 end % }}}
 
 function p = uav_merge(p1, p2) % {{{
