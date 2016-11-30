@@ -39,43 +39,44 @@ function merged_keypoints = uav_merge_keypoints(key_points, t_distance) % {{{
         end
     end
 
-    d_min = t_distance - 1;
+    % find the minimum distance, used to merge those two points
+    d_min = min(distances(:));
     while d_min < t_distance
-        % find the two key points with the smallest distance
-        d_min = min(distances(:))
-        if d_min < t_distance
-            [rows, cols] = find(distances == d_min);
-            r = rows(1);
-            c = cols(1);
-            p = uav_merge(key_points(:, r), key_points(:, c));
+        % determine two points with the minimum distance, and merge the points
+        [rows, cols] = find(distances == d_min);
+        r = rows(1);
+        c = cols(1);
+        p = uav_merge(key_points(:, r), key_points(:, c));
 
-            % remove the two merged key points, and append the new key_point
-            key_points(:, r) = [];
-            key_points(:, c) = [];
-            key_points(:, size(key_points, 2) + 1) = p;
+        % remove the two merged key points, and append the new key_point
+        key_points(:, max([r c])) = [];
+        key_points(:, min([r c])) = [];
+        key_points(:, size(key_points, 2) + 1) = p;
 
-            % the two merged key points no longer exist, thus their distances
-            % are meaningless. for both points, remove the corresponding row &
-            % column from the distance matrix.
-            distances(:, r) = [];
-            distances(:, c) = [];
-            distances(r, :) = [];
-            distances(c, :) = [];
+        % the two merged key points no longer exist, thus their distances
+        % are meaningless. for both points, remove the corresponding row &
+        % column from the distance matrix.
+        distances(:, r) = [];
+        distances(:, c) = [];
+        distances(r, :) = [];
+        distances(c, :) = [];
 
-            % add a row & column for the new point, with max value for the
-            % intersection of the new point with itself.
-            distances(:, size(distances, 2) + 1) = zeros(size(distances, 1), 1);
-            distances(size(distances, 1) + 1, :) = zeros(1, size(distances, 2));
-            distances(size(distances, 1), size(distances, 2)) = realmax;
+        % add a row & column for the new point, with max value for the
+        % intersection of the new point with itself.
+        distances(:, size(distances, 2) + 1) = zeros(size(distances, 1), 1);
+        distances(size(distances, 1) + 1, :) = zeros(1, size(distances, 2));
+        distances(size(distances, 1), size(distances, 2)) = realmax;
 
-            % for each other point, calculate the distance to the new point, and
-            % fill both locations in the matrix
-            for k = 1:size(key_points, 2) - 1
-                d = uav_distance(p, key_points(:, k));
-                distances(k, size(distances, 2)) = d;
-                distances(size(distances, 1), k) = d;
-            end
+        % for each other point, calculate the distance to the new point, and
+        % fill both locations in the matrix
+        for k = 1:size(key_points, 2) - 1
+            d = uav_distance(p, key_points(:, k));
+            distances(k, size(distances, 2)) = d;
+            distances(size(distances, 1), k) = d;
         end
+
+        % find the new minimum distance
+        d_min = min(distances(:));
     end
 
     % get the columns which have m == 1. then remove all those columns
