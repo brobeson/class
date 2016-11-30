@@ -116,6 +116,25 @@ warning on all
 % }}}
 % }}}
 
+% merge the key points {{{
+log_message('merging key points');
+
+% this is for 4cm/pixel imagery. assuming the average car is 360 cm long, use
+% 360/4 == 90 pixels for the threshold distance.
+[asphalt_car_frames, n] = uav_merge_keypoints(asphalt_car_frames, 90);
+
+% draw the image with merged asphalt car key points {{{
+warning off all % tired of seeing warnings about the image being too large
+figure(fig);
+fig = fig + 1;
+imshow(img);
+hold on
+plot(asphalt_car_frames(1,:), asphalt_car_frames(2,:), 'r.');
+hold off
+warning on all
+% }}}
+% }}}
+
 log_message('done counting cars');
 fprintf(1, 'Press any key to close windows and exit.\n\n');
 pause
