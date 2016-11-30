@@ -9,11 +9,16 @@ key_points_1 = [ 1 2 3;
                  0 0 0;
                  0 0 0 ];
 expected_merged_1 = [ 1.875; 1; 0; 0; 5 ];
-merged_1 = uav_merge_keypoints(key_points_1, 3);
+[merged_1, n1] = uav_merge_keypoints(key_points_1, 3);
 if isequal(merged_1, expected_merged_1)
     fprintf(1, 'for test 1, merge results are correct\n');
 else
     error('for test 1, merge results are incorrect\n');
+end
+if n1 == size(merged_1, 2)
+    fprintf(1, 'for test 1, merge count is correct\n');
+else
+    error('for test 1, merge count is incorrect\n');
 end
 
 % test 2 - four points should merge into two, and one outlier should be removed
@@ -26,9 +31,14 @@ expected_merged_2 = [ 1.5  9.5;
                       0    0;
                       0    0;
                       3    3 ];
-merged_2 = uav_merge_keypoints(key_points_2, 3);
+[merged_2, n2] = uav_merge_keypoints(key_points_2, 3);
 if isequal(merged_2, expected_merged_2)
     fprintf(1, 'for test 2, merge results are correct\n');
 else
     error('for test 2, merge results are incorrect\n');
+end
+if n2 == size(merged_2, 2)
+    fprintf(1, 'for test 2, merge count is correct\n');
+else
+    error('for test 2, merge count is incorrect\n');
 end

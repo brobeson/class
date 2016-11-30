@@ -1,6 +1,7 @@
-function merged_keypoints = uav_merge_keypoints(key_points, t_distance) % {{{
+function [merged_keypoints, n] = uav_merge_keypoints(key_points, t_distance) % {{{
     % UAV_MERGE_KEYPOINTS   merge car key points found in UAV imagery
-    %   merged_keypoints = uav_merge_keypoints(key_points)
+    %   merged_keypoints      = UAV_MERGE_KEYPOINTS(key_points, t_distance)
+    %   [merged_keypoints, n] = UAV_MERGE_KEYPOINTS(key_points, t_distance)
     %
     %   key_points          The set of car key_points to merge. This should be a
     %                       2D matrix. Each column is a key point. Each key
@@ -10,6 +11,8 @@ function merged_keypoints = uav_merge_keypoints(key_points, t_distance) % {{{
     %                       value should be expressed in pixel units.
     %   merged_keypoints    The set of key points remaining after the merge
     %                       operation.
+    %   n                   The number of key points after the merging operation
+    %                       is complete.
     %
     %   This function will merge key points in close proximity into a single key
     %   point. This produces one key point per car. Note that any original key
@@ -83,6 +86,11 @@ function merged_keypoints = uav_merge_keypoints(key_points, t_distance) % {{{
     to_delete = find(key_points(5, :) == 1);
     key_points(:, to_delete) = [];
     merged_keypoints = key_points;
+
+    % add the output count if requested
+    if nargout == 2
+        n = size(merged_keypoints, 2);
+    end
 end % }}}
 
 function p = uav_merge(p1, p2) % {{{
