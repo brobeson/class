@@ -12,7 +12,10 @@ function merged_keypoints = uav_merge_keypoints(key_points, t_distance) % {{{
     %                       operation.
     %
     %   This function will merge key points in close proximity into a single key
-    %   point. This produces one key point per car.
+    %   point. This produces one key point per car. Note that any original key
+    %   points which do not get merged are considered classification outliers;
+    %   they have no other key points in close proximity. Such key points are
+    %   excluded from the returned merged_keypoints.
 
     assert(ndims(key_points) == 2,   'key_points must be a 2D matrix');
     assert(size(key_points, 1) == 4, 'key_points must have four rows');
@@ -28,7 +31,6 @@ function merged_keypoints = uav_merge_keypoints(key_points, t_distance) % {{{
     % points following A need to be calculated.
     N = size(key_points, 2);
     distances = eye(N, N) .* realmax;
-    distances = zeros(N, N);
     for n1 = 1:N
         for n2 = (n1+1):N
             d = uav_distance(key_points(:, n1), key_points(:, n2));
@@ -37,13 +39,14 @@ function merged_keypoints = uav_merge_keypoints(key_points, t_distance) % {{{
         end
     end
 
-    % find the two key points with the smallest distance
-    d_min = min(distances(:));
-    if d_min < t_distance
-        [rows, cols] = find(distances == d_min);
-        if ~isempty(rows)
-            r = rows(1)
-            c = cols(1)
+    d_min = t_distance - 1;
+    while d_min < t_distance
+        % find the two key points with the smallest distance
+        d_min = min(distances(:))
+        if d_min < t_distance
+            [rows, cols] = find(distances == d_min);
+            r = rows(1);
+            c = cols(1);
             p = uav_merge(key_points(:, r), key_points(:, c));
 
             % remove the two merged key points, and append the new key_point
@@ -59,9 +62,11 @@ function merged_keypoints = uav_merge_keypoints(key_points, t_distance) % {{{
             distances(r, :) = [];
             distances(c, :) = [];
 
-            % add a row & column for the new point
+            % add a row & column for the new point, with max value for the
+            % intersection of the new point with itself.
             distances(:, size(distances, 2) + 1) = zeros(size(distances, 1), 1);
             distances(size(distances, 1) + 1, :) = zeros(1, size(distances, 2));
+            distances(size(distances, 1), size(distances, 2)) = realmax;
 
             % for each other point, calculate the distance to the new point, and
             % fill both locations in the matrix
@@ -73,7 +78,10 @@ function merged_keypoints = uav_merge_keypoints(key_points, t_distance) % {{{
         end
     end
 
-    merged_keypoints = distances;
+    % get the columns which have m == 1. then remove all those columns
+    to_delete = find(key_points(5, :) == 1);
+    key_points(:, to_delete) = [];
+    merged_keypoints = key_points;
 end % }}}
 
 function p = uav_merge(p1, p2) % {{{
