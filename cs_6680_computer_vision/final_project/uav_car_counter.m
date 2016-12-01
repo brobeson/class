@@ -36,7 +36,11 @@ img = imread('test.jpg');
 
 % extract the asphalt segments {{{
 log_message('extracting asphalt');
-asphalt = uav_find_asphalt(img, asphalt_svm);
+
+% the SE radii are adapted from the paper. the numerators are in cm, and the
+% divisors are the image resolution. thus, the radii are in pixels, based on
+% real world distances.
+asphalt = uav_find_asphalt(img, asphalt_svm, ceil(30 / 4), ceil(300 / 4));
 
 % draw the asphalt mask {{{
 warning off all % tired of seeing warnings about the image being too large
