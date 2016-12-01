@@ -6,7 +6,7 @@ asphalt_svm_filename = 'uav_asphalt_svm.mat';
 if exist(asphalt_svm_filename, 'file') == 2
     log_message('loading the asphalt SVM');
     svm_struct = load('uav_asphalt_svm.mat');
-    asphalt_svm = svm_struct.asphalt_svm;
+    asphalt_svm = svm_struct.svm;
     assert(isa(asphalt_svm, 'ClassificationSVM'), 'loaded SVM is not really an SVM');
 else
     log_message('training the asphalt SVM');
@@ -34,16 +34,40 @@ log_message('loading test image');
 img = imread('test.jpg');
 % }}}
 
-% load the asphalt mask {{{
-log_message('warning', 'loading hand-made asphalt mask');
-asphalt = imread('mask.png');
-asphalt = logical(asphalt(:, :, 1));
+% extract the asphalt segments {{{
+log_message('extracting asphalt');
+asphalt = uav_find_asphalt(img, asphalt_svm);
 
-% draw the mask
+% draw the asphalt mask {{{
 warning off all % tired of seeing warnings about the image being too large
-figure(fig);
-fig = fig + 1;
+figure(1);
+subplot(2, 2, 1);
 imshow(asphalt);
+
+masked_img = img;
+for r=1:size(masked_img, 1)
+    for c=1:size(masked_img, 2)
+        if asphalt(r,c) == 0
+            masked_img(r,c,:) = 0;
+        end
+    end
+end
+%img(:, :, 1) = img(:, :, 1) & asphalt;
+%img(:, :, 2) = img(:, :, 2) & asphalt;
+%img(:, :, 3) = img(:, :, 3) & asphalt;
+subplot(2, 2, 2);
+imshow(masked_img);
+
+masked_img = img;
+for r=1:size(masked_img, 1)
+    for c=1:size(masked_img, 2)
+        if asphalt(r,c) == 1
+            masked_img(r,c,:) = 0;
+        end
+    end
+end
+subplot(2, 2, 4);
+imshow(masked_img);
 warning on all
 % }}}
 % }}}

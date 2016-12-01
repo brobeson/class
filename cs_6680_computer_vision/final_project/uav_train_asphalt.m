@@ -19,10 +19,19 @@ function svm = uav_train_asphalt(training_img, filename)
     assert(isa(filename,  'char'), 'for uav_trainer(), filename must be a character array');
 
     % prep the asphalt training data {{{
-    % non-asphalt - dirt & grass
+    % non-asphalt - dirt
     o = 1;
-    for r = 2800:3000
-        for c = 1090:1290
+    for r = 451:500
+        for c = 3271:3320
+            observations(o, 1:3) = training_img(r, c, 1:3);
+            asphalt_classes(o) = -1;
+            o = o + 1;
+        end
+    end
+
+    % non-asphalt - grass
+    for r = 1801:1850
+        for c = 3901:3950
             observations(o, 1:3) = training_img(r, c, 1:3);
             asphalt_classes(o) = -1;
             o = o + 1;
@@ -30,8 +39,15 @@ function svm = uav_train_asphalt(training_img, filename)
     end
 
     % non-asphalt - building
-    for r = 2990:3200
-        for c = 4990:5190
+    for r = 1051:1100
+        for c = 1001:1051
+            observations(o, 1:3) = training_img(r, c, 1:3);
+            asphalt_classes(o) = -1;
+            o = o + 1;
+        end
+    end
+    for r = 901:950
+        for c = 2251:2300
             observations(o, 1:3) = training_img(r, c, 1:3);
             asphalt_classes(o) = -1;
             o = o + 1;
@@ -39,22 +55,74 @@ function svm = uav_train_asphalt(training_img, filename)
     end
 
     % non-asphalt - trees
-    for r = 800:1000
-        for c = 3600:3800
+    for r = 1201:1251
+        for c = 3351:3400
             observations(o, 1:3) = training_img(r, c, 1:3);
             asphalt_classes(o) = -1;
             o = o + 1;
         end
     end
 
+    % non-asphalt - cars
+    for r = 2651:2700
+        for c = 5251:5300
+            observations(o, 1:3) = training_img(r, c, 1:3);
+            asphalt_classes(o) = -1;
+            o = o + 1;
+        end
+    end
+
+    % non-asphalt - railroad
+    for r = 1901:1950
+        for c = 2701:2750
+            observations(o, 1:3) = training_img(r, c, 1:3);
+            asphalt_classes(o) = -1;
+            o = o + 1;
+        end
+    end
+
+    log_message(sprintf('%d non-asphalt observations', o));
+    oo = o;
+
     % asphalt
-    for r = 1400:1700
-        for c = 2800:3200
+    for r = 1001:1050
+        for c = 1701:1750
             observations(o, 1:3) = training_img(r, c, 1:3);
             asphalt_classes(o) = 1;
             o = o + 1;
         end
     end
+    for r = 1001:1050
+        for c = 1901:1950
+            observations(o, 1:3) = training_img(r, c, 1:3);
+            asphalt_classes(o) = 1;
+            o = o + 1;
+        end
+    end
+    for r = 1201:1250
+        for c = 2841:2890
+            observations(o, 1:3) = training_img(r, c, 1:3);
+            asphalt_classes(o) = 1;
+            o = o + 1;
+        end
+    end
+    for r = 2801:2851
+        for c = 5301:5350
+            observations(o, 1:3) = training_img(r, c, 1:3);
+            asphalt_classes(o) = 1;
+            o = o + 1;
+        end
+    end
+    for r = 1901:1950
+        for c = 3001:3050
+            observations(o, 1:3) = training_img(r, c, 1:3);
+            asphalt_classes(o) = 1;
+            o = o + 1;
+        end
+    end
+
+    log_message(sprintf('%d asphalt observations', o-oo));
+    log_message(sprintf('%d total observations', o));
 
     % }}}
 
