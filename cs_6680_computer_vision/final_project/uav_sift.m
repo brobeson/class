@@ -33,8 +33,9 @@ function [frames, descriptors] = uav_sift(img)
     assert(isa(img, 'uint8'), 'at this time, uav_sift() only supports uint8 image data');
 
     % get the basic SIFT frames (keypoints) and their descriptors
-    %[frames, descriptors] = vl_sift(img);
-    [frames, descriptors] = vl_sift(im2single(rgb2gray(img)));
+    [frames, descriptors] = vl_sift(im2single(rgb2gray(img)), 'EdgeThresh', 9);
+
+    return
 
     % HSV information will be appended to the basic descriptor, so convert the
     % image. also, hue is typically described on [0,1] or [1,360], neither of
