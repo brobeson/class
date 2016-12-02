@@ -36,6 +36,6 @@ function asphalt = uav_find_asphalt(img, svm, erode_se_radius, dilate_se_radius)
     asphalt = 1 - asphalt;
 
     % erode the asphalt, then dilate it... a lot!
-    asphalt = imdilate(imerode(asphalt, strel('disk', erode_se_radius)),
+    asphalt = imdilate(imerode(asphalt, strel('disk', erode_se_radius)), ...
                        strel('disk', dilate_se_radius));
 end
