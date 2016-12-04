@@ -1,10 +1,14 @@
-function [N, run_times] = uav_car_counter(img_files) % {{{
+function [N, run_times] = uav_car_counter(img_files, svm_files) % {{{
     % UAV_CAR_COUNTER   count the number of cars in an imagery set
-    %   [N, run_times] = UAV_CAR_COUNTER(img_files)
+    %   [N, run_times] = UAV_CAR_COUNTER(img_files, svm_files)
     %
     %   img_files   The list of file names for the images to run through the car
     %               counting algorithm. This should be a cell array of character
     %               arrays.
+    %   svm_files   The list of .mat files from which to load the SVMs. This
+    %               should be a cell array of character arrays. The first
+    %               element should be the asphalt SVM file; the second should be
+    %               the key point classification SVM file.
     %   N           A vector of car counts. Each element is the car count for
     %               the corresponding element in img_files.
     %   run_times   A vector of run times. Each element is the total run time
@@ -15,26 +19,19 @@ function [N, run_times] = uav_car_counter(img_files) % {{{
     %   counting algorithm. It will return various data about the algorithm
     %   execution.
 
-    % if the asphalt SVM has already been trained, just load it. otherwise, train it. {{{
-    asphalt_svm_filename = 'uav_asphalt_svm.mat';
-    if exist(asphalt_svm_filename, 'file') == 2
-        svm_struct = load('uav_asphalt_svm.mat');
-        asphalt_svm = svm_struct.svm;
-        assert(isa(asphalt_svm, 'ClassificationSVM'), 'loaded SVM is not really an SVM');
-    else
-        asphalt_svm = uav_asphalt_trainer(imread('trainer.jpg'), asphalt_svm_filename);
-    end
+    assert(nargin == 2, 'two input arguments are required');
+    assert(length(svm_files) >= 2, 'svm_files must have at least two elements');
+
+    % load the asphalt SVM {{{
+    svm_struct = load(char(svm_files(1)));
+    asphalt_svm = svm_struct.svm;
+    assert(isa(asphalt_svm, 'ClassificationSVM'), 'loaded asphalt SVM is not really an SVM');
     % }}}
 
-    % if the keypoint SVM has already been trained, just load it. otherwise, train it. {{{
-    keypoint_svm_filename = 'uav_keypoint_svm.mat';
-    if exist(keypoint_svm_filename, 'file') == 2
-        svm_struct = load('uav_keypoint_svm.mat');
-        keypoint_svm = svm_struct.svm;
-        assert(isa(keypoint_svm, 'ClassificationSVM'), 'loaded SVM is not really an SVM');
-    else
-        keypoint_svm = uav_trainer(imread('trainer.jpg'), keypoint_svm_filename);
-    end
+    % load the key point classification SVM {{{
+    svm_struct = load(char(svm_files(2)));
+    keypoint_svm = svm_struct.svm;
+    assert(isa(keypoint_svm, 'ClassificationSVM'), 'loaded key point SVM is not really an SVM');
     % }}}
 
     % form the output variables
