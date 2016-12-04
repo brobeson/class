@@ -1,0 +1,3 @@
+Row,counts
+small_img.png,8
+small_img2.png,20
