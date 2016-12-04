@@ -8,10 +8,9 @@ truth_data = sortrows(truth_data, 'RowNames');
 true_counts = truth_data.counts;
 
 % run the car counter on a set of images
-%image_files = { 'small_img.png' 'small_img2.png' };
-image_files = { 'small_img2.png' 'small_img.png' };
+image_files = { 'small_img.png' 'small_img2.png' };
 svm_files = { 'uav_asphalt_svm.mat' 'uav_keypoint_svm.mat' };
-[counts, run_times] = uav_car_counter(image_files, svm_files);
+[counts, run_times] = uav_car_counter(image_files, svm_files, 'intermediate_figures', 1);
 
 % separate the run times into distinct variables. not sure why, but assigning a
 % matrix to the table doesn't work right.

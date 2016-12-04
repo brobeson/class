@@ -1,4 +1,4 @@
-function [N, run_times] = uav_car_counter(img_files, svm_files) % {{{
+function [N, run_times] = uav_car_counter(img_files, svm_files, varargin) % {{{
     % UAV_CAR_COUNTER   count the number of cars in an imagery set
     %   [N, run_times] = UAV_CAR_COUNTER(img_files, svm_files)
     %
@@ -22,12 +22,36 @@ function [N, run_times] = uav_car_counter(img_files, svm_files) % {{{
     %                   Total run time
     %               The run times are measured in seconds.
     %
+    %   UAV_CAR_COUNTER() accepts the following options:
+    %       intermediate_figures    uint32
+    %           If present, the value should be in the range [1,N] where N is
+    %           the length of img_files. This will generate intermediate figures
+    %           for each major step of the process, for the corresponding file.
+    %           If the value is outside the range, a warning is issued, no
+    %           figures are generated, and the process procedes.
+    %
     %   This function will run each image in img_files through the UAV car
     %   counting algorithm. It will return various data about the algorithm
     %   execution.
 
-    assert(nargin == 2, 'two input arguments are required');
+    assert(nargin >= 2, 'two input arguments are required');
+    assert(length(img_files) > 0, 'img_files must have at least one element');
     assert(length(svm_files) >= 2, 'svm_files must have at least two elements');
+    assert(length(varargin) == 0 || length(varargin) == 2, 'varargin must be 0 or 2 arguments');
+
+    % figure out if the user requested intermediate figures to be generated
+    if length(varargin) == 2
+        if strcmp(varargin{1}, 'intermediate_figures')
+            int_figures = varargin{2};
+            if int_figures == 0 || length(img_files) < int_figures
+                warning('%d is outside the range of [1,%d] to specify intermediate figures; no figures will be generated', int_figures, length(img_files));
+            end
+        else
+            error('%s is not a valid option', varargin{1});
+        end
+    else
+        int_figures = 0;
+    end
 
     % load the asphalt SVM
     svm_struct = load(char(svm_files(1)));
@@ -45,97 +69,37 @@ function [N, run_times] = uav_car_counter(img_files, svm_files) % {{{
 
     % load the image to count
     for f = 1:length(img_files)
-        [N(f), run_times(f, :)] = uav_count_cars(imread(char(img_files(f))), asphalt_svm, keypoint_svm, 0);
+        gen_figures = (f == int_figures);
+        [N(f), run_times(f, :)] = uav_count_cars(imread(char(img_files(f))), asphalt_svm, keypoint_svm, gen_figures);
     end
 end
 % }}}
 
-function [n, t] = uav_count_cars(img, asphalt_svm, keypoint_svm, verbose) % {{{
+function [n, t] = uav_count_cars(img, asphalt_svm, keypoint_svm, intermediate_figures) % {{{
     fig = 1; % semi-auto incrementing figure number
     t = zeros(1, 6);
-
     t_start = tic;
-    % extract the asphalt segments {{{
-    if verbose ~= 0
-        log_message('extracting asphalt');
-    end
 
+    % extract the asphalt segments {{{
     % the SE radii are adapted from the paper. the numerators are in cm, and the
     % divisors are the image resolution. thus, the radii are in pixels, based on
     % real world distances.
     asphalt = uav_find_asphalt(img, asphalt_svm, ceil(30 / 4), ceil(300 / 4));
-
-    % draw the asphalt mask {{{
-    if verbose ~= 0
-        warning off all % tired of seeing warnings about the image being too large
-        figure(1);
-        subplot(2, 2, 1);
-        imshow(asphalt);
-
-        masked_img = img;
-        for r=1:size(masked_img, 1)
-            for c=1:size(masked_img, 2)
-                if asphalt(r,c) == 0
-                    masked_img(r,c,:) = 0;
-                end
-            end
-        end
-        %img(:, :, 1) = img(:, :, 1) & asphalt;
-        %img(:, :, 2) = img(:, :, 2) & asphalt;
-        %img(:, :, 3) = img(:, :, 3) & asphalt;
-        subplot(2, 2, 2);
-        imshow(masked_img);
-
-        masked_img = img;
-        for r=1:size(masked_img, 1)
-            for c=1:size(masked_img, 2)
-                if asphalt(r,c) == 1
-                    masked_img(r,c,:) = 0;
-                end
-            end
-        end
-        subplot(2, 2, 4);
-        imshow(masked_img);
-        warning on all
-    end
-    % }}}
-    % }}}
     t(1) = toc(t_start);
+    % }}}
 
-    t_intermediate = tic;
     % extract key points from the test image {{{
-    if verbose ~= 0
-        log_message('extracting key points. this typically takes around 30 seconds');
-    end
-    [frames, descriptors] = uav_sift(img);
-
-    % draw the image with key points {{{
-    if verbose ~= 0
-        warning off all % tired of seeing warnings about the image being too large
-        figure(fig);
-        fig = fig + 1;
-        imshow(img);
-        hold on
-        plot(frames(1,:), frames(2,:), 'r.');
-        hold off
-        warning on all
-    end
-    % }}}
-    % }}}
-    t(2) = toc(t_intermediate);
-
     t_intermediate = tic;
+    [frames, descriptors] = uav_sift(img);
+    t(2) = toc(t_intermediate);
+    % }}}
+
     % classify the key points {{{
-    if verbose ~= 0
-        log_message('classifying the key points');
-    end
+    t_intermediate = tic;
     classes = predict(keypoint_svm, descriptors');
 
     % only keep the points corresponding to class 1. also, at this point, the
     % descriptors are no longer needed, only the frames.
-    if verbose ~= 0
-        log_message('discarding background key points');
-    end
     f = 1;
     for c = 1:size(classes, 1)
         if classes(c) == 1
@@ -143,27 +107,11 @@ function [n, t] = uav_count_cars(img, asphalt_svm, keypoint_svm, verbose) % {{{
             f = f + 1;
         end
     end
-
-    % draw the image with car key points {{{
-    if verbose ~= 0
-        warning off all % tired of seeing warnings about the image being too large
-        figure(fig);
-        fig = fig + 1;
-        imshow(img);
-        hold on
-        plot(car_frames(1,:), car_frames(2,:), 'r.');
-        hold off
-        warning on all
-    end
-    % }}}
-    % }}}
     t(3) = toc(t_intermediate);
+    % }}}
 
-    t_intermediate = tic;
     % remove key points which are not in asphalt {{{
-    if verbose ~= 0
-        log_message('removing key points from non-asphalt areas');
-    end
+    t_intermediate = tic;
     ff = 1;
     for f = 1:size(car_frames, 2)
         x = round(car_frames(1, f));
@@ -174,46 +122,90 @@ function [n, t] = uav_count_cars(img, asphalt_svm, keypoint_svm, verbose) % {{{
             ff = ff + 1;
         end
     end
-
-    % draw the image with asphalt car key points {{{
-    if verbose ~= 0
-        warning off all % tired of seeing warnings about the image being too large
-        figure(fig);
-        fig = fig + 1;
-        imshow(img);
-        hold on
-        plot(asphalt_car_frames(1,:), asphalt_car_frames(2,:), 'r.');
-        hold off
-        warning on all
-    end
-    % }}}
-    % }}}
     t(4) = toc(t_intermediate);
+    % }}}
 
-    t_intermediate = tic;
     % merge the key points {{{
-    if verbose ~= 0
-        log_message('merging key points');
-    end
-
     % this is for 4cm/pixel imagery. assuming the average car is 360 cm long, use
     % 360/4 == 90 pixels for the threshold distance.
+    t_intermediate = tic;
     [asphalt_car_frames, n] = uav_merge_keypoints(asphalt_car_frames, 90);
+    t(5) = toc(t_intermediate);
+    % }}}
 
-    % draw the image with merged asphalt car key points {{{
-    if verbose ~= 0
+    t(6) = toc(t_start);
+
+    if intermediate_figures % {{{
         warning off all % tired of seeing warnings about the image being too large
-        figure(fig);
-        fig = fig + 1;
+
+        % draw the asphalt mask {{{
+        figure(1);
+        subplot(1, 3, 1);
+        imshow(asphalt);
+        title('Asphalt mask');
+
+        masked_img = img;
+        for r=1:size(masked_img, 1)
+            for c=1:size(masked_img, 2)
+                if asphalt(r,c) == 0
+                    masked_img(r,c,:) = 0;
+                end
+            end
+        end
+        subplot(1, 3, 2);
+        imshow(masked_img);
+        title('Asphalt segments');
+
+        masked_img = img;
+        for r=1:size(masked_img, 1)
+            for c=1:size(masked_img, 2)
+                if asphalt(r,c) == 1
+                    masked_img(r,c,:) = 0;
+                end
+            end
+        end
+        subplot(1, 3, 3);
+        imshow(masked_img);
+        title('Asphalt segments');
+        % }}}
+
+        % draw the image with key points {{{
+        figure(2);
         imshow(img);
+        title('Extracted key points');
+        hold on
+        plot(frames(1,:), frames(2,:), 'r.');
+        hold off
+        % }}}
+
+        % draw the image with car key points {{{
+        figure(3);
+        imshow(img);
+        title('Classified key points');
+        hold on
+        plot(car_frames(1,:), car_frames(2,:), 'r.');
+        hold off
+        % }}}
+
+        % draw the image with asphalt car key points {{{
+        figure(4);
+        imshow(img);
+        title('Classified key points on asphalt');
         hold on
         plot(asphalt_car_frames(1,:), asphalt_car_frames(2,:), 'r.');
         hold off
+        % }}}
+
+        % draw the image with merged asphalt car key points {{{
+        figure(5);
+        imshow(img);
+        title('Merged key points');
+        hold on
+        plot(asphalt_car_frames(1,:), asphalt_car_frames(2,:), 'r.');
+        hold off
+        % }}}
+
         warning on all
-    end
-    % }}}
-    % }}}
-    t(5) = toc(t_intermediate);
-    t(6) = toc(t_start);
+    end % }}}
 end
 % }}}
