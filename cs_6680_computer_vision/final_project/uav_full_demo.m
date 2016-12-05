@@ -1,12 +1,12 @@
 % load the truth data and extract the column of true car counts
-truth_data = readtable('true_counts_small.txt', 'ReadRowNames', true);
+truth_data = readtable('true_counts_full.txt', 'ReadRowNames', true);
 truth_data = sortrows(truth_data, 'RowNames');
 true_counts = truth_data.counts;
 
 % run the car counter on a set of images
-image_files = { 'small_img.png' 'small_img2.png' };
+image_files = { 'IMG_0085.JPG' 'IMG_0105.JPG' 'IMG_0107.JPG' };
 svm_files = { 'uav_asphalt_svm.mat' 'uav_keypoint_svm.mat' };
-[counts, run_times] = uav_car_counter(image_files, svm_files, 'intermediate_figures', 1);
+[counts, run_times] = uav_car_counter(image_files, svm_files);
 
 % separate the run times into distinct variables. not sure why, but assigning a
 % matrix to the table doesn't work right.
@@ -29,11 +29,11 @@ count_table = sortrows(count_table, 'RowNames');
 count_table.true_counts = true_counts;
 count_table.accuracy = (count_table.counts ./ count_table.true_counts) .* 100;
 count_table
-writetable(count_table, 'demo_counts.txt', 'WriteRowNames', true);
+writetable(count_table, 'full_demo_counts.txt', 'WriteRowNames', true);
 
 times_table = table(asphalt_time, key_point_time, classify_time, removal_time, merge_time, total_time);
 times_table.Properties.RowNames = image_files;
 times_table.Properties.VariableUnits = { 'seconds %' 'seconds %' 'seconds %' 'seconds %' 'seconds %' 'seconds' };
 times_table = sortrows(times_table, 'RowNames');
 times_table
-writetable(times_table, 'demo_times.txt', 'WriteRowNames', true);
+writetable(times_table, 'full_demo_times.txt', 'WriteRowNames', true);

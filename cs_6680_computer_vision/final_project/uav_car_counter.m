@@ -129,7 +129,7 @@ function [n, t] = uav_count_cars(img, asphalt_svm, keypoint_svm, intermediate_fi
     % this is for 4cm/pixel imagery. assuming the average car is 360 cm long, use
     % 360/4 == 90 pixels for the threshold distance.
     t_intermediate = tic;
-    [asphalt_car_frames, n] = uav_merge_keypoints(asphalt_car_frames, 90);
+    [merged_car_frames, n] = uav_merge_keypoints(asphalt_car_frames, 90);
     t(5) = toc(t_intermediate);
     % }}}
 
@@ -201,7 +201,7 @@ function [n, t] = uav_count_cars(img, asphalt_svm, keypoint_svm, intermediate_fi
         imshow(img);
         title('Merged key points');
         hold on
-        plot(asphalt_car_frames(1,:), asphalt_car_frames(2,:), 'r.');
+        plot(merged_car_frames(1,:), merged_car_frames(2,:), 'r.', 'MarkerSize', 10);
         hold off
         % }}}
 
