@@ -1,0 +1,4 @@
+Row,asphalt_time_1,asphalt_time_2,key_point_time_1,key_point_time_2,classify_time_1,classify_time_2,removal_time_1,removal_time_2,merge_time_1,merge_time_2,total_time
+IMG_0085.JPG,215.714269,3,16.633096,0,42.764012,1,0.00495,0,6023.729851,96,6298.846545
+IMG_0105.JPG,214.150864,4,21.439001,0,66.669711,1,0.003411,0,5773.657325,95,6075.920521
+IMG_0107.JPG,212.570102,3,19.241986,0,58.883241,1,0.00323,0,6163.026247,95,6453.724856
