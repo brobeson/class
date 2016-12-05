@@ -70,6 +70,7 @@ function [N, run_times] = uav_car_counter(img_files, svm_files, varargin) % {{{
     % load the image to count
     for f = 1:length(img_files)
         gen_figures = (f == int_figures);
+        log_message(sprintf('counting cars in %s', char(img_files(f))));
         [N(f), run_times(f, :)] = uav_count_cars(imread(char(img_files(f))), asphalt_svm, keypoint_svm, gen_figures);
     end
 end
