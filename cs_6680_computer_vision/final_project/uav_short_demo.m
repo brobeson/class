@@ -29,11 +29,11 @@ count_table = sortrows(count_table, 'RowNames');
 count_table.true_counts = true_counts;
 count_table.accuracy = (count_table.counts ./ count_table.true_counts) .* 100;
 count_table
-writetable(count_table, 'demo_counts.txt', 'WriteRowNames', true);
+writetable(count_table, 'short_demo_counts.txt', 'WriteRowNames', true);
 
 times_table = table(asphalt_time, key_point_time, classify_time, removal_time, merge_time, total_time);
 times_table.Properties.RowNames = image_files;
 times_table.Properties.VariableUnits = { 'seconds %' 'seconds %' 'seconds %' 'seconds %' 'seconds %' 'seconds' };
 times_table = sortrows(times_table, 'RowNames');
 times_table
-writetable(times_table, 'demo_times.txt', 'WriteRowNames', true);
+writetable(times_table, 'short_demo_times.txt', 'WriteRowNames', true);
