@@ -83,7 +83,7 @@ Key point extraction is done by the function `[frames, descriptors] = uav_sift(i
 | frames      | The SIFT frames [1]. This is a matrix of class double, with four rows, and one column for each frame. The rows in order are: X, Y, S, θ. |
 | descriptors | The SIFT frame descriptors [1]. These are enhanced with color information as described in [2]. The descriptors are a matrix of class double, with 152 rows, and one column for each frame. Each descriptor contains standard SIFT information, and the additional color information as described in [2].
 
-This function uses the SIFT algorith to extract key points from the input image. The key points' geometric information is returned in the `frames` output. The `descriptors` output contains the standard SIFT descriptor, appended with color information at the key points' locations in the image. This is the RGB and HSV data for the pixel. It also contains the RGB information for three image dilations and three image erosions.
+This function uses the SIFT algorithm to extract key points from the input image. The key points' geometric information is returned in the `frames` output. The `descriptors` output contains the standard SIFT descriptor, appended with color information at the key points' locations in the image. This is the RGB and HSV data for the pixel. It also contains the RGB information for three image dilations and three image erosions.
 
 Correctness can be evaluated by observing the intermediate figure. It shows the image with the key points overlaid as red dots. Run time is reported by the function `uav_car_counter()`.
 
@@ -93,7 +93,7 @@ This function uses `vl_sift()` from the VLFeat toolbox. This toolbox can be down
 
 ### Key point classification
 
-Key point classification is not given a separate function. It just uses a single Matlab function, then a straightfoward loop. It requires the key point frames and descriptors from the key point extraction step, and the trained key point classification SVM. Using the descriptors as the observations, `predict()` is used to classify them. For any key point classified as -1 (non-car), the corresponding key point frame is deleted. The descriptors are not used after this, so they are not purged as the frames are. This step results in a reduced set of key point frames.
+Key point classification is not given a separate function. It just uses a single Matlab function, then a straightforward loop. It requires the key point frames and descriptors from the key point extraction step, and the trained key point classification SVM. Using the descriptors as the observations, `predict()` is used to classify them. For any key point classified as -1 (non-car), the corresponding key point frame is deleted. The descriptors are not used after this, so they are not purged as the frames are. This step results in a reduced set of key point frames.
 
 Correctness can be evaluated by observing the intermediate figure. It shows the image with the car key points overlaid as red dots. Run time is reported by the function `uav_car_counter()`.
 
@@ -107,7 +107,7 @@ Key point reduction involves removing car key points which are not within asphal
 
 Correctness can be evaluated by observing the intermediate figure. It shows the image with the car key points in asphalt overlaid as red dots. Run time is reported by the function `uav_car_counter()`.
 
-The quality of the output is subject the quality of the asphalt mask. Any errors in generating the mask propogate to generating erroneous key point data.
+The quality of the output is subject the quality of the asphalt mask. Any errors in generating the mask propagate to generating erroneous key point data.
 
 This step only uses basic Matlab functionality. No external toolboxes are required.
 
@@ -129,9 +129,9 @@ Merging the set of key points follows this algorithm:
   - Set each matrix element _ij_, for _i =/= j_, to the distance between key
      points _i_ and _j_.
   - Set the diagonal _i == j_ to the maximum system value (`realmax`).
-- Set _tmin_ to the minimum value of _D_.
-- While *t\_distance < tmin*
-  - Determine the key points _i_ and _j_ corresponding to _tmin_.
+- Set _dmin_ to the minimum value of _D_.
+- While *dmin < t\_distance*
+  - Determine the key points _i_ and _j_ corresponding to _dmin_.
   - Merge key points _i_ and _j_ to get key point _k_.
   - Remove key points _i_ and _j_ from the set of key point frames.
   - Add key point _k_ to the set of key point frames.
@@ -140,7 +140,7 @@ Merging the set of key points follows this algorithm:
   - Calculate the distance between each key point and the new key point _k_. Set
     the corresponding elements of _D_ to the distances. Set the distatnce from
     _k_ to itself to `realmax`.
-  - Set _tmin_ to the minimum value of _D_.
+  - Set _dmin_ to the minimum value of _D_.
   - Repeat the loop
 - Delete all key points with _m == 1_.
 - Set _n_ to the number of remaining key points.
