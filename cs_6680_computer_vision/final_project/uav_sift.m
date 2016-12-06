@@ -5,7 +5,8 @@ function [frames, descriptors] = uav_sift(img)
     %   img         The image for which to calculate SIFT information. The image
     %               must be an RGB image of class uint8.
     %   frames      The SIFT frames [1]. This is a matrix of class double, with
-    %               four rows, and one column for each frame.
+    %               four rows, and one column for each frame. The rows in order
+    %               are: X, Y, S, θ.
     %   descriptors The SIFT frame descriptors [1]. These are enhanced with
     %               color information as described in [2]. The descriptors are a
     %               matrix of class double, with 152 rows, and one column for
