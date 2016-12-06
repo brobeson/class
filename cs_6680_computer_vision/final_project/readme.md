@@ -51,7 +51,7 @@ Run time of the process depends on the size of the image. Test runs on an Intel 
 
 ### Asphalt segmentation
 
-Asphalt segmentation is done by the function `asphalt = uav\_find\_asphalt(img, svm, erode\_se\_radius, dilate\_se\_radius)`.
+Asphalt segmentation is done by the function `asphalt = uav_find_asphalt(img, svm, erode_se_radius, dilate_se_radius)`.
 
 | Parameter | Description |
 |:----------|:------------|
@@ -130,7 +130,7 @@ Merging the set of key points follows this algorithm:
      points _i_ and _j_.
   - Set the diagonal _i == j_ to the maximum system value (`realmax`).
 - Set _tmin_ to the minimum value of _D_.
-- While _t\distance < tmin_
+- While *t\_distance < tmin*
   - Determine the key points _i_ and _j_ corresponding to _tmin_.
   - Merge key points _i_ and _j_ to get key point _k_.
   - Remove key points _i_ and _j_ from the set of key point frames.
@@ -148,19 +148,19 @@ Merging the set of key points follows this algorithm:
 Two key points are merged via a weighted average:
 
 ```
-        (i\_x)(i\_m) + (j\_x)(j\_m)
-k\_x = ----------------------------
-                i\_m + j\_m
-        (i\_y)(i\_m) + (j\_y)(j\_m)
-k\_y = ----------------------------
-                i\_m + j\_m
-        (i\_s)(i\_m) + (j\_s)(j\_m)
-k\_s = ----------------------------
-                i\_m + j\_m
-        (i\_θ)(i\_m) + (j\_θ)(j\_m)
-k\_θ = ----------------------------
-                i\_m + j\_m
-k\_m = i\_m + j\_m + 1
+        (i_x)(i_m) + (j_x)(j_m)
+k_x = ----------------------------
+                i_m + j_m
+        (i_y)(i_m) + (j_y)(j_m)
+k_y = ----------------------------
+                i_m + j_m
+        (i_s)(i_m) + (j_s)(j_m)
+k_s = ----------------------------
+                i_m + j_m
+        (i_θ)(i_m) + (j_θ)(j_m)
+k_θ = ----------------------------
+                i_m + j_m
+k_m = i_m + j_m + 1
 ```
 
 Correctness can be evaluated by observing the intermediate figure. It shows the image with the merged key points overlaid as red dots. Run time is reported by the function `uav_car_counter()`.
@@ -168,6 +168,79 @@ Correctness can be evaluated by observing the intermediate figure. It shows the 
 This function is subject to a single threshold distance. This doesn't consider that vehicles are rectangular, or that they can differ significantly in size (consider a sports car compared to a semi-truck).
 
 This function only uses basic Matlab functionality. No external toolboxes are required.
+
+## Improvements and changes
+
+No attempts have been made to improve this process. The results from my implementation are not yet accurate. A basic software engineering principle is to "get it working first, then optimize it." I considered reducing the number of key points before classifying them. I hypothesized that this would improve performance. After seeing the run time statistics, though, it's evident that the asphalt segmentation and key point merging are the time consuming operations. The proposed change would not affect either of the steps.
+
+The paper implies that, during the key point merging loop, _D_ should be recalcualed during each iteration. My implementation only recalculates the new information. My implementation still may require several matrix allocations; improving that aspect may significantly improve the merging performance.
+
+## Data structures
+
+No custom data structures were implemented for this project. The standard Matlab matrix and `ClassificationSVM` sufficed for every step.
+
+## Issues
+
+Training the SVMs proved to be inadequate, primarily due to my inexperience with SVMs. Given more time, I would research them further, so that I could utilize the tuning parameters discussed in the paper.
+
+A similar problem occured using `vl_sift()`. Attempting to set the peak threshold resulted in no key points being generated. Again, with more time, I would research the SIFT algorithm more in an attempt to determine my mistake.
+
+## Comparison with the original implementation
+
+My implementation performs significantly worse than the authors, often producing many more false positives.
+
+## Experimental results
+
+### uav\_full\_demo
+
+`uav_full_demo` processes three full-size images (5472 x 3648). `uav_short_demo` processes two smaller images (1280 x 1024). The following table summarizes the car counts:
+
+| Image | Calculated Count | True Count | Accuracy\* |
+|:------|-----------------:|-----------:|-----------:|
+| IMG\_0085.JPG | 607 |  12 | 5058% |
+| IMG\_0105.JPG | 487 | 118 |  412% |
+| IMG\_0107.JPG | 517 |  23 | 2247% |
+| small\_img.png  | 44 |  8 | 688% |
+| small\_img2.png | 12 | 20 |  60% |
+
+_Calculated Count_ shows the number of cars counted by the implementation. _True Count_ shows the actual number of cars in the image. These values were determined by manually counting the cars in the image. _Accuracy_ is the percentage of under- or over-counting. % = _Caclulated Count_ / _True Count_ \* 100. A value greater than 100 indicates an overcount, false positives. A value less than 100 indicates an undercount, false negatives. To reproduce these results, run the demo scripts.
+
+By contrast, the authors reported these results:
+
+| Image | Calculated Count | True Count | Accuracy\* |
+|:------|-----------------:|-----------:|-----------:|
+| Image Test 1 | 75 | 51 | 147% |
+| Image Test 2 | 39 | 31 | 126% |
+| Image Test 3 | 76 | 19 | 400% |
+| Image Test 4 | 19 | 15 | 126% |
+| Image Test 5 | 22 |  3 | 733% |
+
+Note that the authors did not present their results in this manner. The provide a table showing true positives, false positives, actual count, producer's accuracy, user's accuracy, and total accuracy. I performed the math to present a table comparable to mine.
+
+The following two tables show the run time for each major step of the process. The first shows the run times measured in seconds. The second shows the run times as a percentage of the total run time.
+
+| Image | Asphalt | Key Point Extraction | Key Point Classification | Key Point Reduction | Key Point Merging | Total |
+|:---|---:|---:|---:|---:|---:|---:|
+| IMG\_0085.JPG   | 215.714269 | 16.633096 | 42.764012 | 0.00495  | 6023.729851 | 6298.846545 |
+| IMG\_0105.JPG   | 214.150864 | 21.439001 | 66.669711 | 0.003411 | 5773.657325 | 6075.920521 |
+| IMG\_0107.JPG   | 212.570102 | 19.241986 | 58.883241 | 0.00323  | 6163.026247 | 6453.724856 |
+| small\_img.png  |  14.958742 |  1.548434 |  2.377698 | 0.002654 |    7.069838 |   25.957849 |
+| small\_img2.png |  14.311444 |  1.088026 |  2.336332 | 0.00084  |    0.395015 |   18.131864 |
+
+| Image | Asphalt | Key Point Extraction | Key Point Classification | Key Point Reduction | Key Point Merging |
+|:---|---:|---:|---:|---:|---:|
+| IMG\_0085.JPG   |  3 | 0 |  1 | 0 | 96 |
+| IMG\_0105.JPG   |  4 | 0 |  1 | 0 | 95 |
+| IMG\_0107.JPG   |  3 | 0 |  1 | 0 | 95 |
+| small\_img.png  | 58 | 6 |  9 | 0 | 27 |
+| small\_img2.png | 79 | 6 | 13 | 0 |  2 |
+
+The authors did not provide run time statistics in their paper, thus my implementation cannot be compared to theirs in terms of efficiency. It's interesting to note that, for full size imagery, the execution time is dominated by the key point merging step. As the image size drops, the asphalt segmentation becomes the time bottleneck. The authors do not claim to have developed a system which can be run in real time. However, timely processing is important for many applications. These data help to identify where timing problems exist.
+
+Simply run the demo scripts to reproduce these data.
+
+
+
 
 
 
