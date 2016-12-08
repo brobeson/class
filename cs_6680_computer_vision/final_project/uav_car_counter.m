@@ -145,29 +145,13 @@ function [n, t] = uav_count_cars(img, asphalt_svm, keypoint_svm, intermediate_fi
         imshow(asphalt);
         title('Asphalt mask');
 
-        masked_img = img;
-        for r=1:size(masked_img, 1)
-            for c=1:size(masked_img, 2)
-                if asphalt(r,c) == 0
-                    masked_img(r,c,:) = 0;
-                end
-            end
-        end
         subplot(1, 3, 2);
-        imshow(masked_img);
-        title('Asphalt segments');
+        imshow(img .* uint8(asphalt));
+        title('Asphalt regions');
 
-        masked_img = img;
-        for r=1:size(masked_img, 1)
-            for c=1:size(masked_img, 2)
-                if asphalt(r,c) == 1
-                    masked_img(r,c,:) = 0;
-                end
-            end
-        end
         subplot(1, 3, 3);
-        imshow(masked_img);
-        title('Asphalt segments');
+        imshow(img .* (1 - uint8(asphalt)));
+        title('Non-asphalt regions');
         % }}}
 
         % draw the image with key points {{{
@@ -190,7 +174,7 @@ function [n, t] = uav_count_cars(img, asphalt_svm, keypoint_svm, intermediate_fi
 
         % draw the image with asphalt car key points {{{
         figure(4);
-        imshow(img);
+        imshow(img .* uint8(asphalt));
         title('Classified key points on asphalt');
         hold on
         plot(asphalt_car_frames(1,:), asphalt_car_frames(2,:), 'r.');
