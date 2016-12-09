@@ -190,6 +190,86 @@ T = \{ 3, 2, 2, 5, 2, 2 ,7, 7, 7, 6, 7, 8, 6, 7, 3, 4, 5 \}
     \begin{math}S_1(3), S_2(3)\end{math}
 % }}}
 
+% problem 3.2 {{{
+\item [3.2]
+    Initial clusters:
+
+    \begin{tabular}{ l c c c c c c }
+        & (0,0) & (0,1) & (5,4) & (5,5) & (4,5) & (1.0) \\       
+        \hline
+        (0,0) & 0 & 1 & 6.4031 & 7.0711 & 6.4031 & 1 \\
+        (0,1) & 1 & 0 & 5.8310 & 6.4031 & 5.6569 & 1.4142 \\
+        (5,4) & 6.4031 & 5.8310 & 0 & 1 & 1.4142 & 5.6569 \\
+        (5,5) & 7.0711 & 6.4031 & 1 & 0 & 1 & 6.4031 \\
+        (4,5) & 6.4031 & 5.6569 & 1.4142 & 1 & 0 & 5.8310 \\
+        (1,0) & 1 & 1.4142 & 5.6569 & 6.4031 & 5.8310 & 0
+    \end{tabular}
+    \newline
+
+    Iteration 1:
+    \begin{align*}
+        d_{min} &= 1 \\
+        C_1 &= \{ (0,0), (0,1) \}
+    \end{align*}
+
+    \begin{tabular}{ l c c c c c }
+        & \begin{math}C_1\end{math}        & (5,4)  & (5,5)  & (4,5)  & (1.0) \\       
+        \hline
+        \begin{math}C_1\end{math} & 0      & 5.8310 & 6.4031 & 5.6569 & 1 \\
+        (5,4)                     & 5.8310 & 0      & 1      & 1.4142 & 5.6569 \\
+        (5,5)                     & 6.4031 & 1      & 0      & 1      & 6.4031 \\
+        (4,5)                     & 5.6569 & 1.4142 & 1      & 0      & 5.8310 \\
+        (1,0)                     & 1      & 5.6569 & 6.4031 & 5.8310 & 0
+    \end{tabular}
+    \newline
+
+    Iteration 2:
+    \begin{align*}
+        d_{min} &= 1 \\
+        C_1 &= \{ (0,0), (0,1), (1,0) \}
+    \end{align*}
+
+    \begin{tabular}{ l c c c c }
+        & \begin{math}C_1\end{math}        & (5,4)  & (5,5)  & (4,5)  \\
+        \hline
+        \begin{math}C_1\end{math} & 0      & 5.6569 & 6.4031 & 5.6569 \\
+        (5,4)                     & 5.6569 & 0      & 1      & 1.4142 \\
+        (5,5)                     & 6.4031 & 1      & 0      & 1      \\
+        (4,5)                     & 5.6569 & 1.4142 & 1      & 0      \\
+    \end{tabular}
+    \newline
+
+    Iteration 3:
+    \begin{align*}
+        d_{min} &= 1 \\
+        C_1 &= \{ (0,0), (0,1), (1,0) \} \\
+        C_2 &= \{ (5,4), (5,5) \}
+    \end{align*}
+
+    \begin{tabular}{ l c c c }
+        & \begin{math}C_1\end{math} & \begin{math}C_2\end{math} & (4,5)  \\
+        \hline
+        \begin{math}C_1\end{math} & 0      & 5.6569 & 5.6569 \\
+        \begin{math}C_2\end{math} & 5.6569 & 0      & 1 \\
+        (4,5)                     & 5.6569 & 1      & 0      \\
+    \end{tabular}
+    \newline
+
+    Iteration 4:
+    \begin{align*}
+        d_{min} &= 1 \\
+        C_1 &= \{ (0,0), (0,1), (1,0) \} \\
+        C_2 &= \{ (5,4), (5,5), (4,5) \}
+    \end{align*}
+
+    \begin{tabular}{ l c c c }
+        & \begin{math}C_1\end{math} & \begin{math}C_2\end{math} \\
+        \hline
+        \begin{math}C_1\end{math} & 0      & 5.6569 \\
+        \begin{math}C_2\end{math} & 5.6569 & 0      \\
+    \end{tabular}
+% }}}
+
 \end{description}
 
 \end{document}
