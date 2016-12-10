@@ -270,6 +270,21 @@ T = \{ 3, 2, 2, 5, 2, 2 ,7, 7, 7, 6, 7, 8, 6, 7, 3, 4, 5 \}
     \end{tabular}
 % }}}
 
+% problem 3.3 {{{
+\item [3.3]
+    \begin{align*}
+        m_1 &= \frac{1}{N_1} \sum_{x \in w_1}{x_1} = \frac{1}{3} \left ( (0,0) + (0,1) + (1,0) \right ) = (\frac{1}{3}, \frac{1}{3}) \\
+        m_2 &= \frac{1}{N_2}\sum_{x \in w_2}{x_2} = \frac{1}{3} \left ( (5,4) + (5,5) + (4,5) \right ) = (\frac{14}{3}, \frac{14}{3}) \\
+        d_1(x) &= m_1x^t - \frac{1}{2}m_1^Tm_1 = \frac{1}{3}x_1 + \frac{1}{3}x_2 - \frac{1}{2} \left ( \frac{1}{3} \times \frac{1}{3} + \frac{1}{3} \times \frac{1}{3} \right ) \\
+               &= \frac{1}{3}x_1 + \frac{1}{3}x_2 - \frac{1}{9} \\
+        d_2(x) &= m_2x^t - \frac{1}{2}m_2^Tm_2 = \frac{14}{3}x_1 + \frac{14}{3}x_2 - \frac{1}{2} \left ( \frac{14}{3} \times \frac{14}{3} + \frac{14}{3} \times \frac{14}{3} \right ) \\
+               &= \frac{14}{3}x_1 + \frac{14}{3}x_2 - \frac{196}{9} \\
+        d_{12}(x) &= d_1(x) - d_2(x) = 0 \\
+                  &= \frac{1}{3}x_1 + \frac{1}{3}x_2 - \frac{1}{9} - \left (\frac{14}{3}x_1 + \frac{14}{3}x_2 - \frac{196}{9} \right ) = 0 \\
+                  &= -\frac{13}{3}x_1 - \frac{13}{3}x_2 + \frac{65}{3} = 0 \\
+                  &= -4.33x_1 - 4.33x_2 + 21.67 = 0
+    \end{align*}
+
 \end{description}
 
 \end{document}
