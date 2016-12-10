@@ -26,6 +26,9 @@ function [merged_keypoints, n] = uav_merge_keypoints(key_points, t_distance) % {
     % append the m parameter to each key point, initialized to 1
     key_points(5, :) = 1;
 
+    % set a value to tombstone certain distances
+    tombstone = realmax;
+
     % create the initial NxN matrix of euclidian distances
     % the distance from key point A to key point B is the same as the distance
     % from key point B to key point A. thus, for two matrix entries, only one
@@ -33,7 +36,7 @@ function [merged_keypoints, n] = uav_merge_keypoints(key_points, t_distance) % {
     % point A need not be calculated. thus, point A, only the distance with the
     % points following A need to be calculated.
     N = size(key_points, 2);
-    distances = eye(N, N) .* realmax;
+    distances = eye(N, N) .* tombstone;
     for n1 = 1:N
         for n2 = (n1+1):N
             d = uav_distance(key_points(:, n1), key_points(:, n2));
@@ -47,36 +50,32 @@ function [merged_keypoints, n] = uav_merge_keypoints(key_points, t_distance) % {
     while d_min < t_distance
         % determine two points with the minimum distance, and merge the points
         [rows, cols] = find(distances == d_min);
-        r = rows(1);
-        c = cols(1);
-        p = uav_merge(key_points(:, r), key_points(:, c));
+        i = min([rows(1) cols(1)]);
+        j = max([rows(1) cols(1)]);
+        p = uav_merge(key_points(:, i), key_points(:, j));
 
-        % remove the two merged key points, and append the new key_point
-        key_points(:, max([r c])) = [];
-        key_points(:, min([r c])) = [];
-        key_points(:, size(key_points, 2) + 1) = p;
+        % replace key point i with the new key point, then remove key point j
+        key_points(:, i) = p;
+        key_points(:, j) = [];
 
-        % the two merged key points no longer exist, thus their distances
-        % are meaningless. for both points, remove the corresponding row &
-        % column from the distance matrix.
-        distances(:, r) = [];
-        distances(:, c) = [];
-        distances(r, :) = [];
-        distances(c, :) = [];
+        % key point j no longer exists, thus its distances are meaningless.
+        % remove the corresponding row & colun from the distance matrix.
+        distances(:, j) = [];
+        distances(j, :) = [];
 
-        % add a row & column for the new point, with max value for the
-        % intersection of the new point with itself.
-        distances(:, size(distances, 2) + 1) = zeros(size(distances, 1), 1);
-        distances(size(distances, 1) + 1, :) = zeros(1, size(distances, 2));
-        distances(size(distances, 1), size(distances, 2)) = realmax;
-
-        % for each other point, calculate the distance to the new point, and
+        % for each other point, calculate the distance to the new point i, and
         % fill both locations in the matrix
-        for k = 1:size(key_points, 2) - 1
+        for k = 1:i-1
             d = uav_distance(p, key_points(:, k));
-            distances(k, size(distances, 2)) = d;
-            distances(size(distances, 1), k) = d;
+            distances(k, i) = d;
+            distances(i, k) = d;
         end
+        for k = i+1:size(key_points, 2)
+            d = uav_distance(p, key_points(:, k));
+            distances(k, i) = d;
+            distances(i, k) = d;
+        end
+        distances(i,i) = tombstone; % tombstone the distance from i to itself
 
         % find the new minimum distance
         d_min = min(distances(:));
