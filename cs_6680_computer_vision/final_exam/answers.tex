@@ -290,6 +290,54 @@ T = \{ 3, 2, 2, 5, 2, 2 ,7, 7, 7, 6, 7, 8, 6, 7, 3, 4, 5 \}
     \includegraphics[scale=1]{min_distance_cluster}
 % }}}
 
+% problem 3.4 {{{
+\item [3.4]
+    \begin{align*}
+        A &= \begin{bmatrix}
+                0 & 0 \\
+                0 & 1 \\
+                4 & 5 \\
+                5 & 5 \\
+                5 & 4 \\
+                1 & 0
+             \end{bmatrix} \\
+        \mu &= \frac{1}{M} \sum_{m=1}^{M}{x_m} = \frac{1}{6} \left [ \begin{pmatrix}0 \\ 0\end{pmatrix} +
+                                                                     \begin{pmatrix}0 \\ 1\end{pmatrix} +
+                                                                     \begin{pmatrix}5 \\ 4\end{pmatrix} +
+                                                                     \begin{pmatrix}5 \\ 5\end{pmatrix} +
+                                                                     \begin{pmatrix}4 \\ 5\end{pmatrix} +
+                                                                     \begin{pmatrix}1 \\ 0\end{pmatrix} \right ] \\
+            &= \begin{bmatrix} 2.5 & 2.5 \end{bmatrix} \\
+        x_m - \mu &= \begin{bmatrix}
+                        -2.5 & -2.5 \\
+                        -2.5 & -1.5 \\
+                         1.5 &  2.5 \\
+                         2.5 &  2.5 \\
+                         2.5 &  1.5 \\
+                        -1.5 & -2.5
+                     \end{bmatrix} \\
+        \sum &= \frac{1}{M} \sum_{m=1}^{M}{\left [ x_m - \mu \right ] \left [ x_m - \mu \right ]^T} \\
+             &= \frac{1}{6} \left ( \begin{bmatrix} 6.25 & 6.25 \\ 6.25 & 6.25 \end{bmatrix} +
+                \begin{bmatrix} 6.25 & 3.75 \\ 3.75 & 2.25 \end{bmatrix} +
+                \begin{bmatrix} 2.25 & 3.75 \\ 3.75 & 6.25 \end{bmatrix} \right ) + \\
+                    &\frac{1}{6} \left ( \begin{bmatrix} 6.25 & 6.25 \\ 6.25 & 6.25 \end{bmatrix} +
+                \begin{bmatrix} 6.25 & 3.75 \\ 3.75 & 2.25 \end{bmatrix} +
+                    \begin{bmatrix} 2.25 & 3.75 \\ 3.75 & 6.25 \end{bmatrix} \right ) \\
+             &= \begin{bmatrix} 4.92 & 4.58 \\ 4.58 & 4.92 \end{bmatrix} \\
+        U &= \begin{bmatrix} -0.7071 & 0.7071 \\ 0.7071 & 0.7071 \end{bmatrix} \\
+        \lambda &= \begin{bmatrix} 0.34 & \\ & 9.5 \end{bmatrix} \\
+        \alpha \left ( \begin{bmatrix}2 \\ 2\end{bmatrix} \right ) &= U^T(x - \mu) = \begin{bmatrix} -0.7071 & 0.7071 \\ 0.7071 & 0.7071 \end{bmatrix} \left ( \begin{bmatrix}2 \\ 2\end{bmatrix} - \begin{bmatrix} 2.5 \\ 2.5 \end{bmatrix} \right ) = \begin{bmatrix}0 \\ -0.7071\end{bmatrix} \\
+        \alpha \left ( \begin{bmatrix}0 \\ 0\end{bmatrix} \right ) &= \begin{bmatrix} 0 \\ 0 \end{bmatrix} \\
+        \alpha \left ( \begin{bmatrix}0 \\ 1\end{bmatrix} \right ) &= \begin{bmatrix} 0.7071 \\ 0.7071 \end{bmatrix} \\
+        \alpha \left ( \begin{bmatrix}4 \\ 5\end{bmatrix} \right ) &= \begin{bmatrix} 0.7071 \\ 6.3640 \end{bmatrix} \\
+        \alpha \left ( \begin{bmatrix}5 \\ 5\end{bmatrix} \right ) &= \begin{bmatrix} 0 \\ 7.0711 \end{bmatrix} \\
+        \alpha \left ( \begin{bmatrix}5 \\ 4\end{bmatrix} \right ) &= \begin{bmatrix} -0.7071 \\ 6.3640 \end{bmatrix} \\
+        \alpha \left ( \begin{bmatrix}1 \\ 0\end{bmatrix} \right ) &= \begin{bmatrix} -0.7071 \\ 0.7071 \end{bmatrix} \\
+        d_{min} &= \left | \begin{bmatrix}0 \\ 0\end{bmatrix} - \begin{bmatrix}0 \\ -0.7071\end{bmatrix} \right | = 0.7071 \\
+    \end{align*}
+    \begin{math}(2,2)\end{math} is closest to \begin{math}(0,0)\end{math} in feature space.
+% }}}
+
 \end{description}
 
 \end{document}
