@@ -69,6 +69,42 @@ T = \{ 3, 2, 2, 5, 2, 2 ,7, 7, 7, 6, 7, 8, 6, 7, 3, 4, 5 \}
 \end{displaymath}
 % }}}
 
+% problem 2.1.a {{{
+\item [2.1.a]
+    In the data below, gray pixels must already be designated as border pixels. The green pixel is the next pixel to be added to region 1. The light gray pixels are new border pixels.
+
+    \begin{tabular}{| c | c | c | c | c | c | c | c |}
+        \hline
+        3 & 2 & 2 & \cellcolor{orange} 1 & \cellcolor{orange} 1 & \cellcolor{orange} 1 & \cellcolor{orange} 1 & \cellcolor{orange} 1 \\ \hline
+        \cellcolor{orange} 6 & 5 & \cellcolor{gray} 2 & \cellcolor{gray} 2 & \cellcolor{orange} 1 & \cellcolor{orange} 1 & \cellcolor{orange} 1 & \cellcolor{orange} 1 \\ \hline
+        \cellcolor{orange} 7 & \cellcolor{orange} 7 & \cellcolor{orange} 7 & \cellcolor{gray} 7 & \cellcolor{lightgray} 7 & \cellcolor{orange} 1 & \cellcolor{orange} 1 & \cellcolor{orange} 1 \\ \hline
+        \cellcolor{orange} 7 & \cellcolor{orange} 7 & \cellcolor{orange} 6 & \cellcolor{green} 7 & \cellcolor{lightgray} 6 & 7 & \cellcolor{orange} 1 & \cellcolor{orange} 1 \\ \hline
+        \cellcolor{orange} 8 & \cellcolor{orange} 7 & \cellcolor{orange} 7 & \cellcolor{gray} 8 & \cellcolor{lightgray} 6 & 7 & \cellcolor{orange} 1 & \cellcolor{orange} 1 \\ \hline
+        \cellcolor{orange} 8 & \cellcolor{orange} 8 & \cellcolor{orange} 7 & \cellcolor{gray} 3 & \cellcolor{orange} 2 & \cellcolor{orange} 1 & \cellcolor{orange} 1 & \cellcolor{orange} 1 \\ \hline
+        \cellcolor{orange} 8 & \cellcolor{orange} 8 & \cellcolor{orange} 8 & \cellcolor{gray} 4 & \cellcolor{orange} 2 & \cellcolor{orange} 1 & \cellcolor{orange} 2 & \cellcolor{orange} 1 \\ \hline
+        \cellcolor{orange} 8 & \cellcolor{orange} 8 & \cellcolor{orange} 8 & \cellcolor{gray} 5 & \cellcolor{orange} 1 & \cellcolor{orange} 1 & \cellcolor{orange} 1 & \cellcolor{orange} 1 \\ \hline
+    \end{tabular}
+
+    Using notation (x,y)...
+    \begin{align*}
+        \mu_1 &= 7.37 \\
+        \mu_2 &= 1.11 \\
+        T &= \begin{Bmatrix}
+                p     & i & \delta_i \\
+                (4,4) & 1 & 0.37 & \gets \text{next pixel} \\
+                (3,1) & 2 & 0.89 \\
+                (2,2) & 1 & 2.37 \\
+                (1,1) & 1 & 4.37 \\
+                (5,4) & 2 & 4.89 & \gets \text{new border} \\
+                (5,5) & 2 & 4.89 & \gets \text{new border} \\
+                (2,1) & 1 & 5.37 \\
+                (5,3) & 2 & 5.89 & \gets \text{new border} \\
+                (6,4) & 2 & 5.89 \\
+                (6,5) & 2 & 5.89
+            \end{Bmatrix} \\
+    \end{align*}
+% }}}
+
 % problem 2.2.a {{{
 \item [2.2.a]
     The minimums are the region of 1's, region of 2's and region of 3's. They
