@@ -105,6 +105,51 @@ T = \{ 3, 2, 2, 5, 2, 2 ,7, 7, 7, 6, 7, 8, 6, 7, 3, 4, 5 \}
     \end{align*}
 % }}}
 
+% problem 2.1.b {{{
+\item [2.1.b]
+    The grown regions are nearly identical. The border differs by only a few pixels.
+
+    Seed pixels
+
+    \begin{tabular}{| c | c | c | c | c | c | c | c |}
+        \hline
+        3 & 2 & 2 & 1 & 1 & 1 & 1 & \cellcolor{orange} 1 \\ \hline
+        6 & 5 & 2 & 2 & 1 & 1 & 1 & 1 \\ \hline
+        7 & 7 & 7 & 7 & 7 & 1 & 1 & 1 \\ \hline
+        7 & 7 & 6 & 7 & 6 & 7 & 1 & 1 \\ \hline
+        8 & 7 & 7 & 8 & 6 & 7 & 1 & 1 \\ \hline
+        8 & 8 & 7 & 3 & 2 & 1 & 1 & 1 \\ \hline
+        8 & 8 & 8 & 4 & 2 & 1 & 2 & 1 \\ \hline
+        \cellcolor{green} 8 & 8 & 8 & 5 & 1 & 1 & 1 & 1 \\ \hline
+    \end{tabular}
+
+    \begin{tabular}{| c | c | c | c | c | c | c | c |}
+        \hline
+        \cellcolor{brown} 3 & \cellcolor{orange} 2 & \cellcolor{orange} 2 & \cellcolor{orange} 1 & \cellcolor{orange} 1 & \cellcolor{orange} 1 & \cellcolor{orange} 1 & \cellcolor{orange} 1 \\ \hline
+        \cellcolor{gray} 6 & \cellcolor{gray} 5 & \cellcolor{gray} 2 & \cellcolor{gray} 2 & \cellcolor{orange} 1 & \cellcolor{orange} 1 & \cellcolor{orange} 1 & \cellcolor{orange} 1 \\ \hline
+        \cellcolor{green} 7 & \cellcolor{green} 7 & \cellcolor{green} 7 & \cellcolor{gray} 7 & \cellcolor{gray} 7 & \cellcolor{orange} 1 & \cellcolor{orange} 1 & \cellcolor{orange} 1 \\ \hline
+        \cellcolor{green} 7 & \cellcolor{green} 7 & \cellcolor{yellow} 6 & \cellcolor{green} 7 & \cellcolor{gray} 6 & \cellcolor{brown} 7 & \cellcolor{orange} 1 & \cellcolor{orange} 1 \\ \hline
+        \cellcolor{green} 8 & \cellcolor{green} 7 & \cellcolor{green} 7 & \cellcolor{green} 8 & \cellcolor{gray} 6 & \cellcolor{brown} 7 & \cellcolor{orange} 1 & \cellcolor{orange} 1 \\ \hline
+        \cellcolor{green} 8 & \cellcolor{green} 8 & \cellcolor{green} 7 & \cellcolor{gray} 3 & \cellcolor{gray} 2 & \cellcolor{orange} 1 & \cellcolor{orange} 1 & \cellcolor{orange} 1 \\ \hline
+        \cellcolor{green} 8 & \cellcolor{green} 8 & \cellcolor{green} 8 & \cellcolor{gray} 4 & \cellcolor{orange} 2 & \cellcolor{orange} 1 & \cellcolor{brown} 2 & \cellcolor{orange} 1 \\ \hline
+        \cellcolor{green} 8 & \cellcolor{green} 8 & \cellcolor{green} 8 & \cellcolor{gray} 5 & \cellcolor{orange} 1 & \cellcolor{orange} 1 & \cellcolor{orange} 1 & \cellcolor{orange} 1 \\ \hline
+    \end{tabular}
+
+    %Using notation (x,y)...
+    \begin{align*}
+        \mu_{green}  &= 7.5263 \\
+        \mu_{orange} &= 1.1071 \\
+        T &= \begin{Bmatrix}
+                p     & i & g(p) & \delta_i \\
+                (7,7) & o & 2 & 0.8929 \\
+                (3,4) & g & 6 & 1.5263 \\
+                (1,1) & o & 2 & 1.8929 \\
+                (6,4) & o & 7 & 5.8929 \\
+                (6,5) & o & 7 & 5.8929 \\
+            \end{Bmatrix} \\
+    \end{align*}
+% }}}
+
 % problem 2.2.a {{{
 \item [2.2.a]
     The minimums are the region of 1's, region of 2's and region of 3's. They
