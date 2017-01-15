@@ -1,16 +1,25 @@
-S. Hare, A. Saffari and P. H. S. Torr, "Struck: Structured output tracking with kernels," 2011 International Conference on Computer Vision, Barcelona, 2011, pp. 263-270. doi: 10.1109/ICCV.2011.6126251
-http://ieeexplore.ieee.org.dist.lib.usu.edu/document/6126251/
-427 citations
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+
+\begin{document}
+\title{CS 7680 - Assignment 1}
+\author{Brendan Robeson}
+\maketitle
+
+B. Babenko, M. H. Yang and S. Belongie, "Robust Object Tracking with Online Multiple Instance Learning," in IEEE Transactions on Pattern Analysis and Machine Intelligence, vol. 33, no. 8, pp. 1619-1632, Aug. 2011. doi: 10.1109/TPAMI.2010.226
+
+This paper has 599 citations and is available at \\ http://ieeexplore.ieee.org.dist.lib.usu.edu/document/5674053/. The paper improves object tracking in video. The authors used nine videos: three publicly available, and six of their own making. The location of these videos is not listed in the paper, though. The authors do not list any assumptions. The authors' technique is called MILTrack. MILTrack uses multiple instance learning to track an object in video. Basically, the authors use patches of a frame surrounding the tracked object, to train the algorithm about the object's appearance. The authors developed a new boosting algorithm, suitable for online use, dubbed Online MILBoost (OMB). The advantages of MILTrack are real-time performance and reduced errors over previous techniques. MILTrack will still track incorrect objects if the desired object is not visible for a long period of time. MILTrack was compared with OAB and IVT methods. Mean error and precision were presented, both graphically and in tables. MILTrack is available at http://vision.ucsd.edu/project/tracking-online-multiple-instance-learning.
+
+S. Hare, A. Saffari and P. H. S. Torr, "Struck: Structured output tracking with kernels," 2011 International Conference on Computer Vision, Barcelona, 2011, pp. 263-270. \\ doi: 10.1109/ICCV.2011.6126251
+
+This paper has 427 citations and is available at \\ http://ieeexplore.ieee.org.dist.lib.usu.edu/document/6126251/. The paper improves object tracking in video. The authors report results for a set of eight videos, but do not make the videos available to the reader. The authors assume that the first video frame contains label information for training. They also assume that the tracked object will remain within a bounding circle centered on the object in the previous frame. The authors' approach is to learn a function capable of predicting the tracked object's position in subsequent frames (previous techiniques learned a classifier intead). This is done with an SVM. Their approach avoids the need for generating binary labels, thus eliminating a source of errors. An upper bound is placed on the number of support vectors; without this bound, too many support vectors can be generated which will degrade system performance. The authors compared their technique to MIForest, OMCLP, MIL, Frag, and OAB techniques. These comparisons are presented in a table of "average bounding box overlap". No specific software packages are mentioned in the paper.
 
 Z. Kalal, K. Mikolajczyk and J. Matas, "Tracking-Learning-Detection," in IEEE Transactions on Pattern Analysis and Machine Intelligence, vol. 34, no. 7, pp. 1409-1422, July 2012. doi: 10.1109/TPAMI.2011.239
 http://ieeexplore.ieee.org.dist.lib.usu.edu/document/6104061/
 577 citations
 
-B. Babenko, M. H. Yang and S. Belongie, "Robust Object Tracking with Online Multiple Instance Learning," in IEEE Transactions on Pattern Analysis and Machine Intelligence, vol. 33, no. 8, pp. 1619-1632, Aug. 2011. doi: 10.1109/TPAMI.2010.226
-http://ieeexplore.ieee.org.dist.lib.usu.edu/document/5674053/
-599 citations
-
 Y. Li, C. Huang and R. Nevatia, "Learning to associate: HybridBoosted multi-target tracker for crowded scene," 2009 IEEE Conference on Computer Vision and Pattern Recognition, Miami, FL, 2009, pp. 2953-2960. doi: 10.1109/CVPR.2009.5206735
 http://ieeexplore.ieee.org.dist.lib.usu.edu/document/5206735/
 65 citations (IEEEXplore)
-321 citations (Google Scholar https://scholar.google.com/scholar?cites=13497846371260441380&as_sdt=5,45&sciodt=1,45&hl=en)
+%321 citations (Google Scholar https://scholar.google.com/scholar?cites=13497846371260441380\&as_sdt=5,45\&sciodt=1,45\&hl=en)
+\end{document}
