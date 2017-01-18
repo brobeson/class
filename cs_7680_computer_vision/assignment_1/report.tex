@@ -6,14 +6,79 @@
 \author{Brendan Robeson}
 \maketitle
 
-Babenko et. al. \cite{5674053} has 599 citations and is available at \\ http://ieeexplore.ieee.org.dist.lib.usu.edu/document/5674053/. The paper improves object tracking in video. The authors used nine videos: three publicly available, and six of their own making. The location of these videos is not listed in the paper, though. The authors do not list any assumptions. The authors' technique is called MILTrack. MILTrack uses multiple instance learning to track an object in video. Basically, the authors use patches of a frame surrounding the tracked object, to train the algorithm about the object's appearance. The authors developed a new boosting algorithm, suitable for online use, dubbed Online MILBoost (OMB). The advantages of MILTrack are real-time performance and reduced errors over previous techniques. MILTrack will still track incorrect objects if the desired object is not visible for a long period of time. MILTrack was compared with OAB and IVT methods. Mean error and precision were presented, both graphically and in tables. MILTrack is available at http://vision.ucsd.edu/project/tracking-online-multiple-instance-learning.
+Babenko et al. \cite{5674053} has 599 citations and is available at \\
+http://ieeexplore.ieee.org.dist.lib.usu.edu/document/5674053/. The paper
+improves object tracking in video. The authors used nine videos: three publicly
+available, and six of their own making. The location of these videos is not
+listed in the paper, though. The authors do not list any assumptions. The
+authors' technique is called MILTrack, and based on Multiple Instance Learning.
+MILTrack uses multiple instance learning to track an object in video. Basically,
+the authors use patches of a frame surrounding the tracked object, to train the
+algorithm about the object's appearance. The authors developed a new boosting
+algorithm, suitable for online use, dubbed Online MILBoost (OMB). The advantages
+of MILTrack are real-time performance and reduced errors over previous
+techniques. MILTrack will still track incorrect objects if the desired object is
+not visible for a long period of time. MILTrack was compared with Online
+AdaBoost (OAB), SemiBoost, FragTrack, and Incremental Visual Tracking (IVT).
+Performance metrics are location error and location precision. Error is measured
+in pixels, and precision is measured as the percentage of frames for which the
+calculated location was within a specific distance of the true location. These
+measurements are presented in tables and graphs. MILTrack is available at
+http://vision.ucsd.edu/project/tracking-online-multiple-instance-learning.
 
-Hare et. al. \cite{6126251} has 427 citations and is available at \\ http://ieeexplore.ieee.org.dist.lib.usu.edu/document/6126251/. The paper improves object tracking in video. The authors report results for a set of eight videos, but do not make the videos available to the reader. The authors assume that the first video frame contains label information for training. They also assume that the tracked object will remain within a bounding circle centered on the object in the previous frame. The authors' approach is to learn a function capable of predicting the tracked object's position in subsequent frames (previous techiniques learned a classifier intead). This is done with an SVM. Their approach avoids the need for generating binary labels, thus eliminating a source of errors. An upper bound is placed on the number of support vectors; without this bound, too many support vectors can be generated which will degrade system performance. The authors compared their technique to MIForest, OMCLP, MIL, Frag, and OAB techniques. These comparisons are presented in a table of "average bounding box overlap". No specific software packages are mentioned in the paper.
+Hare et al. \cite{6126251} has 427 citations and is available at \\
+http://ieeexplore.ieee.org.dist.lib.usu.edu/document/6126251/. The paper
+improves object tracking in video. The authors report results for a set of eight
+videos, but do not make the videos available to the reader. The authors assume
+that the first video frame contains label information for training. They also
+assume that the tracked object will remain within a bounding circle centered on
+the object in the previous frame. The authors' approach is to learn a function
+capable of predicting the tracked object's position in subsequent frames
+(previous techniques learned a classifier instead). This is done with an SVM.
+Their approach avoids the need for generating binary labels, thus eliminating a
+source of errors. An upper bound is placed on the number of support vectors;
+without this bound, too many support vectors can be generated which will degrade
+system performance. The authors compared their technique to MIForest (a MIL
+technique), Online Multi-Class LPBoost (OMCLP), MILTrack (Babenko et al.),
+FragTrack, and OAB techniques. These comparisons are presented in a table of
+Pascal VOC overlap. No specific software packages are mentioned in the paper.
 
-Kalal et. al. \cite{6104061} has 577 citations and can be found at \\ http://ieeexplore.ieee.org.dist.lib.usu.edu/document/6104061/. The authors attempt to track an object in a video, at frame rate. The authors use a number of videos for experimentation, available at http://cmp.felk.cvut.cz/tld. The authors make the assumption that motion of the target object from frame to frame is limited, that the object remains visible, and the object appears at a single location in each frame. The authors' approach is called Tracking-Learning-Detection (TLD). The learning component uses P-N learning to improve the detecter as the video progresses. A significant drawback of TLD is that failure is likely if the object leaves the frame. The authors compared their algorithm to Iterative Visual Tracking, Online Discriminative Features, Ensemble Tracking, Multiple Instance Learning, Cotrained Generative-Discriminative Tracking, Online Boosting, Online Random Forrest, Fragment-Baset Tracker, and Prost. Tables are present with various performance metrics. The authors' implementation of TLD is available at http://cmp.felk.cvut.cz/tld.
+Kalal et al. \cite{6104061} has 577 citations and can be found at \\
+http://ieeexplore.ieee.org.dist.lib.usu.edu/document/6104061/. The authors
+attempt to track an object in a video, at frame rate. The authors use a number
+of videos for experimentation, available at http://cmp.felk.cvut.cz/tld. The
+authors make the assumption that motion of the target object from frame to frame
+is limited, that the object remains visible, and the object appears at a single
+location in each frame. The authors' approach is called
+Tracking-Learning-Detection (TLD). The learning component uses P-N learning to
+improve the detector as the video progresses. A significant drawback of TLD is
+that failure is likely if the object leaves the frame. The authors compared
+their algorithm to IVT, Online Discriminative Features, Ensemble Tracking,
+MILTrack (Babenko et al.), Cotrained Generative-Discriminative Tracking, Online
+Boosting, Online Random Forrest, FragTrack, and Parallel Robust Online Simple
+Tracking (Prost). The authors provide several performance measurements: number
+of successfully tracked frames, recall, and localization error. These data are
+only provided in tables; no graphs are provided. The authors' implementation of
+TLD is available at http://cmp.felk.cvut.cz/tld.
 
-Li et. al. \cite{5206735} has 65 citations, according to IEEE, and 321 according to Google Scholar \\ (https://scholar.google.com/scholar?cites=13497846371260441380\&as\_sdt=5,45\&sciodt=1,45\&hl=en). The paper can be found at http://ieeexplore.ieee.org.dist.lib.usu.edu/document/5206735/. The authors attempt to solve the problem of tracking multiple targets in a single video. The authors used the CAVIAR and TRECVID08 datasets. The CAVIAR data can be found at \\ http://homepages.inf.ed.ac.uk/rbf/CAVIARDATA1/. A URL for the TRECVID08 data is not provided. The authors do not state any assumptions. The authors' technique is called HybridBoost, because it is a combination of RankBoost and AdaBoost. The authors develop an affinity model learning algorithm; HybridBoost is used for both ranking and classification. The authors do not list the names of algorithms to which they compared their algorithm; rather, they are listed by reference (lead author). The authors present a table of data comparing their approach to three others. The authors refer to VACE evaluation software, using it asa a reference to implement their performance metrics.
+Li et al. \cite{5206735} has 65 citations, according to IEEE, and 321 according
+to Google Scholar \\
+(https://scholar.google.com/scholar?cites=13497846371260441380\&as\_sdt=5,45\&sciodt=1,45\&hl=en).
+The paper can be found at
+http://ieeexplore.ieee.org.dist.lib.usu.edu/document/5206735/. The authors
+attempt to solve the problem of tracking multiple targets in a single video. The
+authors used the CAVIAR and TRECVID08 datasets. The CAVIAR data can be found at
+\\ http://homepages.inf.ed.ac.uk/rbf/CAVIARDATA1/. A URL for the TRECVID08 data
+is not provided. The authors do not state any assumptions. The authors'
+technique is called HybridBoost, because it is a combination of RankBoost and
+AdaBoost. The authors develop an affinity model learning algorithm; HybridBoost
+is used for both ranking and classification. The authors compared their approach
+to a hierarchical Hungarian algorithm, multi-hypothesis, and min-cost flow
+techniques. The authors provide the performance metrics recall, false alarms per
+frame, ground truth trajectories, mostly tracked, mostly lost, partially
+tracked, fragments, and ID switches. The authors refer to VACE evaluation
+software, using it as a reference to implement their performance metrics.
 
-\bibliographystyle{plain}
+\bibliographystyle{IEEEtran}
 \bibliography{references}
 \end{document}
