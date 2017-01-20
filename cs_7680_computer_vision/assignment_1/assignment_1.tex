@@ -1,0 +1,31 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+
+\begin{document}
+\title{CS 7680 - Assignment 1}
+\author{Brendan Robeson}
+\maketitle
+
+Tian et al. \cite{5688239} has 55 citations according to Google Scholar, and is
+available at \\ http://ieeexplore.ieee.org.dist.lib.usu.edu/document/5688239/.
+The primary goal of the paper is to improve segmentation of brain tissue in MR
+imagery. They accomplish this by improving the EM algorithm frequently used in
+MR imagery segmentation. Segmenting MR imagery allows doctors to better analyze
+the imagery and focus on the tissue of concern. Manual segmentation is time
+consuming; subjective; and difficult, if not impossible, to reproduce. These
+issues make manual segmentation impractical for large neurological studies. The
+authors point out that the traditional EM algorithm tends to over fit the
+training data, and can become focused on local optima. These drawbacks limit the
+accuracy of EM. The authors also state that EM is deterministic, implying this
+is also a drawback. However, this property seems to me to be an advantage.
+
+The authors make standard assumptions about their data as required by GMM. Brain
+MR imagery is composed of volume elements, or voxels. The authors assume that
+each voxel represents a single type of tissue; that is, a voxel will not contain
+a bit of tissue type 1 and a bit of tissue type 2. For their experiments, the
+authors assumed three Gaussian models for the EM and variational EM (VEM)
+algorithms.
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+\end{document}
