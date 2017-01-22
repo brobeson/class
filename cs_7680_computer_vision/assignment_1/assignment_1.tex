@@ -30,15 +30,61 @@ Two data sets were used for verification and experimentation. The first
 consisted of 20 low resolution brain MR images. The second set was 17 high
 resolution brain MR images. Both data sets were obtained from The Internet Brain
 Segmentation Repository (IBSR). The repository's URL is
-http://www.cma.mgh.harvard.edu/ibsr/index.html. The authors do not identify
-which specific data sets they retrieved from the repository.
+http://www.cma.mgh.harvard.edu/ibsr/index.html, though attempts to visit
+repository timed out. The authors do not identify which specific data sets they
+retrieved from the repository.
 
-\[TODO - Algorithmic Overview\]
+\begin{quote}TODO - Algorithmic Overview\end{quote}
 
 The authors compared their GA-VEM algorithm to standard Expectation Maximization
-(EM), Variational EM (VEM), and to Genetic Algorithm Expectation Maximization
-(GA-EM). In addition, they compared their segmentation to that of the software
-packages Statistical Parametric Mapping (SPM) and FSL.
+(EM), Variational EM (VEM), and to Genetic Algorithm EM (GA-EM). The GA-EM
+algorithm tested was obtained from the MIXTUREGA software package, available at
+\\ http://www.cs.tut.fi/~tohkaj/gamixture.html. In addition, the authors
+compared their segmentation to that of the software packages Statistical
+Parametric Mapping (SPM) and FMRIB Software Library (FSL). The versions of SPM
+and FSL used are not specified. SPM is available for download at
+http://www.fil.ion.ucl.ac.uk/spm/ and FLS is available at
+https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/. Plots include histograms of voxel
+values, particularly a set of histograms comparing the ground truth to the
+GA-VEM output. The authors also included sample MR images, colored by tissue
+classification. These images allow for visual comparison of the ground truth to
+the various algorithms used in the experiments. Line graphs indicate the
+classification accuracy of each method on the test images. Box and whisker plots
+are used to compare the output accuracy for different initial values of
+\(\beta^0\). The metric used for comparing the algorithms is classification
+accuracy, specifically the Jaccard similarity coefficient. This is the
+intersection of the algorithm output with the ground truth, divided by their
+union. The ground truth was obtained from investigators trained in brain MR
+image segmentation.
+
+The authors claim that using GA overcomes the difficulty of initializing VEM.
+Their GA-VEM algorithm results in more accurate classification than the
+alternatives compared in the experiments.
+
+The only issue noted with GA-VEM by the authors is determining the initial value
+of the \(\beta^0\) hyperparameter. The authors ran a set of experiments with
+different initial values of \(\beta^0\), to evaluate the effect on
+classification accuracy. The authors made no mention of ideas for future
+improvement.
+
+In my opinion, this paper presents an interesting improvement on EM and VEM. The
+genetic algorithm seems like a novel method of initializing the VEM algorithm.
+This does involve computational complexity than EM, but it appears to be just a
+constant factor; that is, given complexity O(n) for EM, the complexity of GA-VEM
+appears to be kO(n). The experimental data set seems a bit small, only 37 MR
+images. The results are promising, though. GA-VEM is shown to be more accurate
+than EM, VEM, and GA-EM. Against SPM and FSL, GA-VEM is more accurate, or only
+slightly less accurate.
+
+\begin{quote}TODO - My Improvement Suggestions\end{quote}
+
+It seems clear that GA-VEM can be applied to any image or video processing tasks
+for which EM is used.
+
+em4gmm is a C implementation of the EM algorithm \\
+(https://github.com/juandavm/em4gmm). The OpenCV library contains an EM
+implementation \\
+(http://docs.opencv.org/2.4/modules/ml/doc/expectation\_maximization.html).
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
