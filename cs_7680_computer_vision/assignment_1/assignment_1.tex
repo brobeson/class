@@ -2,9 +2,13 @@
 \usepackage[margin=1in]{geometry}
 
 \begin{document}
-\title{CS 7680 - Assignment 1}
-\author{Brendan Robeson}
-\maketitle
+\noindent Brendan Robeson
+
+\noindent CS 7680 - Assignment 1
+
+\noindent \today
+
+\medskip
 
 Tian et al. \cite{5688239} has 55 citations according to Google Scholar, and is
 available at \\ http://ieeexplore.ieee.org.dist.lib.usu.edu/document/5688239/.
@@ -34,7 +38,32 @@ http://www.cma.mgh.harvard.edu/ibsr/index.html, though attempts to visit
 repository timed out. The authors do not identify which specific data sets they
 retrieved from the repository.
 
-\begin{quote}TODO - Algorithmic Overview\end{quote}
+The goal of the genetic algorithm (GA) initialization process is to determine
+the best set of GMM parameters, \(\Theta\). The process starts with a population
+of parameter sets; the authors use 500 sets. Each initial set has parameters
+with random, though valid, values. GA is an iterative process. For each
+iteration, the fitness value for each parameter set is calculated. The set with
+the highest fitness is retained for the next iteration. All other parameter sets
+are combined to create new parameter sets. The authors refer the reader to two
+references for the combination operation: BLX-0.5 operator and a permutation
+operator. The next iteration then operates on the new parameter set. After a
+predetermined number of iterations, the parameter set with highest fitness score
+is used to initialize the VEM hyperparameter set, \(\Psi\). Equation (18) describes the
+iterative process for calculating \(\alpha^0\). \(\beta^0\) is initialized to
+0.1; this value was found empirically by the authors. \(\nu^0\) is initialized
+to the number of observed data points. \(m^0\) and \(W^0\) are initialized to
+the Gaussian component's mean and the inverse of its covariance matrix (the
+precision matrix).
+
+The VEM algorithm is an iterative process, involving two basic steps for each
+iteration. The first step is maximize \(L(q;\Psi)\) with respect to
+\(q(\Theta)\). During this step, \(\Psi\) remains constant. Equation (15) is
+calculated for each distribution. The maximum result is kept for the second
+step, maximizing \(L(q;\Psi)\) with respect to \(q(Z)\). This is done by
+calculating the maximum value of equation (16). Equations (13) and (14) show how
+the two results are combined. This process iterates until the difference in
+\(\Psi\) from one iteration to the next is below an acceptable threshold.
+Equations (17) describe how to update the parameters in \(\Psi\).
 
 The authors compared their GA-VEM algorithm to standard Expectation Maximization
 (EM), Variational EM (VEM), and to Genetic Algorithm EM (GA-EM). The GA-EM
@@ -76,13 +105,13 @@ images. The results are promising, though. GA-VEM is shown to be more accurate
 than EM, VEM, and GA-EM. Against SPM and FSL, GA-VEM is more accurate, or only
 slightly less accurate.
 
-\begin{quote}TODO - My Improvement Suggestions\end{quote}
+At this time, I do not have any thoughts on improving this algorithm.
 
 It seems clear that GA-VEM can be applied to any image or video processing tasks
 for which EM is used.
 
 em4gmm is a C implementation of the EM algorithm \\
-(https://github.com/juandavm/em4gmm). The OpenCV library contains an EM
+(https://github.com/juandavm/em4gmm). The OpenCV library also contains an EM
 implementation \\
 (http://docs.opencv.org/2.4/modules/ml/doc/expectation\_maximization.html).
 
