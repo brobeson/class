@@ -105,7 +105,12 @@ images. The results are promising, though. GA-VEM is shown to be more accurate
 than EM, VEM, and GA-EM. Against SPM and FSL, GA-VEM is more accurate, or only
 slightly less accurate.
 
-At this time, I do not have any thoughts on improving this algorithm.
+The authors' current GA algorithm iterates a fixed number of times. I think a
+better algorithm would iterate until a fitness is found that is equal to, or
+greater than, a threshold fitness. I'm not entirely sure this is possible,
+though. The fitness is defined as the log of the probability of X given
+\(\Theta^{(i)}\). This would require knowing that there exists some parameter
+set with a suitably high probability for X.
 
 It seems clear that GA-VEM can be applied to any image or video processing tasks
 for which EM is used.
