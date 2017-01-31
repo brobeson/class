@@ -17,26 +17,91 @@
     \item The paper is available at
         http://www.mdpi.com/1424-8220/11/10/9573/htm.
 
-    \item The authors want the computer to recognize facial expressions in images. Facial expressions are a primary mode of non-verbal communication between people. Thus automating facial recognition has interesting applications for various fields.
+    \item The authors want the computer to recognize facial expressions in
+        images. Facial expressions are a primary mode of non-verbal
+        communication between people. Thus automating facial recognition has
+        interesting applications for various fields.
 
-    \item 
+    \item The authors did not state any assumptions.
 
-    \item The authors used the JAFFE database (http://www.kasrl.org/jaffe.html) and the Cohn-Kanade database (http://www.pitt.edu/~emotion/ck-spread.htm).
+    \item The authors used the JAFFE database (http://www.kasrl.org/jaffe.html)
+        and the Cohn-Kanade database
+        (http://www.pitt.edu/~emotion/ck-spread.htm).
 
-    \item 
+    \item The authors dub their algorithm kernel discriminant isomap (KDIsomap).
+        The goal of KDIsomap is to maximize interclass scatter, while minimizing
+        intraclass scatter, as per LDA. The authors begin with kernal isomap
+        (KIsomap). The crux of KDIsomap is modify the Euclidean distance used in
+        KIsomap.
 
-    \item KDIsomap was compared to PCA, LDA, KPCA, kernel linear discriminant analysis (KLDA), and kernel isomap (KIsomap).
-    
-    Quantitatively, the authors compared each algorithm's recognition accuraccy vs. embedded dimension in a line graph. The authors also provide a table showing each algorithm's peak accuracy with the corresponding embedded dimension. Finally, a confusion matrix is provided for KDIsomap for seven classes of facial expressions.
-    
-    There are no qualitative figures directly related to KDIsomap.
-    
-    \item 
-    \item 
-    \item 
-    \item 
-    \item 
-    \item 
+        Input for the algorithm is the image data and the corresponding class
+        label. The image data point is a vector of length D. The class label is
+        one of the facial expressions of interest.
+
+        The first step is to implicitly map the input data to a higher dimensional
+        space. A nonlinear function, \(\phi\), performs this mapping. A kernel
+        function is used to avoid actually performing the math in higher
+        dimensions, as shown with equation (6). For their experiments, the
+        authors used a Gaussian kernel function; the equation is not numbered,
+        but is provided in the text on page 9581.
+
+        Second, a neighborhood graph is constructed for the high dimensional
+        data. The data points form the graph vertices. The edges connect a point
+        to its nearest neighbors, and are weighted with the kernel discriminant
+        distance between two vertices. Equation (8) provides the formula for the
+        kernel discriminant distance as a function of the data points' classes,
+        and the data points' Euclidean distance. The Euclidean distance, in the
+        high dimensional space, is given by Equation (7). Equation (8) is how
+        the algorithm maintains the scatter constraints outlined above.
+
+        The remaining steps are taken from KIsomap. The third step of KDIsomap
+        is to calculate a matrix of geodesic distances between all the data
+        points. The authors suggest using Dijkstra's algorithm
+
+        The fourth step is to calculate the matrix \(K(D^2)\) using equation
+        (3).
+
+        Next, calculate a Mercer kernel matrix \(K^*\) from equation (4). From
+        \(K^*\) calculate the \emph{d} most important eigenvectors and
+        corresponding eigenvalues.
+
+        The final step is to calculate the embedded coordinates. Equation (5)
+        describes this process. These are the output of the algorithm.
+
+    \item KDIsomap was compared to PCA, LDA, KPCA, kernel linear discriminant
+        analysis (KLDA), and kernel isomap (KIsomap).
+
+        Quantitatively, the authors compared each algorithm's recognition
+        accuracy vs. embedded dimension in a line graph. The authors also
+        provide a table showing each algorithm's peak accuracy with the
+        corresponding embedded dimension. In addition, a confusion matrix is
+        provided for KDIsomap for seven classes of facial expressions. These
+        data are provided separately for the JAFFE and Cohn-Kanade databases.
+        Finally, the authors provided a table of computational and memory
+        complexity for each algorithm.
+
+        There are no qualitative figures directly related to KDIsomap.
+
+    \item KDIsomap improves facial expression classification over KIsomap. It
+        does so by minimizing scatter among data within a class, and maximizing
+        scatter among data between classes.
+
+    \item The authors did not mention any shortcomings in the paper. They did
+        discuss integrating KDIsomap with boosted LBP and an SVM classifier.
+        They also hypothesize that incorporating time information could lead to
+        improved accuracy.
+
+    \item This is a somewhat novel approach to the problem. Their experiments
+        show significant accuracy improvement over KIsomap, but only minor
+        improvement over the other methods. Computational complexity is equal to
+        that of KPCA and KLDA, and worse than PCA and LDA.
+
+    \item
+
+    \item This technique is applicable to any feature extraction task, provided
+        the computational costs are acceptable.
+
+    \item
 \end{enumerate}
 
 \bibliographystyle{IEEEtran}
