@@ -56,17 +56,24 @@
 
         The remaining steps are taken from KIsomap. The third step of KDIsomap
         is to calculate a matrix of geodesic distances between all the data
-        points. The authors suggest using Dijkstra's algorithm
+        points. The authors suggest using Dijkstra's algorithm. Each matrix
+        element is simply the square of the geodesic distance between two data
+        points.
 
-        The fourth step is to calculate the matrix \(K(D^2)\) using equation
-        (3).
+        The fourth step is to calculate the matrix kernel \(K(D^2)\) using
+        equation (3). The kernel matrix is a centering of the geodesic distance
+        matrix from the previous step.
 
-        Next, calculate a Mercer kernel matrix \(K^*\) from equation (4). From
-        \(K^*\) calculate the \emph{d} most important eigenvectors and
+        Next, calculate a Mercer kernel matrix \(K^*\) from equation (4). This
+        equation has been shown to produce a positive semi-definite matrix.
+        Thus, \(K^*\) satisifies Mercer's condition, and the matrix can be used
+        as a kernel in lieu of transforming the data to higher dimensions. From
+        \(K^*\) calculate the \emph{d} most important eigenvectors and their
         corresponding eigenvalues.
 
-        The final step is to calculate the embedded coordinates. Equation (5)
-        describes this process. These are the output of the algorithm.
+        The final step is to reduce the input data from D dimensions to d
+        dimensions. This transformation is given by equation (5). The output is
+        a \(d \times N\) matrix; each column vector is a transformed data point.
 
     \item KDIsomap was compared to PCA, LDA, KPCA, kernel linear discriminant
         analysis (KLDA), and kernel isomap (KIsomap).
@@ -96,12 +103,15 @@
         improvement over the other methods. Computational complexity is equal to
         that of KPCA and KLDA, and worse than PCA and LDA.
 
-    \item
+    \item At this time, I haven't come up with any ideas to improve KDIsomap.
 
     \item This technique is applicable to any feature extraction task, provided
         the computational costs are acceptable.
 
-    \item
+    \item I was unable to find any implementations of KDIsomap. The closest I
+        came was a Matlab implementation of Isomap at
+        https://lvdmaaten.github.io/drtoolbox/, though it is no longer being
+        maintained.
 \end{enumerate}
 
 \bibliographystyle{IEEEtran}
