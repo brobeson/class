@@ -48,11 +48,16 @@
         Second, a neighborhood graph is constructed for the high dimensional
         data. The data points form the graph vertices. The edges connect a point
         to its nearest neighbors, and are weighted with the kernel discriminant
-        distance between two vertices. Equation (8) provides the formula for the
-        kernel discriminant distance as a function of the data points' classes,
-        and the data points' Euclidean distance. The Euclidean distance, in the
-        high dimensional space, is given by Equation (7). Equation (8) is how
-        the algorithm maintains the scatter constraints outlined above.
+        distance between two vertices. For this step, the Euclidean distance as
+        given by Equation (7), is required. This is where the kernel trick is
+        used, to calculate the Euclidean distance in higher dimensions, without
+        actually transforming the data. Equation (8) provides the kernel
+        discriminant distance and is how the algorithm maintains the scatter
+        constraints outlined above. Equation (8) is a function of the data
+        points' classes, and the data points' Euclidean distance. If the two
+        data points have the same class, the function calculates a distance on
+        \([0, 1)\). If the two data points have different classes, the
+        calculated distance is on \([1, \infty)\).
 
         The remaining steps are taken from KIsomap. The third step of KDIsomap
         is to calculate a matrix of geodesic distances between all the data
