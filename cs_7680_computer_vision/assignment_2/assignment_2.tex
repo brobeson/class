@@ -1,5 +1,6 @@
 \documentclass[11pt]{article}
 \usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
 
 \begin{document}
 \noindent Brendan Robeson
@@ -10,29 +11,29 @@
 
 \medskip
 
-\begin{enumerate}
-    \item Zhao and Zhang \cite{s111009573} has 47 citations according to Google
-        Scholar.
+\begin{description}[leftmargin=0in]
+    \item [Source] Zhao and Zhang \cite{s111009573} has 47 citations according
+        to Google Scholar.
 
-    \item The paper is available at
+    \item [URL] The paper is available at
         http://www.mdpi.com/1424-8220/11/10/9573/htm.
 
-    \item The authors want the computer to recognize facial expressions in
-        images. Facial expressions are a primary mode of non-verbal
-        communication between people. Thus automating facial recognition has
-        interesting applications for various fields.
+    \item [Problem] The authors want the computer to recognize facial
+        expressions in images. Facial expressions are a primary mode of
+        non-verbal communication between people. Thus automating facial
+        recognition has interesting applications for various fields.
 
-    \item The authors did not state any assumptions.
+    \item [Assumptions] The authors did not state any assumptions.
 
-    \item The authors used the JAFFE database (http://www.kasrl.org/jaffe.html)
-        and the Cohn-Kanade database
+    \item [Data Sets] The authors used the JAFFE database
+        (http://www.kasrl.org/jaffe.html) and the Cohn-Kanade database
         (http://www.pitt.edu/~emotion/ck-spread.htm).
 
-    \item The authors dub their algorithm kernel discriminant isomap (KDIsomap).
-        The goal of KDIsomap is to maximize interclass scatter, while minimizing
-        intraclass scatter, as per LDA. The authors begin with kernal isomap
-        (KIsomap). The crux of KDIsomap is modify the Euclidean distance used in
-        KIsomap.
+    \item [Algorithm Overview] The authors dub their algorithm kernel
+        discriminant isomap (KDIsomap). The goal of KDIsomap is to maximize
+        interclass scatter, while minimizing intraclass scatter, as per LDA. The
+        authors begin with kernal isomap (KIsomap). The crux of KDIsomap is
+        modify the Euclidean distance used in KIsomap.
 
         Input for the algorithm is the image data and the corresponding class
         label. The image data point is a vector of length D. The class label is
@@ -80,8 +81,8 @@
         dimensions. This transformation is given by equation (5). The output is
         a \(d \times N\) matrix; each column vector is a transformed data point.
 
-    \item KDIsomap was compared to PCA, LDA, KPCA, kernel linear discriminant
-        analysis (KLDA), and kernel isomap (KIsomap).
+    \item [Experiments] KDIsomap was compared to PCA, LDA, KPCA, kernel linear
+        discriminant analysis (KLDA), and kernel isomap (KIsomap).
 
         Quantitatively, the authors compared each algorithm's recognition
         accuracy vs. embedded dimension in a line graph. The authors also
@@ -94,30 +95,32 @@
 
         There are no qualitative figures directly related to KDIsomap.
 
-    \item KDIsomap improves facial expression classification over KIsomap. It
-        does so by minimizing scatter among data within a class, and maximizing
-        scatter among data between classes.
+    \item [Contributions] KDIsomap improves facial expression classification
+        over KIsomap. It does so by minimizing scatter among data within a
+        class, and maximizing scatter among data between classes.
 
-    \item The authors did not mention any shortcomings in the paper. They did
-        discuss integrating KDIsomap with boosted LBP and an SVM classifier.
-        They also hypothesize that incorporating time information could lead to
-        improved accuracy.
+    \item [Shortcomings] The authors did not mention any shortcomings in the
+        paper. They did discuss integrating KDIsomap with boosted LBP and an SVM
+        classifier. They also hypothesize that incorporating time information
+        could lead to improved accuracy.
 
-    \item This is a somewhat novel approach to the problem. Their experiments
-        show significant accuracy improvement over KIsomap, but only minor
-        improvement over the other methods. Computational complexity is equal to
-        that of KPCA and KLDA, and worse than PCA and LDA.
+    \item [Self Evaluation] This is a somewhat novel approach to the problem.
+        Their experiments show significant accuracy improvement over KIsomap,
+        but only minor improvement over the other methods. Computational
+        complexity is equal to that of KPCA and KLDA, and worse than PCA and
+        LDA.
 
-    \item At this time, I haven't come up with any ideas to improve KDIsomap.
+    \item [Improvements] At this time, I haven't come up with any ideas to
+        improve KDIsomap.
 
-    \item This technique is applicable to any feature extraction task, provided
-        the computational costs are acceptable.
+    \item [Applications] This technique is applicable to any feature extraction
+        task, provided the computational costs are acceptable.
 
-    \item I was unable to find any implementations of KDIsomap. The closest I
-        came was a Matlab implementation of Isomap at
+    \item [Packages] I was unable to find any implementations of KDIsomap. The
+        closest I came was a Matlab implementation of Isomap at
         https://lvdmaaten.github.io/drtoolbox/, though it is no longer being
         maintained.
-\end{enumerate}
+\end{description}
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
