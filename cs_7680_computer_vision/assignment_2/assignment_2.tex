@@ -12,11 +12,12 @@
 \medskip
 
 \begin{description}[leftmargin=0in]
-    \item [Source] Zhao and Zhang \cite{s111009573} has 47 citations according
-        to Google Scholar.
+    \item [Source] X. Zhao and S. Zhang, "Facial expression recognition based on
+        local binary patterns and kernel discriminant isomap," \emph{Sensors,}
+        vol. 11, no. 10, pp. 9573-9588, 2011. [Online]. Available:
+        http://www.mdpi.com/1424-8220/11/10/9573. Cited by 47.
 
-    \item [URL] The paper is available at
-        http://www.mdpi.com/1424-8220/11/10/9573/htm.
+    \item [URL] http://www.mdpi.com/1424-8220/11/10/9573
 
     \item [Problem] The authors want the computer to recognize facial
         expressions in images. Facial expressions are a primary mode of
@@ -27,12 +28,14 @@
 
     \item [Data Sets] The authors used the JAFFE database
         (http://www.kasrl.org/jaffe.html) and the Cohn-Kanade database
-        (http://www.pitt.edu/~emotion/ck-spread.htm).
+        (http://www.pitt.edu/\~{}emotion/ck-spread.htm). The authors
+        pre-processed the data to eliminate non-facial features (hair, neck,
+        background, etc.).
 
     \item [Algorithm Overview] The authors dub their algorithm kernel
         discriminant isomap (KDIsomap). The goal of KDIsomap is to maximize
         interclass scatter, while minimizing intraclass scatter, as per LDA. The
-        authors begin with kernal isomap (KIsomap). The crux of KDIsomap is
+        authors begin with kernal isomap (KIsomap). The crux of KDIsomap is to
         modify the Euclidean distance used in KIsomap.
 
         Input for the algorithm is the image data and the corresponding class
@@ -122,6 +125,4 @@
         maintained.
 \end{description}
 
-\bibliographystyle{IEEEtran}
-\bibliography{references}
 \end{document}
