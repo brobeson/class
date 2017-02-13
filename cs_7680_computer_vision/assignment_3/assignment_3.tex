@@ -1,0 +1,74 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{algorithm2e}
+
+\begin{document}
+\noindent Brendan Robeson
+
+\noindent CS 7680 - Assignment 3
+
+\noindent \today
+
+\medskip
+
+\begin{description}[leftmargin=0in]
+    \item [Source] G. ming Xian, "An identification method of malignant and
+        benign liver tumors from ultrasonogrpahy based on GLCM texture features
+        and fuzzy SVM," \emph{Expert Systems with Applications}, vol. 37, no.
+        10, pp. 6737-6741, 2010. [Online]. Cited by 76.
+
+    \item [URL]
+        http://www.sciencedirect.com/science/article/pii/S0957417410001065
+
+    \item [Problem] The author wants to train a computer to correctly classify
+        liver tumors as malignant or benign. Improving a computer's accuracy in
+        such a task has clear benefits for both doctors and patients.
+
+    \item [Assumptions] The author does not state any assumptions.
+
+    \item [Data Sets] The author used two data sets in his experiments. The
+        first consisted of 200 images. 132 were known to be benign, and 68 were
+        known to be malignant. The second data set had 450 images, all with
+        various benign tumors. No URLs are provided for the data sets. 
+
+    \item [Algorithm Overview]
+
+    \item [Experiments] The author only compared their technique to standard
+        SVM. The only comparison data presented are a table of misdiagnoses by
+        each algorithm.
+
+        Other tables and graphs are provided with data relevant only to the
+        proposed technique. Among these are a graph of the technique's accuracy
+        as a function of the GLCM's $\delta$ value. Another table presents
+        FSVM's performance for five metrics: accuracy, sensitivity, specificity,
+        positive predictive value, and negative predictive value.
+
+        No qualitative figures are provided.
+
+    \item [Contributions] This paper seems to have improved the accuracy of
+        automated diagnosis of liver tumors.
+
+    \item [Shortcomings] The author does not mention any shortcomings.
+
+    \item [Self Evaluation] This paper does not appear to develop any new
+        techniques, but rather to simply apply FSVM to the application of tumor
+        diagnosis. In addition, a physician is still required to identify a
+        tumor as a region of interest for input to the algorithm. This technique
+        is not much more complex than non-linear kernel soft margin SVMs. The
+        results are interesting, but I think comparison with more classification
+        techniques would improve the experiments.
+
+    \item [Improvements] GLCM and FSVM are subject to input parameters, the
+        values of which influence the quality of the results. A method for
+        automatically determining the optimal parameters would improve the
+        algorithm. In the case of GLCM, a different feature extraction technique
+        could eliminate the $\delta$ parameter.
+
+    \item [Applications] The FSVM classifier seems applicable to any
+        classification problem.
+
+    \item [Packages]
+\end{description}
+
+ \end{document}

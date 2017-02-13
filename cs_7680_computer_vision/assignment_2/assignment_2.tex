@@ -1,6 +1,7 @@
 \documentclass[11pt]{article}
 \usepackage[margin=1in]{geometry}
 \usepackage{enumitem}
+\usepackage{algorithm2e}
 
 \begin{document}
 \noindent Brendan Robeson
@@ -38,54 +39,50 @@
         authors begin with kernal isomap (KIsomap). The crux of KDIsomap is to
         modify the Euclidean distance used in KIsomap.
 
-        Input for the algorithm is the image data and the corresponding class
-        label. The image data point is a vector of length D. The class label is
-        one of the facial expressions of interest.
+        \begin{algorithm}
+            \KwIn{LBP histograms and corresponding expression class label}
+            \ForAll{$x_i$}{
+                \ForAll{$x_j$}{
+                    Calculate Euclidean distance with Equation (7)\;
+                    Calculate kernel discriminant distance with Equation (8)\;
+                    Calculate the geodesic distance\;
+                }
+            }
+            Calculate a matrix of centered geodesic distances with Equation
+            (3)\;
+            Calculate a Mercer kernel matrix, $K^*$, with Equation (4)\;
+            Calculate the $d$ most important eigenvectors of $K^*$\;
+            Calculate the embedded coordinates with Equation (5)\;
+            \KwOut{A set of feature vectors}
+        \end{algorithm}
 
-        The first step is to implicitly map the input data to a higher dimensional
-        space. A nonlinear function, \(\phi\), performs this mapping. A kernel
-        function is used to avoid actually performing the math in higher
-        dimensions, as shown with equation (6). For their experiments, the
-        authors used a Gaussian kernel function; the equation is not numbered,
-        but is provided in the text on page 9581.
+        Equation (7) is a function of the input data points $x_i$ and $x_j$. It
+        describes the Euclidean distance of two data points in higher
+        dimensions. This equation uses the kernel trick to avoid actually
+        transforming the data.
 
-        Second, a neighborhood graph is constructed for the high dimensional
-        data. The data points form the graph vertices. The edges connect a point
-        to its nearest neighbors, and are weighted with the kernel discriminant
-        distance between two vertices. For this step, the Euclidean distance as
-        given by Equation (7), is required. This is where the kernel trick is
-        used, to calculate the Euclidean distance in higher dimensions, without
-        actually transforming the data. Equation (8) provides the kernel
-        discriminant distance and is how the algorithm maintains the scatter
-        constraints outlined above. Equation (8) is a function of the data
-        points' classes, and the data points' Euclidean distance. If the two
-        data points have the same class, the function calculates a distance on
-        \([0, 1)\). If the two data points have different classes, the
-        calculated distance is on \([1, \infty)\).
+        Equation (8) provides the kernel discriminant distance and is how the
+        algorithm maintains the scatter constraints outlined above. This is a
+        function of the data points' classes, and the data points' Euclidean
+        distance. If the two data points have the same class, the function
+        calculates a distance on $[0, 1)$. If the two data points have different
+        classes, the calculated distance is on $[1, \infty)$.
 
-        The remaining steps are taken from KIsomap. The third step of KDIsomap
-        is to calculate a matrix of geodesic distances between all the data
-        points. The authors suggest using Dijkstra's algorithm. Each matrix
-        element is simply the square of the geodesic distance between two data
-        points.
+        Equation (3) simply centers the geodesic distances around the mean.
 
-        The fourth step is to calculate the matrix kernel \(K(D^2)\) using
-        equation (3). The kernel matrix is a centering of the geodesic distance
-        matrix from the previous step.
-
-        Next, calculate a Mercer kernel matrix \(K^*\) from equation (4). This
+        Equation (4) calculate a Mercer kernel matrix, $K^*$. This
         equation has been shown to produce a positive semi-definite matrix.
-        Thus, \(K^*\) satisifies Mercer's condition, and the matrix can be used
-        as a kernel in lieu of transforming the data to higher dimensions. From
-        \(K^*\) calculate the \emph{d} most important eigenvectors and their
-        corresponding eigenvalues.
+        Thus, $K^*$ satisfies Mercer's condition, and the matrix can be used
+        as a kernel in lieu of transforming the data to higher dimensions.
 
-        The final step is to reduce the input data from D dimensions to d
-        dimensions. This transformation is given by equation (5). The output is
-        a \(d \times N\) matrix; each column vector is a transformed data point.
+        Finally, Equation (5) combines the eigenvalues and eigenvectors to form
+        the embedded coordinates. These are the output of the algorithm; each
+        column vector is a transformed data point.
 
     \item [Experiments] KDIsomap was compared to PCA, LDA, KPCA, kernel linear
-        discriminant analysis (KLDA), and kernel isomap (KIsomap).
+        discriminant analysis (KLDA), and kernel isomap (KIsomap). For their
+        experiments, the authors used a Gaussian kernel function; the equation
+        is not numbered, but is provided in the text on page 9581.
 
         Quantitatively, the authors compared each algorithm's recognition
         accuracy vs. embedded dimension in a line graph. The authors also
