@@ -2,6 +2,8 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{enumitem}
 \usepackage{algorithm2e}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
 
 \begin{document}
 \noindent Brendan Robeson
@@ -19,7 +21,7 @@
         10, pp. 6737-6741, 2010. [Online]. Cited by 76.
 
     \item [URL]
-        http://www.sciencedirect.com/science/article/pii/S0957417410001065
+        \url{http://www.sciencedirect.com/science/article/pii/S0957417410001065}
 
     \item [Problem] The author wants to train a computer to correctly classify
         liver tumors as malignant or benign. Improving a computer's accuracy in
@@ -65,10 +67,13 @@
         algorithm. In the case of GLCM, a different feature extraction technique
         could eliminate the $\delta$ parameter.
 
-    \item [Applications] The FSVM classifier seems applicable to any
-        classification problem.
+    \item [Applications] This technique is limited to applications for which
+        texture analysis is used for feature extraction, which are then used for
+        classification. The FSVM component, though, can be used for any
+        classification problem for which fuzzy logic is applicable.
 
-    \item [Packages]
+    \item [Packages] \url{https://www.csie.ntu.edu.tw/~cjlin/libsvm/} \\
+        \url{https://www.mathworks.com/help/stats/support-vector-machine-classification.html}
 \end{description}
 
  \end{document}
