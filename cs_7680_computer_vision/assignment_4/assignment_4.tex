@@ -1,0 +1,97 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{algorithm2e}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+
+\begin{document}
+\noindent Brendan Robeson
+
+\noindent CS 7680 - Assignment 4
+
+\noindent \today
+
+\medskip
+
+\begin{description}[leftmargin=0in]
+    \item [Source] N. Wang and D.-Y. Yeung, "Learning a Deep Compact Image
+        Representation for Visual Tracking," in \emph{Advances in Neural
+        Information Processing Systems 26} (C. J. Burges, L. Bottou, M. Welling,
+        Z. Ghahramani, and K. Q. Weinberger, eds), p. 809-817, Curran
+        Associates, Inc., 2013. Cited by 196.
+
+    \item [URL]
+        {\smaller\url{http://papers.nips.cc/paper/5192-learning-a-deep-compact-image-representation-for-visual-tracking}}
+
+    \item [Problem] The authors want to track an object through video or an
+        image sequence. Object tracking has use in several fields: security
+        surveillance, sports video analysis, HCI, and machine automation, to
+        name a few.
+
+    \item [Assumptions] The authors do not state any assumptions.
+
+    \item [Data Sets] The Tiny Images
+        (\url{http://groups.csail.mit.edu/vision/TinyImages/}) dataset was used for
+        offline training. The authors randomly samples 1 million images from the
+        data set. The authors do not state where they acquired the video
+        sequences used for their experiments. I found most (and many more) at
+        \url{http://cvlab.hanyang.ac.kr/tracker_benchmark/datasets.html}.
+
+    \item [Algorithm Overview]
+
+    \item [Experiments] The authors compared their tracker to these seven:
+        Multi-Task Tracking (MTT), Compressive Tracking (CT), Visual Tracking
+        Decomposition (VTD), Multiple Instance Learning (MIL), L1 Tracker (L1T),
+        Tracking-Learning-Detection (TLD), Incremental Visual Tracking (IVT).
+
+        The authors reported, for each algorithm, the success rate and the
+        central pixel error. The success rate is the percentage of frames for
+        which the tracker is considered successful, as defined by the authors.
+        The central pixel error is the Euclidean distance between the center
+        pixels of the tracker's bounding box and the ground truth bounding box.
+        The authors also list the frame rate of their algorithm, but not the
+        other algorithms. Finally, for each test video, the authors provide a
+        graph depicted the center error vs. frame number for each algorithm.
+
+        Qualitatively, the authors provide a sample of frames from each video,
+        with the trackers' bounding boxes overlaid on the frames.
+
+    \item [Contributions] The authors note that their algorithm automatically
+        learns image features, rather than requiring features extracted by a
+        user. Also, the authors' algorithm can continue to learn as tracking
+        progresses. Finally, the authors were able to train their algorithm
+        using a large, general database; they did not require a small database
+        specific to the video.
+
+    \item [Shortcomings] The authors did not describe any shortcomings. They
+        did, however, discuss the use of a convolutional neural network, instead
+        of the SDAE, as a direction for future research. They also mentioned
+        using a classifier more sophisticated than the linear classifier they
+        employed.
+
+    \item [Self Evaluation] This paper is more about applying a combination of
+        algorithms; than developing a new, or improving an existing, algorithm.
+        Their technique appears to make a slight improvement over previous
+        techniques, but it's not the best technique for all the experimental
+        videos. The cause, or causes, for DLT to perform worse on some of the
+        videos is not immediately obvious.
+
+    \item [Improvements] At this time, I have ideas for directly improving the
+        authors' technique. Given time to study more deep learning algorithms,
+        it may be possible to propose an alternative technique.
+
+    \item [Applications] Essentially, this is a deep learning technique applied
+        to imagery which changes slightly over time. Perhaps it would work with
+        other types of change. A target object in medical imaging slices, for
+        example, don't so much move as they change size and shape.
+
+    \item [Packages]
+
+        Caffe by Berkeley Vision and Learning Center
+        (\url{http://caffe.berkeleyvision.org/})
+
+        DIGITS by NVidia (\url{https://developer.nvidia.com/digits})
+\end{description}
+
+ \end{document}

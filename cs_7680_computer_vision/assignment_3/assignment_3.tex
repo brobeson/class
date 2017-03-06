@@ -15,10 +15,10 @@
 \medskip
 
 \begin{description}[leftmargin=0in]
-    \item [Source] G. ming Xian, "An identification method of malignant and
-        benign liver tumors from ultrasonogrpahy based on GLCM texture features
-        and fuzzy SVM," \emph{Expert Systems with Applications}, vol. 37, no.
-        10, pp. 6737-6741, 2010. [Online]. Cited by 76.
+    \item [Source] G. Xian, "An identification method of malignant and benign
+        liver tumors from ultrasonogrpahy based on GLCM texture features and
+        fuzzy SVM," \emph{Expert Systems with Applications}, vol. 37, no. 10,
+        pp. 6737-6741, 2010. [Online]. Cited by 76.
 
     \item [URL]
         \url{http://www.sciencedirect.com/science/article/pii/S0957417410001065}
@@ -34,7 +34,74 @@
         known to be malignant. The second data set had 450 images, all with
         various benign tumors. No URLs are provided for the data sets. 
 
-    \item [Algorithm Overview]
+    \item [Algorithm Overview] The goal of the author's technique is to classify
+        tumors as benign or malignant based on ultrasound images of the liver.
+        The author uses a gray level co-occurrence (GLCM) matrix to extract features
+        from the imagery. From the matrix, the following texture features are
+        calculated: energy, contrast, correlation, entropy, and homogeneity.
+        These features are input to a fuzzy SVM (FSVM) to classify the image
+        depicting a benign or malignant tumor.
+
+        \begin{algorithm}
+            \Begin(Feature Extraction)
+            {
+                \KwIn{ROI extracted from ultrasound image}
+                \ForEach{ROI image}
+                {
+                    Calculate the GLCM $P_u$\;
+                    Calculate energy using Equation (2)\;
+                    Calculate contrast using Equation (3)\;
+                    Calculate correlation using Equation (4)\;
+                    Calculate entropy using Equation (5)\;
+                    Calculate homogeneity using Equation (6)\;
+                }
+                \KwOut{A set of feature vectors}
+            }
+        \end{algorithm}
+
+        \begin{algorithm}
+            \Begin(Classification)
+            {
+                \tcp{At this point, the author ceased numbering their
+                equations.}
+                \KwIn{Feature vectors X, labels Y, fuzzy memberships S}
+                \ForEach{$x_i$}
+                {
+                    Solve $W(\alpha)$ for the $\alpha$ values, subject to
+                    constraints;
+                }
+            }
+        \end{algorithm}
+
+        As far as feature extraction, I assume Equations (2) through (6) are
+        typical equations for extracting the named properties from the GLCM.
+
+        Fuzzy SVMs begin with an additional input datum for each training
+        sample: a fuzziness value, $s_i$. This is a positive value, less than
+        one, which provides the confidence that $x_i$ belongs to class $y_i$.
+
+        To SVMs' minimization function, fuzzy SVMs adds a term which is the sum
+        of weighted error values, scaled by a constant parameter. I think the
+        weighted errors are related to the input fuzziness, though it's not
+        clear from the paper how the two are related. The constraints on this
+        function are similar to those of soft margin SVMs: 1) the class label
+        times the linear function must be greater than, or equal to, one minus
+        an error value, $\epsilon$; and 2) the error value must be greater than,
+        or equal to, zero.
+
+        The Lagrangian multiplier function is similar to that of soft margin
+        SVMs. The differences are: 1) the second term is the sum of the
+        fuzziness error, instead of the slack variables; and 2) the final term
+        is the sum $\beta_i$, instead of $\mu_i$ times the slack variable. I
+        assume $\beta_i$ is the second Lagrange multiplier.
+
+        The next three equations are the partial derivatives, similar to those
+        derived for the soft margin SVMs. Following these equations, is the dual
+        optimization formula, using the kernel trick. This equation is identical
+        to that of soft margin SVMs. The constraint that the sum of the $\alpha$
+        values scaled by the class labels is also identical. The differing
+        constraint is that, for fuzzy SVMs, $\alpha_i$ must lie between zero,
+        and the slack penalty scaled by the fuzziness membership $f_i$.
 
     \item [Experiments] The author only compared their technique to standard
         SVM. The only comparison data presented are a table of misdiagnoses by
