@@ -6,11 +6,12 @@
 \hypersetup{colorlinks=true}
 
 \begin{document}
-\noindent Brendan Robeson
-
-\noindent CS 7680 - Assignment 4
-
-\noindent \today
+\noindent Brendan Robeson \hfill CS 7680 - Assignment 4 \hfill \today
+%\noindent Brendan Robeson
+%
+%\noindent CS 7680 - Assignment 4
+%
+%\noindent \today
 
 \medskip
 
@@ -38,7 +39,68 @@
         sequences used for their experiments. I found most (and many more) at
         \url{http://cvlab.hanyang.ac.kr/tracker_benchmark/datasets.html}.
 
-    \item [Algorithm Overview]
+    \item [Algorithm Overview] The authors' procedure is referred to as Deep
+        Learning Tracker (DLT). In short, DLT uses a stacked denoising
+        autoencoder (SDAE) to learn general features from a large imagery
+        database. The tracking target is specified by a bounding box in the
+        first frame, presumably by a user. Particles, from the particle
+        filtering technique, are fed to the augmented SDAE for tracking.
+
+        \begin{algorithm}
+            \Begin(Offline Training)
+            {
+                \KwIn{Image Database}
+                \ForEach{Database Image}
+                {
+                    Calculate autoencoder weights using Equation (4)\;
+                }
+                \KwOut{A trained SDAE}
+            }
+        \end{algorithm}
+
+        \begin{algorithm}
+            \Begin(Online Tracking)
+            {
+                \KwIn{Trained SDAE, Video or Image Sequence}
+                Extract the encoder component from the SDAE\;
+                Append a classification layer to the encoder\;
+                \ForEach{Video/Image Frame}
+                {
+                    Extract particles\;
+                    \ForEach{Particle}
+                    {
+                        Calculate particle confidence $p_i$ with the encoder\;
+                    }
+                }
+                \KwOut{Tracked Object}
+            }
+        \end{algorithm}
+
+        The SDAE is a series of denoising autoencoders (DAE). A DAE takes as
+        input a data sample, $x_i$. The input is corrupted in some way to
+        produce $\tilde{x}_i$; the authors chose to use Gaussian noise, but
+        other techniques could be used. $\tilde{x}_i$ constitutes the first
+        layer of an autoencoder with fewer hidden units than input units. The
+        authors did not specify their activation function. The output of the DAE
+        is $\hat{x}_i$, which should be equivalent to $x_i$.
+
+        Equation (4) describes updating the DAE weights during training. This is
+        an error minimization function, the error being the square distance
+        between $x_i$ and $\hat{x}_i$. This function also takes into
+        consideration the encoder and decoder weights, scaled by an input
+        parameter, $\lambda$.
+        
+        Stacking the DAEs involves reducing the number of units in each layer of
+        the encoder, and increasing them in each layer of the decoder. The
+        authors chose to halve each subsequent encoder layer, until a layer has
+        256 units. Then each layer of the encoder doubles the previous layer
+        until the output layer has same number of units as the input layer.
+        
+        The online tracker uses the encoder portion of the trained SDAE. This is
+        augmented with a classification layer using a sigmoid activation
+        function. The classification layer outputs a scalar value, the
+        confidence of the input particle representing the target.
+
 
     \item [Experiments] The authors compared their tracker to these seven:
         Multi-Task Tracking (MTT), Compressive Tracking (CT), Visual Tracking
@@ -52,7 +114,7 @@
         pixels of the tracker's bounding box and the ground truth bounding box.
         The authors also list the frame rate of their algorithm, but not the
         other algorithms. Finally, for each test video, the authors provide a
-        graph depicted the center error vs. frame number for each algorithm.
+        graph depicting the center error vs. frame number for each algorithm.
 
         Qualitatively, the authors provide a sample of frames from each video,
         with the trackers' bounding boxes overlaid on the frames.
@@ -77,9 +139,9 @@
         videos. The cause, or causes, for DLT to perform worse on some of the
         videos is not immediately obvious.
 
-    \item [Improvements] At this time, I have ideas for directly improving the
-        authors' technique. Given time to study more deep learning algorithms,
-        it may be possible to propose an alternative technique.
+    \item [Improvements] At this time, I have no ideas for directly improving
+        the authors' technique. Given time to study more deep learning
+        algorithms, it may be possible to propose an alternative technique.
 
     \item [Applications] Essentially, this is a deep learning technique applied
         to imagery which changes slightly over time. Perhaps it would work with
