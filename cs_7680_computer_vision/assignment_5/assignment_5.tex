@@ -1,0 +1,88 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{algorithm2e}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+
+\begin{document}
+\noindent Brendan Robeson \hfill CS 7680 - Assignment 5 \hfill \today
+%\noindent Brendan Robeson
+%
+%\noindent CS 7680 - Assignment 4
+%
+%\noindent \today
+
+\medskip
+
+\begin{description}[leftmargin=0in]
+    \item [Source] A. Jazayeri et al. "Vehicle Detection and Tracking in Car Video Based on Motion
+        Model", \emph{IEEE Transactions on Intelligent Transportation Systems}, vol. 12, no. 2,
+        June, 2011, pp. 583-595. Cited by 177.
+
+    \item [URL]
+        \url{http://ieeexplore.ieee.org/abstract/document/5723749/}.
+
+    \item [Problem] The authors want to track vehicles in video recorded with a camera mounted in a
+        vehicle, typically a dash-cam. This problem has applications with police pursuit, driver
+        notifications, and self-driving cars.
+
+    \item [Assumptions] The authors make two assumptions:
+        \begin{enumerate}
+            \item The camera will not turn away from, nor fall back from, the target vehicles.
+            \item The camera must remain in motion.
+        \end{enumerate}
+
+    \item [Data Sets] The authors do not describe how they acquired their data, nor if they are
+        available for download.
+
+    \item [Algorithm Overview]
+        The data modeled by the HMM is referred to as traces. A trace is essentially a description
+        of horizontal motion.
+
+        In my opinion, the authors confused HMM states and observations in this paper. What they
+        call states, strike me as observations; and vice versa. That said, I'll continue the summary
+        using the authors' descriptions.
+
+        The HMM involves two states: car and background. That is, a trace can represent a car or the
+        background. The HMM observations are the trace's position in the image, \emph{x}, and its
+        horizontal velocity, \emph{v}.
+
+        Equation (14) gives the probability that the background is observed.
+
+    \item [Experiments] The authors did not compare their technique to others. The authors provided
+        several graphs of example trace probabilities, as well as video frames with bounding boxes
+        around vehicles. The authors did not state any performance metrics. The only performance
+        data provided is a confusion matrix for cars and background.
+
+    \item [Contributions] The authors claim their method avoids dependency on threshold parameters,
+        thus is more stable. They also claim their algorithm is effective, and not computationally
+        intensive. This indicates the algorithm is suitable for an embedded application in vehicle
+        hardware.
+
+    \item [Shortcomings] The technique requires "mild driving conditions." Constant speed in a
+        straight line is best; abrupt changes in speed, or curves, can create problems for the
+        tracker. Also, vehicle far away are difficult to detect due to their small size. Finally,
+        the tracker requires significant number of video frames to be certain it's tracking a true
+        positive.
+
+    \item [Self Evaluation]
+
+    \item [Improvements] The authors made assumptions regarding the motion of the camera vehicle,
+        which allowed them to simplify their equations. I would look into solving the problem
+        without those simplifications. If that could be accomplished, the tracker would be more
+        robust under more realistic driving conditions.
+
+    \item [Applications] I think it would be interesting to apply this technique to airborne video.
+        The math would need to be modified a bit; the assumed motion is different for a car mounted
+        camera than for a helicopter, airplane, or drone camera.
+
+    \item [Packages]
+
+        Probabilistic Modeling Toolkit for Matlab (\url{https://github.com/probml/pmtk3})
+
+        Shogun (\url{http://www.shogun-toolbox.org/})
+
+\end{description}
+
+ \end{document}
