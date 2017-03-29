@@ -6,12 +6,12 @@
 \hypersetup{colorlinks=true}
 
 \begin{document}
-\noindent Brendan Robeson \hfill CS 7680 - Assignment 5 \hfill \today
-%\noindent Brendan Robeson
-%
-%\noindent CS 7680 - Assignment 4
-%
-%\noindent \today
+%\noindent Brendan Robeson \hfill CS 7680 - Assignment 5 \hfill \today
+\noindent Brendan Robeson
+
+\noindent CS 7680 - Assignment 4
+
+\noindent \today
 
 \medskip
 
@@ -38,17 +38,50 @@
 
     \item [Algorithm Overview]
         The data modeled by the HMM is referred to as traces. A trace is essentially a description
-        of horizontal motion.
+        of horizontal motion. The second assumption, that the camera remains in motion, is used for
+        extracting traces. Traces rely on motion in the video frame, so a stationary background will
+        have no motion.
 
-        In my opinion, the authors confused HMM states and observations in this paper. What they
-        call states, strike me as observations; and vice versa. That said, I'll continue the summary
-        using the authors' descriptions.
+        %In my opinion, the authors confused HMM states and observations in this paper. What they
+        %call states, strike me as observations; and vice versa. That said, I'll continue the summary
+        %using the authors' descriptions.
+
+        The authors did not train their HMM; they explicitly state this on page 592. Their testing
+        process appears to have been simply to run their algorithm on some data, and observe the
+        results.
 
         The HMM involves two states: car and background. That is, a trace can represent a car or the
         background. The HMM observations are the trace's position in the image, \emph{x}, and its
         horizontal velocity, \emph{v}.
 
-        Equation (14) gives the probability that the background is observed.
+        The transition array is given by Equation (20). The authors give a general rationale for the
+        array values, but not describe how they arrived at the specific values used. For example,
+        the explain that it unlikely for a car trace to transition to a background trace, but do not
+        describe how the derived the specific probability of 0.8 for the car-to-car transition. The
+        initial probabilities were empirically determined to be 0.7 for a trace to be a car, and 0.3
+        for it to be background. No more detail than that is provided for their determination. The
+        observation array does not appear to be used. Instead, two look up tables are generated, one
+        for each state. The look up tables provide probability density functions, mapping position
+        and velocity values to probability for the table's state. These tables are generated
+        offline, using equations described below.
+
+        Equation (13) gives the probability of specific values for position and velocity, given a
+        background trace, for straight motion. Equation (14) extends the PDF to include slight
+        heading changes by the vehicle. This uses the first assumption described above. Very small
+        variations in heading allow the authors to simply the inclusion of this term in Equation
+        (14). Equations (16) and (17) are the equivalent of (13) and (14), except for car traces. 
+
+        Equations (21) and (22) describe the posterior probabilities that a trace represents a car
+        or background, respectively. Equation (21) calculates two probabilities: 1) the probability
+        that the trace was background in the previous frame, and will transition to car this frame,
+        scaled by the observation likelihood using the car PDF table; and 2) the probability that
+        the trace was a car in the previous frame, and will transition to a car this frame, again
+        scaled by the same likelihood value. The equation uses the maximum of these two
+        probabilities. Equation (22) is analogous, but using transition to background and likelihood
+        from the background PDF. If the result of (21) is greater than (22), the trace is classified
+        as a car. Otherwise, it is considered background. The trace is only finalized after it has
+        been tracked for a minimum number of frames. Traces lost before that threshold are
+        considered noise, and discarded.
 
     \item [Experiments] The authors did not compare their technique to others. The authors provided
         several graphs of example trace probabilities, as well as video frames with bounding boxes
@@ -66,7 +99,10 @@
         the tracker requires significant number of video frames to be certain it's tracking a true
         positive.
 
-    \item [Self Evaluation]
+    \item [Self Evaluation] I think the lack of comparison to other tracking methods is a weakness
+        for this paper. We have no idea how the HMM used compares to other techniques. They also did
+        not provide any comparison to ground truth. I found the technique to be unintuitive, but
+        interesting after I was able to comprehend it.
 
     \item [Improvements] The authors made assumptions regarding the motion of the camera vehicle,
         which allowed them to simplify their equations. I would look into solving the problem
