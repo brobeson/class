@@ -1,16 +1,21 @@
 #!/bin/bash
 
-#pdflatex -output-directory ~/Documents/phd/cs7680/ -file-line-error -halt-on-error "$1" && \
-#bibtex "$1.aux" && \
-#pdflatex -output-directory ~/Documents/phd/cs7680/ -file-line-error -halt-on-error "$1" && \
-#pdflatex -output-directory ~/Documents/phd/cs7680/ -file-line-error -halt-on-error "$1"
+output_directory="/tmp/latex/output"
+mkdir -p ${output_directory}
+current_directory=$(pwd)
 
-mkdir -p /tmp/latex/output
-pdflatex -output-directory /tmp/latex/output/ -file-line-error -halt-on-error "$1.tex"
+# first pass through the document
+pdflatex -output-directory ${output_directory} -file-line-error -halt-on-error "$1.tex"
+
+# run bibtex. need to do this in the output directory
+cp references.bib ${output_directory}
+cd ${output_directory} 
+bibtex -min-crossrefs=0 "$1.aux"
+cd ${current_directory}
+
+pdflatex -output-directory ${output_directory} -file-line-error -halt-on-error "$1.tex"
 if [[ $? == 0 ]]
 then
     cp /tmp/latex/output/$1.pdf ./
 fi
-#bibtex "$1.aux" && \
-#pdflatex -file-line-error -halt-on-error "$1.tex" && \
-#pdflatex -file-line-error -halt-on-error "$1.tex"
+
