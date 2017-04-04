@@ -72,47 +72,88 @@
 
 \begin{frame}
     \frametitle{How does one train adaptive tracking-by-detection?}
-    The algorithm operates on frame $f_t$, for $t \in \{1, 2, ..., T\}$.
 
-    The tracker estimates a bounding box position, $\mathbf{p}$.
-
-    Extract features $\mathbf{x}_t^\mathbf{p}$ from patches within the bounding box.
-
-    Train the classifier with $(\mathbf{x}, z)$\uncover<3->{, where $z = \pm1$.}
+    \begin{itemize}
+        \item The algorithm operates on frame $f_t$, for $t \in \{1, 2, ..., T\}$.
+        \item The tracker estimates a bounding box position, $\mathbf{p}$.
+        \item Extract features $\mathbf{x}_t^\mathbf{p}$ from patches within the bounding box.
+        \item Train the classifier with $(\mathbf{x}, z)$\uncover<3->{, where $z = \pm1$.}
+    \end{itemize}
 
     \uncover<2>{\alert{What is $z$?}}
 \end{frame}
 
 \begin{frame}
     \frametitle{How does one predict using adaptive tracking-by-detection?}
-    Uses a classification confidence function $h(\mathbf{x})$
 
-    Goal is to estimate a transformation $\mathbf{y}_t \in \mathcal{Y}$, where $\mathbf{p}_t =
-    \mathbf{p}_{t-1} \circ \mathbf{y}_t$
-
-    $\mathcal{Y}$ is the search space
-
-    Typically, $\mathcal{Y} = \left\{ (u,v) | u^2 + v^2 < r^2 \right \}$ \alert{$\Leftarrow$ What does
-    this mean?}
-
-    $\mathbf{y}_t = \argmax\limits_{y \in \mathcal{Y}} h \left( \mathbf{x}_t^{\mathbf{p}_{t-1}},
-    \mathbf{y} \right)$
+    \begin{itemize}
+        \item The goal is to estimate a transformation $\mathbf{y}_t \in
+            \mathcal{Y}$, where $\mathbf{p}_t = \mathbf{p}_{t-1} \circ \mathbf{y}_t$.
+        \item $\mathcal{Y}$ is the search space in the image.
+        \item Typically, $\mathcal{Y} = \left\{ (u,v) | u^2 + v^2 < r^2 \right \}$
+            \alert{$\Leftarrow$ What does this mean?}
+        \item $\mathbf{y}_t = \argmax\limits_{y \in \mathcal{Y}} h \left(
+            \mathbf{x}_t^{\mathbf{p}_{t-1}}, \mathbf{y} \right)$
+        \item Uses a classification confidence function $h(\mathbf{x})$
+    \end{itemize}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Adapting the classifier.}
-    Update the classifier after calculating $\mathbf{p}_t$
+    \frametitle{How does one update the classifier?}
 
-    Generate sample transformations: $\left\{ \mathbf{y}_t^1, \mathbf{y}_t^2, ..., \mathbf{y}_t^n
-    \right\}$
+    \begin{itemize}
+        \item Update the classifier after calculating $\mathbf{p}_t$.
+        \item Generate sample transformations: $\left\{ \mathbf{y}_t^1,
+            \mathbf{y}_t^2, ..., \mathbf{y}_t^n \right\}$.
+        \item Generate training samples: $\left\{
+                \mathbf{x}_t^{\mathbf{p}_t \circ \mathbf{y}_t^1},
+                \mathbf{x}_t^{\mathbf{p}_t \circ \mathbf{y}_t^2}, ...,
+                \mathbf{x}_t^{\mathbf{p}_t \circ \mathbf{y}_t^n} \right\}$.
+        \item Generate labels: $\left\{ z_t^1, z_t^2, ..., z_t^n \right\}$.
+        \item Use the samples and labels to update the classifier.
+    \end{itemize}
+\end{frame}
 
-    Corresponding training samples: $\left\{ \mathbf{x}_t^{\mathbf{p}_t \circ \mathbf{y}_t^1},
-    \mathbf{x}_t^{\mathbf{p}_t \circ \mathbf{y}_t^2}, ..., \mathbf{x}_t^{\mathbf{p}_t \circ
-    \mathbf{y}_t^n} \right\}$
+\begin{frame}
+    \frametitle{How to label a transformation.}
+    Use a transformation similarity function:
 
-    Corresponding labels: $\left\{ z_t^1, z_t^2, ..., z_t^n \right\}$
+    \begin{equation}
+        s_{\mathbf{t}_t}^o \left( \mathbf{y}_t^i, \mathbf{y}_t^j \right) =
+            \frac{\left( \mathbf{p}_t \circ \mathbf{y}_t^i \right) \cap \left( \mathbf{p}_t \circ \mathbf{y}_t^j \right)}
+                 {\left( \mathbf{p}_t \circ \mathbf{y}_t^i \right) \cup \left( \mathbf{p}_t \circ \mathbf{y}_t^j \right)}
+    \end{equation}
 
-    Use the samples and labels to update the classifier.
+    Then, use a labelling function:
+
+    \begin{equation}
+        l\left( s_{\mathbf{p}_t}\left(\mathbf{y}^0, \mathbf{y}_t^i \right) \right) =
+            \begin{cases}
+                +1 & s_{\mathbf{p}_t}\left(\mathbf{y}^0, \mathbf{y}_t^i \right) > \theta_u \\
+                -1 & s_{\mathbf{p}_t}\left(\mathbf{y}^0, \mathbf{y}_t^i \right) < \theta_l \\
+                 0 & \text{otherwise}
+            \end{cases}
+    \end{equation}
+\end{frame}
+
+\begin{frame}
+    \frametitle{So what's wrong with this?}
+
+    \begin{itemize}
+        \item $(\mathbf{x}, z)$ does not correlate $\mathbf{y}$ with $z$.
+        \item Training samples all have equal weight in the classifier.
+            \begin{itemize}
+                \item A background sample with significant overlap: $z = -1$.
+                \item A background sample with less overlap: $z = -1$.
+                \item This leads to tracking error growing over time.
+            \end{itemize}
+        \item The labeller, and the learner, are distinct.
+            \begin{itemize}
+                \item Errors by the labeller are noise in the learner.
+                \item Current techniques attempt to make the learner more
+                    robust, but not address the cause of the noise.
+            \end{itemize}
+    \end{itemize}
 \end{frame}
 
 %\section{Prior Solutions}
@@ -120,16 +161,71 @@
 \section{Struck}
 
 \begin{frame}
-    \frametitle{How does Struck work?}
+    \frametitle{Here's the gist...}
+
     \begin{itemize}
-        \item Learning and tracking are integrated.
-        \item Uses a structured output SVM.
-        \item Must overcome the \alert{curse of kernelization.}
-            \begin{itemize}
-                \item Number of support vectors increase as a function of training data
-            \end{itemize}
+        \item Don't learn a binary classifier. Learn a prediction function: $f :
+            \mathcal{X} \rightarrow \mathcal{Y}$.
+        \item Labelled sample is $(\mathbf{x}, \mathbf{y})$.
+        \item $f$ is learned in a structured output SVM.
+        \item Use a discriminant function $F: \mathcal{X} \times \mathcal{Y}
+            \rightarrow \mathbb{R}$.
+        \item Prediction function becomes %\uncover<1>{
+            \begin{align}
+                \mathbf{y}_t &= \argmax\limits_{y \in \mathcal{Y}} h \left( \mathbf{x}_t^{\mathbf{p}_{t-1}}, \mathbf{y} \right) \tag{prior} \\
+                \mathbf{y}_t &= \argmax\limits_{y \in \mathcal{Y}} F \left( \mathbf{x}_t^{\mathbf{p}_{t-1}}, \mathbf{y} \right) \tag{Struck}
+            \end{align}
     \end{itemize}
 \end{frame}
+
+\begin{frame}
+    \frametitle{What is the discriminant function, $F$?}
+    \begin{equation}
+        F(\mathbf{x}, \mathbf{y}) = \langle \mathbf{w}, \mathbf{\Phi}(\mathbf{x}, \mathbf{y}\rangle
+    \end{equation}
+    \begin{equation}
+        \min_{\mathbf{w}} \frac{1}{2} \|\mathbf{w}\|^2 + C \sum_{i=1}^n \xi_i
+    \end{equation}
+
+    Subject to:
+
+    \begin{align}
+        \forall i &: \xi \ge 0 \\
+        \forall i, \forall \mathbf{y} \ne \mathbf{y}_i &: \langle \mathbf{w}, \delta \mathbf{\Phi}_i (\mathbf{y}) \rangle \ge \Delta (\mathbf{y}_i, \mathbf{y}) - \xi_i
+    \end{align}
+
+    \begin{equation}
+        \delta \mathbf{\Phi}_i (\mathbf{y}) = \mathbf{\Phi}(\mathbf{x}_i, \mathbf{y}_i) - \mathbf{\Phi}(\mathbf{x}_i, \mathbf{y})
+    \end{equation}
+\end{frame}
+
+\begin{frame}
+    \frametitle{What is the discriminant function, $F$}
+    \begin{itemize}
+        \item $\Delta$ is a loss function.
+            \begin{itemize}
+                \item $\Delta (\mathbf{y}, \mathbf{\bar{y}}) = 0 \; \text{iff} \; \mathbf{y} = \mathbf{\bar{y}}$
+                \item $\Delta$ should decrease to 0 as $\mathbf{y}$ approaches $\mathbf{\bar{y}}$
+            \end{itemize}
+        \item This overcomes the equal treatment of samples.
+        \item The authors use bounding box overlap:
+    \end{itemize}
+    \begin{equation}
+        \Delta(\mathbf{y}, \mathbf{\bar{y}}) = 1 - s_{\mathbf{p}_t}^o (\mathbf{y}, \mathbf{\bar{y}})
+    \end{equation}
+\end{frame}
+
+%\begin{frame}
+%    \frametitle{How does Struck work?}
+%    \begin{itemize}
+%        \item Learning and tracking are integrated.
+%        \item Uses a structured output SVM.
+%        \item Must overcome the \alert{curse of kernelization.}
+%            \begin{itemize}
+%                \item Number of support vectors increase as a function of training data
+%            \end{itemize}
+%    \end{itemize}
+%\end{frame}
 
 \section{Experiments}
 
