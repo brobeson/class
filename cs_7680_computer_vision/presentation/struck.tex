@@ -5,7 +5,9 @@
 \usetheme{metropolis}
 %\mode{presentation}
 
+\DeclareMathOperator{\struckDelta}{\Delta \left( \mathbf{y}, \mathbf{y}_i \right)}
 \DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator{\st}{\text{s.t.} \quad}
 
 % front matter
 \title{Struck}
@@ -183,16 +185,13 @@
     \begin{equation}
         F(\mathbf{x}, \mathbf{y}) = \langle \mathbf{w}, \mathbf{\Phi}(\mathbf{x}, \mathbf{y}\rangle
     \end{equation}
-    \begin{equation}
-        \min_{\mathbf{w}} \frac{1}{2} \|\mathbf{w}\|^2 + C \sum_{i=1}^n \xi_i
+    \begin{equation} \label{eq:minimizing_hyperplane}
+        \begin{aligned}
+            \min_{\mathbf{w}} \quad & \frac{1}{2} \|\mathbf{w}\|^2 + C \sum_{i=1}^n \xi_i \\
+            \st & \forall i : \xi \ge 0 \\
+                & \forall i, \forall \mathbf{y} \ne \mathbf{y}_i : \langle \mathbf{w}, \delta \mathbf{\Phi}_i (\mathbf{y}) \rangle \ge \Delta (\mathbf{y}_i, \mathbf{y}) - \xi_i
+        \end{aligned}
     \end{equation}
-
-    Subject to:
-
-    \begin{align}
-        \forall i &: \xi \ge 0 \\
-        \forall i, \forall \mathbf{y} \ne \mathbf{y}_i &: \langle \mathbf{w}, \delta \mathbf{\Phi}_i (\mathbf{y}) \rangle \ge \Delta (\mathbf{y}_i, \mathbf{y}) - \xi_i
-    \end{align}
 
     \begin{equation}
         \delta \mathbf{\Phi}_i (\mathbf{y}) = \mathbf{\Phi}(\mathbf{x}_i, \mathbf{y}_i) - \mathbf{\Phi}(\mathbf{x}_i, \mathbf{y})
@@ -212,6 +211,33 @@
     \end{itemize}
     \begin{equation}
         \Delta(\mathbf{y}, \mathbf{\bar{y}}) = 1 - s_{\mathbf{p}_t}^o (\mathbf{y}, \mathbf{\bar{y}})
+    \end{equation}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Optimizing equation \eqref{eq:minimizing_hyperplane}}
+    \begin{equation}
+        \min_{\mathbf{w}} \frac{1}{2} \|\mathbf{w}\|^2 + C \sum_{i=1}^n \xi_i \tag{\ref{eq:minimizing_hyperplane}}
+    \end{equation}
+    \begin{equation}
+    \begin{aligned}
+        \max_{\alpha} \quad & \sum_{i, \mathbf{y} \ne \mathbf{y}_i} \struckDelta \alpha_i^\mathbf{y} -
+            \frac{1}{2} \sum_{\substack{i, \mathbf{y} \ne \mathbf{y}_i \\ j, \mathbf{y} \ne \mathbf{y}_j}}
+            \alpha_i^\mathbf{y} \alpha_j^\mathbf{\bar{y}} \langle \delta \mathbf{\Phi}_i \left( \mathbf{\bar{y}} \right), \delta \mathbf{\Phi}_j \left( \mathbf{\bar{y}} \right) \rangle \\
+            \st & \forall i, \forall \mathbf{y} \ne \mathbf{y}_i : \alpha_i^\mathbf{y} \ge 0 \\
+                & \forall i \sum_{\mathbf{y} \ne \mathbf{y}_i} \alpha_i^\mathbf{y} \le C
+    \end{aligned}
+    \end{equation}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Optimizing equation \eqref{eq:minimizing_hyperplane}}
+    Reparameterising...
+    \begin{equation}
+        \beta_i^\mathbf{y} = \begin{cases}
+                                -\alpha_i^\mathbf{y} & \mathbf{y} \ne \mathbf{y}_i \\
+                                \sum_{\mathbf{\bar{y}} \ne \mathbf{y}_i} \alpha_i^\mathbf{\bar{y}} & \mathbf{y} = \mathbf{y}_i
+                             \end{cases}
     \end{equation}
 \end{frame}
 
