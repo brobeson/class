@@ -16,6 +16,6 @@ cd ${current_directory}
 pdflatex -output-directory ${output_directory} -file-line-error -halt-on-error "$1.tex"
 if [[ $? == 0 ]]
 then
-    cp /tmp/latex/output/$1.pdf ./
+    cp /tmp/latex/output/$1.pdf ~/Documents/struck.pdf
 fi
 
