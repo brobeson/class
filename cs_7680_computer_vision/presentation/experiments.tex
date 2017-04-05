@@ -7,45 +7,69 @@
             \begin{itemize}
                 \item 2 scales on a 4x4 grid
                 \item 192 features
-                \item Each feature is normalized to $[-1, 1]$.
+                \item Each feature is normalized to [-1, 1].
             \end{itemize}
-        \item Gaussian kernel \( k(\mathbf{x}, \mathbf{\bar{x}}) = e^{-\sigma\|\mathbf{x} -
-            \mathbf{\bar{x}}\|^2} \) with \( \sigma = 0.2 \).
-        \item \( C = 100 \)
-        \item Search radius \( r = 30 \) pixels, \(60\) for classifier updating.
+        \item Used a Gaussian kernel \( k(\mathbf{x}, \mathbf{\bar{x}}) = e^{-\sigma\|\mathbf{x} -
+            \mathbf{\bar{x}}\|^2} \) with \(\sigma\) = 0.2.
+        \item Set \(C\) = 100.
+        \item Set the search radius \(r\) = 30 pixels, 60 for classifier updating.
         \item Sample at 5 radii, and 16 angles, giving 81 locations.
-        %\item \( 5 \text{radii} \times 16 \text{angles} = 81 \text{search locations} \)
     \end{itemize}
 \end{frame}
 
-\begin{frame}
-    \frametitle{How did they measure performance?}
-    \begin{block}{Bounding box overlap}
-        $\text{IoU} = \frac{B \cap G}{B \cup G}$
-    \end{block}
-\end{frame}
 
 \begin{frame}
-    \frametitle{Bounding box overlap}
+    \frametitle{Running the experiments}
+    \begin{itemize}
+        \item Run Struck 5 times for each video.
+            \begin{itemize}
+                \item Used a different random seed for each run.
+                \item Reported the median result.
+            \end{itemize}
+        \item Results reported for 4 SVM budgets: 20, 50, 100, and unbounded.
+        \item Bounding box overlap metric: \(\text{IoU} = \frac{B \cap G}{B \cup G}\)
+    \end{itemize}
+\end{frame}
+
+%\begin{frame}
+%    \frametitle{Bounding box overlap for Struck}
+%    \begin{tabular}{l c c c c }
+%        \toprule
+%        Video & Struck\textsubscript{$\infty$} & Struck\textsubscript{100} & Struck\textsubscript{50} & Struct\textsubscript{20} \\
+%        \midrule
+%        Coke      & \textbf{0.57} & \textbf{0.57} &         0.56  & \underline{0.52} \\
+%        David     &         0.80  &         0.80  & \textbf{0.81} &            0.35  \\
+%        Face 1    &         0.86  &         0.86  &         0.86  &            0.81  \\
+%        Face 2    & \textbf{0.86} & \textbf{0.86} & \textbf{0.86} & \underline{0.83} \\
+%        Girl      & \textbf{0.80} & \textbf{0.80} & \textbf{0.80} & \underline{0.79} \\
+%        Sylvester & \textbf{0.68} & \textbf{0.68} &         0.67  &            0.58  \\
+%        Tiger 1   & \textbf{0.70} & \textbf{0.70} &         0.69  & \underline{0.68} \\
+%        Tiger 2   &         0.56  & \textbf{0.57} &         0.55  &            0.39  \\
+%        \bottomrule
+%    \end{tabular}
+%\end{frame}
+
+\begin{frame}
+    \frametitle{Bounding box overlap for Struck}
     \begin{tabular}{l c c c c }
         \toprule
         Video & Struck\textsubscript{$\infty$} & Struck\textsubscript{100} & Struck\textsubscript{50} & Struct\textsubscript{20} \\
         \midrule
-        Coke      & \textbf{0.57} & \textbf{0.57} &         0.56  & \underline{0.52} \\
-        David     &         0.80  &         0.80  & \textbf{0.81} &            0.35  \\
-        Face 1    &         0.86  &         0.86  &         0.86  &            0.81  \\
-        Face 2    & \textbf{0.86} & \textbf{0.86} & \textbf{0.86} & \underline{0.83} \\
-        Girl      & \textbf{0.80} & \textbf{0.80} & \textbf{0.80} & \underline{0.79} \\
-        Sylvester & \textbf{0.68} & \textbf{0.68} &         0.67  &            0.58  \\
-        Tiger 1   & \textbf{0.70} & \textbf{0.70} &         0.69  & \underline{0.68} \\
-        Tiger 2   &         0.56  & \textbf{0.57} &         0.55  &            0.39  \\
+        Coke      & 0.57 & \textbf{0.57} &         0.56  & \underline{0.52} \\
+        David     & 0.80 &         0.80  & \textbf{0.81} &            0.35  \\
+        Face 1    & 0.86 &         0.86  &         0.86  &            0.81  \\
+        Face 2    & 0.86 &         0.86  & \textbf{0.86} & \underline{0.83} \\
+        Girl      & 0.80 &         0.80  & \textbf{0.80} & \underline{0.79} \\
+        Sylvester & 0.68 & \textbf{0.68} &         0.67  &            0.58  \\
+        Tiger 1   & 0.70 & \textbf{0.70} &         0.69  & \underline{0.68} \\
+        Tiger 2   & 0.56 & \textbf{0.57} &         0.55  &            0.39  \\
         \bottomrule
     \end{tabular}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Bounding box overlap}
-    \begin{tabular}{l c c c c c c }
+    \frametitle{Bounding box overlap for other techniques}
+    \begin{tabular}{l c c c c c c}
         \toprule
         Video & Struck & MIForest & OMCLP & MIL & Frag & OAB \\
         \midrule
@@ -62,6 +86,48 @@
 
     The Struck column shows the best values from the previous table.
 \end{frame}
+
+\begin{frame}
+    \frametitle{Qualitative results}
+    \url{https://www.youtube.com/watch?v=jaI1m1vZEx8}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Combining kernels}
+    Struck allows for easily using different features and kernel functions.
+
+    The authors also considered raw features (256 x 1 vector of pixel intensities) and a Gaussian
+    kernel with \(\sigma\) = 0.1.
+
+    Concatenated histograms (480 x 1 feature fector) with an intersection kernel \(k(\mathbf{x},
+    \mathbf{\bar{x}}) = \frac{1}{D} \sum_{i=1}^D \min(x_i, \bar{x}_i)\)
+
+    Kernels can be combined by averaging: \( k(\mathbf{x}, \mathbf{\bar{x}}) =
+    \frac{1}{N_k} \sum_{i=1}^{N_k} k^{(i)} \left( \mathbf{x}^{(i)}, \mathbf{\bar{x}}^{(i)} \right) \)
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Results of combining kernels}
+    \begin{tabular}{l c c c c c c c}
+        \toprule
+        Video     & Haar & Raw & Hist. & Haar & Haar  & Raw   & All 3 \\
+                  &      &     &       & Raw  & Hist. & Hist. &       \\
+        \midrule
+        Coke      &            0.57  &            0.67  & \underline{0.69} & 0.62 &         0.65  &         0.68  &         0.63  \\
+        David     &            0.80  & \underline{0.83} &            0.67  & 0.84 &         0.68  & \textbf{0.87} & \textbf{0.87} \\
+        Face 1    & \underline{0.86} &            0.82  & \underline{0.86} & 0.82 & \textbf{0.87} &         0.82  &         0.83  \\
+        Face 2    & \underline{0.86} &            0.76  &            0.79  & 0.83 & \textbf{0.86} &         0.78  &         0.84  \\
+        Girl      & \underline{0.80} &            0.77  &            0.68  & 0.79 & \textbf{0.80} &         0.79  &         0.79  \\
+        Sylvester &            0.68  & \underline{0.75} &            0.72  & 0.73 &         0.72  & \textbf{0.77} &         0.73  \\
+        Tiger 1   &            0.70  &            0.69  & \underline{0.77} & 0.69 &         0.74  &         0.74  &         0.72  \\
+        Tiger 2   &            0.57  &            0.50  & \underline{0.61} & 0.53 & \textbf{0.63} &         0.57  &         0.56  \\
+        Average   &            0.73  &            0.73  &            0.72  & 0.73 &         0.74  & \textbf{0.75} & \textbf{0.75} \\
+        \bottomrule
+    \end{tabular}
+    
+\end{frame}
+
 
 %\begin{frame}
 %    \frametitle{Processing time}
