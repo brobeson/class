@@ -1,0 +1,30 @@
+\section{Conclusion}
+
+\begin{frame}
+    \frametitle{What does Struck do?}
+    Struck provides an adaptive tracking-by-detection framework.
+
+    It directly ties image features to a transformation.
+
+    It eliminates binary labelling with equal weight.
+
+    It uses a structured output SVM, with a boundary on the number of support vectors.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Where does Struck fall short?}
+    Currently, Struck focuses solely on translation.
+
+    Though rotation does not appear to confuse Struck, it's not detected and shown.
+
+    Smeulders et. al. concluded Struck's primary problem was dealing with scale (camera zoom).
+\end{frame}
+
+\begin{frame}
+    \frametitle{References}
+    \nocite{*}
+    \bibliographystyle{IEEEtran}
+    \bibliography{references}
+
+    Source code: \url{https://github.com/samhare/struck}
+\end{frame}
