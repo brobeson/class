@@ -81,18 +81,56 @@
                              \end{dcases}
     \end{equation}
 
-    \begin{equation}
+    \begin{equation} \label{eq:maximizig_beta}
         \begin{aligned}
             \max_{\beta} \quad & -\sum_{i,\mathbf{y}} \struckDelta \beta_i^\mathbf{y} -
                 \frac{1}{2} \sum_{i,\mathbf{y},j,\mathbf{\bar{y}}} \beta_i^\mathbf{y}
                 \beta_j^\mathbf{\bar{y}} \langle \mathbf{\Phi}\left( \mathbf{x}_i, \mathbf{y}
                 \right), \mathbf{\Phi}\left( \mathbf{x}_j, \mathbf{\bar{y}} \right) \rangle \\
             \st & \forall i, \forall \mathbf{y} : \beta_i^\mathbf{y} \le \delta(\mathbf{y}, \mathbf{y}_i) C \\
-                & \forall i: \sum_\mathbf{y} \beta_i^\mathbf{y} = 0 \\
-                & \delta(\mathbf{y}, \mathbf{\bar{y}}) = \begin{cases}
+                & \forall i: \sum_\mathbf{y} \beta_i^\mathbf{y} = 0
+        \end{aligned}
+    \end{equation}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Optimizing equation \eqref{eq:minimizing_hyperplane}}
+    \[
+        \begin{aligned}
+            \delta(\mathbf{y}, \mathbf{\bar{y}}) &= \begin{cases}
                                                     1 & \mathbf{y} = \mathbf{\bar{y}} \\
                                                     0 & \mathbf{y} \ne \mathbf{\bar{y}}
                                                \end{cases} \nonumber \\
+            F\left(\mathbf{x}, \mathbf{y}\right) & = \sum_{i, \mathbf{\bar{y}}} \beta_i^\mathbf{\bar{y}}
+                \langle \mathbf{\Phi}\left(\mathbf{x}_i, \mathbf{\bar{y}}\right),
+                \mathbf{\Phi}\left(\mathbf{x}, \mathbf{y}\right) \rangle
+        \end{aligned}
+    \]
+\end{frame}
+
+\begin{frame}
+    \frametitle{Sequential minimal optimization (SMO)}
+    \begin{itemize}
+        \item Monotonically improve \eqref{eq:maximizig_beta} with respect to
+            \(\beta_i^{\mathbf{y}_+}\) and \(\beta_i^{\mathbf{y}_-}\) 
+        \item Recall \( \sum_\mathbf{y} \beta_i^\mathbf{y} = 0 \)
+        \item Therefore, if \( \beta_i^{\mathbf{y}_+} \) is increased by \(\lambda\),
+            \( \beta_i^{\mathbf{y}_-} \) must be decremented by \(\lambda\).
+        \item SMOStep input: \(i, \mathbf{y}_+, \mathbf{y}_-\)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{SMOStep input}
+    For \(i\), select \(\mathbf{y}_+\) and \(\mathbf{y}_-\) to define the search direction with
+    highest gradient \(g\):
+
+    \begin{equation}
+        \begin{aligned}
+            g_i(\mathbf{y}) &= -\struckDelta - \sum_{j, \mathbf{\bar{y}}} \beta_j^\mathbf{\bar{y}}
+            \langle \mathbf{\Phi}\left(\mathbf{x}_i, \mathbf{y}\right), \mathbf{\Phi}\left(\mathbf{x}_j,
+            \mathbf{\bar{y}}\right) \rangle \\
+            &= -\struckDelta - F\left(\mathbf{x}_i, \mathbf{y}\right)
         \end{aligned}
     \end{equation}
 \end{frame}
