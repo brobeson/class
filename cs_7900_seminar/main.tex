@@ -1,0 +1,44 @@
+\documentclass[mathserif,aspectratio=169]{beamer}
+%\documentclass[mathserif,handout]{beamer}
+
+\usepackage{graphicx}
+\usepackage{algorithm2e}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usetheme{metropolis}
+%\mode{presentation}
+
+\DeclareMathOperator{\struckDelta}{\Delta \left( \mathbf{y}, \mathbf{y}_i \right)}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\st}{\text{s.t.} \quad}
+\DeclareMathOperator*{\clamp}{clamp}
+\newcommand{\processNew}{\textsc{ProcessNew} }
+\newcommand{\processOld}{\textsc{ProcessOld} }
+\newcommand{\optimize}{\textsc{Optimize} }
+
+% front matter
+\title{Fuzzy Structured Output Tracking with Kernels}
+%\subtitle{Fuzzy Struck}
+\author{Brendan Robeson}
+\date{\today}
+\institute{Utah State University}
+
+\begin{document}
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}
+    \frametitle{Outline}
+    \tableofcontents
+\end{frame}
+
+% each section is in a separate LaTeX file
+%\input{tracking_by_detection}
+\input{struck}
+\input{experiments}
+\input{conclusion}
+
+\end{document}
+
