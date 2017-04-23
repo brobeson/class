@@ -1,5 +1,5 @@
 #set terminal wxt size 350,262 enhanced font 'Verdana,10' persist
-set terminal wxt size 800,800 enhanced font 'Verdana,10' persist
+set terminal wxt size 400,400 enhanced font 'Verdana,10' persist
 #set border linewidth 1.5
 #set style line 1 linecolor rgb '#0060ad' linetype 1 linewidth 2
 #set style line 2 linecolor rgb '#dd181f' linetype 1 linewidth 2
