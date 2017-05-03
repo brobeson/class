@@ -1,0 +1,110 @@
+\section{Experiments}
+
+\begin{frame}
+    \frametitle{Data sets}
+    \url{http://vision.ucsd.edu/~bbabenko/project_miltrack.html}
+    \begin{itemize}
+        \item Eight sequences reported in \cite{6126251}.
+        \item Four sequences not reported in \cite{6126251}.
+        \item Ensure I didn't make it worse.
+    \end{itemize}
+    \url{http://alov300.org/}
+    \begin{itemize}
+        \item 314 sequences used in \cite{6671560}.
+        \item Categorized to test various object tracking challenges.
+        \item \alert{Not yet tested due to time constraints.}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Experimental Setup - Struck}
+    \begin{itemize}
+        \item Set up as described in their paper:
+            \begin{itemize}
+                \item Haar features
+                \item Gaussian kernel \(\sigma\) = 0.2
+                \item \(C\) = 100
+                \item Search radius \(r\) = 30 pixels
+                \item SVM budget = 100
+            \end{itemize}
+        \item Unknown parameters - Unmodified from the configuration in the repository:
+            \begin{itemize}
+                \item Frame size - set to 320 x 240
+                \item Random seed - set to 0
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Experimenting vs Struck}
+    \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \KwIn{Sequences}
+        \KwIn{Run time configuration}
+        \Begin(Run experiment)
+        {
+            \ForEach{Sequence}
+            {
+                Run Struck\;
+                Compare with ground truth\;
+                Record mean IoU\;
+            }
+        }
+        \KwOut{IoU results}
+    \end{algorithm}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Bounding box overlap results}
+    \begin{center}
+        \resizebox{!}{0.4\textheight}{
+        \begin{tabular}{l l l l l l l l}
+            \toprule
+            random seed      & &             0&          &           &           0&          0 \\
+            loss function    & &     iou&     iou&     distance& distance& iou&         distance \\
+            loss manipulator & & identity& identity& identity& identity& smooth step& smooth step \\
+            process old      & &     &         off&     off&     on&         on&             off \\
+            optimize all     & &     &         on&         on&         off&     off&         on \\
+            \midrule
+            video \\
+            \midrule
+            cliffbar         &               & \textbf{0.894553} &         0.488166  & 0.501336   &         0.505163  & 0.47043   &         0.784133  \\
+            coke11           &         0.57  &         0.883395  & \textbf{0.898872} & 0.85718    &         0.831617  & 0.890323  &         0.792211  \\
+            david            &         0.80  & \textbf{0.800847} &   \sout{2.52149}  & 0.248052   &         0.248633  & 0.374546  &         0.236748  \\
+            dollar           &               &         0.765203  &         0.759838  & 0.785765   &         0.78939   & 0.717113  & \textbf{0.875932} \\
+            faceocc2         & \textbf{0.86} &         0.790128  &         0.426938  & 0.781224   &         0.796034  & 0.591839  &         0.774791  \\
+            faceocc          & \textbf{0.86} &         0.853354  &         0.564876  & 0.41098    &         0.566509  & 0.798702  &         0.660938  \\
+            girl             & \textbf{0.80} &         0.681729  &         0.583508  & 0.540737   &         0.543006  & 0.544018  &         0.446575  \\
+            surfer           &               &         0.787232  &         0.71405   & 0.817181   & \textbf{0.84716}  & 0.75418   &         0.831219  \\
+            sylv             &         0.68  & \textbf{0.861525} &         0.543012  & 0.727951   &         0.546823  & 0.752008  &         0.636949  \\
+            tiger1           & \textbf{0.70} &         0.674713  &   \sout{2.1976}   & 0.0934982  &         0.513165  & 0.565535  &         0.301834  \\
+            tiger2           &         0.57  &         0.667268  &   \sout{3.26082}  & 0.433783   &  \sout{20.8434}   & 0.234416  & \textbf{0.907963} \\
+            twinings         &               & \textbf{0.903097} &         0.675878  & 0.487881   &         0.487881  & 0.825305  &         0.599096  \\
+            \bottomrule
+        \end{tabular}}
+    \end{center}
+\end{frame}
+
+%\begin{frame}
+%    \frametitle{Continous IoU}
+%    \begin{center}
+%        \includegraphics[height=0.8\textheight]{ious}
+%    \end{center}
+%\end{frame}
+
+\begin{frame}
+    \frametitle{Sample frame}
+    \begin{columns}[t]
+        \begin{column}{0.25\textwidth}
+            Red: Original Struck
+
+            Green: My Struck
+        \end{column}
+        \begin{column}{0.75\textwidth}
+            \begin{center}
+                \includegraphics[height=0.8\textheight]{tiger1_210}
+            \end{center}
+        \end{column}
+    \end{columns}
+\end{frame}
+

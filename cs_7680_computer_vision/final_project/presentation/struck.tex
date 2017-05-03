@@ -1,0 +1,109 @@
+\section{Tracking by Detection \& Struck}
+
+\begin{frame}
+    \frametitle{Tracking can be treated as an object detection problem.}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \begin{description}
+                \item [Tracking by detection] Object detection in each frame.
+                \item [Adaptive tracking by detection] Update the classifier online.
+            \end{description}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{itemize}
+                \item The algorithm operates on frame \(f_t\), for \(t \in \{1, 2, ..., T\}\).
+                \item The tracker estimates a bounding box position, \(\mathbf{p}\).
+                \item Extract features \(\mathbf{x}_t^\mathbf{p}\) from patches within the bounding box.
+                \item Train the classifier with \((\mathbf{x}, z)\), where \(z = \pm1\).
+            \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Structured output tracking with kernels \cite{6126251}}
+    \begin{itemize}
+        \item Don't learn a binary classifier. Learn a prediction function: \(f : \mathcal{X} \rightarrow \mathcal{Y}\).
+        \item Labelled sample is \((\mathbf{x}, \mathbf{y})\).
+        \item \(\mathbf{y}\) is a translation in image space.
+        \item \(f\) is learned in a structured output SVM.
+    \end{itemize}
+    \begin{align}
+        F &: \mathcal{X} \times \mathcal{Y} \rightarrow \mathbb{R} \\
+        F\left(\mathbf{x}, \mathbf{y}\right) &= \sum_{i, \mathbf{\bar{y}}} \beta_i^\mathbf{\bar{y}}
+            \langle \mathbf{\Phi}\left(\mathbf{x}_i, \mathbf{\bar{y}}\right),
+            \mathbf{\Phi}\left(\mathbf{x}, \mathbf{y}\right) \rangle \\
+        \label{eq:discriminant_function}
+        F\left(\mathbf{x}, \mathbf{y}\right) &= \sum_{i, \mathbf{\bar{y}}} \beta_i^\mathbf{\bar{y}}
+            \langle \kappa\left(\mathbf{x}_i, \mathbf{\bar{y}}\right),
+            \kappa\left(\mathbf{x}, \mathbf{y}\right) \rangle \\
+        \mathbf{y}_t &= \argmax\limits_{y \in \mathcal{Y}} F \left(
+            \mathbf{x}_t^{\mathbf{p}_{t-1}}, \mathbf{y} \right) \\
+        \Delta \left( \mathbf{y}, \mathbf{\bar{y}} \right) &= 1 - \frac{\mathbf{p_y} \cap
+            \mathbf{p_{\bar{y}}}}{\mathbf{p_y} \cup \mathbf{p_{\bar{y}}}}
+    \end{align}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Implementation}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \begin{algorithm}[H]
+                \DontPrintSemicolon
+                \KwIn{Image frame}
+                \Begin(Track)
+                {
+                    Extract image samples \;
+                    \ForEach{Sample}
+                    {
+                        Extract feature vector \textbf{x} \;
+                        Calculate translation \textbf{y} \;
+                        Calculate discriminant function \(F\) \;
+                    }
+                    Determine sample with maximum \(F\) \;
+                    Update the SVM \;
+                }
+                \KwOut{Target bounding box}
+            \end{algorithm}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{algorithm}[H]
+                \DontPrintSemicolon
+                \KwIn{Image frame}
+                \Begin(Update)
+                {
+                    Extract image samples \;
+                    \ForEach{Sample}
+                    {
+                        Extract feature vector \textbf{x} \;
+                    }
+                    ProcessNew \;
+                    Remove excess support vectors \;
+                    ProcessOld \;
+                    Optimize \;
+                    Remove excess support vectors \;
+                }
+                \KwOut{Updated SVM}
+            \end{algorithm}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Shortcomings}
+    \begin{itemize}
+        \item Full occlusion
+            \begin{itemize}
+                \item Struck does OK with partial occlusion.
+                \item Can recover as partial occlusion reduces.
+                \item Fails with full occlusion.
+                \item Begins tracking occluder.
+            \end{itemize}
+        \item Zooming
+            \begin{itemize}
+                \item Struck includes no mechanism to account for changes in target scale (zooming
+                    in and out).
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
