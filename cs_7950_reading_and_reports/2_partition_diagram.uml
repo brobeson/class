@@ -1,0 +1,17 @@
+@startuml
+start
+if (single or multilevel resolution?) then (single)
+    if (data interpolation required?) then (yes)
+        :Use spatial partitioning;
+    elseif (output size > HDFS block size) then (yes)
+        :Use spatial partitioning;
+    else (no)
+        :Use default partitioning;
+    endif
+elseif (resolution level //z// < //z//<sub>θ</sub>) then (yes)
+    :Use default partitioning;
+else (no)
+    :Use course pyramid partitioning;
+endif
+stop
+@enduml
