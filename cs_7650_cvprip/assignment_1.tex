@@ -1,0 +1,25 @@
+\documentclass{IEEEtran}
+\title{CS 7650 Assignment 1}
+\author{Brendan Robeson}
+\date{2017 Fall}
+
+\begin{document}
+\maketitle
+
+% Problem 1a {{{
+\section{Problem 1a}
+From the book, on page 23: \[P(error|x) = min[P(\omega_1|x),P(\omega_2|x)]\]
+Show that this can be replaced with \[P(error|x) = 2P(\omega_1|x)P(\omega_2|x)\] in
+\[P(error) = \int_{-\infty}^\infty P(error|x)p(x)dx\] to get an upper bound on \(P(error|x)\).
+\subsection{Solution}
+Assume \[P(\omega_1|x) \le P(\omega_2|x)\]
+Then \[P(error|x) = P(\omega_1|x)\]
+Given \[P(\omega_1|x) + P(\omega_2|x) = 1\]
+Then \[2P(\omega_2|x) \ge 1\]
+Multiply both sides by \(P(\omega_1|x)\) \[2P(\omega_1|x)P(\omega_2|x) \ge P(\omega_1|x)\]
+Substitute \(P(error|x)\) \[2P(\omega_1|x)P(\omega_2|x) \ge P(error|x)\]
+Thus, \(2P(\omega_1|x)P(\omega_2|x)\) is an upper bound for \(P(error|x)\).
+% }}}
+
+\end{document}
+
