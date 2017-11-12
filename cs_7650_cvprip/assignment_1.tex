@@ -1,0 +1,79 @@
+\documentclass{IEEEtran}
+\usepackage{amsmath}
+\title{CS 7650 Assignment 1}
+\author{Brendan Robeson}
+\date{2017 Fall}
+
+\begin{document}
+\maketitle
+
+% Problem 1a {{{
+\section{Problem 1a}
+From the book, on page 23:
+\begin{equation}
+    P(error|x) = min[P(\omega_1|x),P(\omega_2|x)]
+\end{equation}
+Show that this can be replaced with
+\begin{equation}
+    P(error|x) = 2P(\omega_1|x)P(\omega_2|x)
+\end{equation}
+in
+\begin{equation}
+    P(error) = \int_{-\infty}^\infty P(error|x)p(x)dx
+\end{equation}
+to get an upper bound on \(P(error|x)\).
+\subsection{Solution}
+Assume
+\begin{equation}
+    P(\omega_1|x) \le P(\omega_2|x)
+\end{equation}
+Then
+\begin{equation}
+    P(error|x) = P(\omega_1|x)
+\end{equation}
+Given
+\begin{equation}
+    P(\omega_1|x) + P(\omega_2|x) = 1
+\end{equation}
+Then
+\begin{equation}
+    2P(\omega_2|x) \ge 1
+\end{equation}
+Multiply both sides by \(P(\omega_1|x)\)
+\begin{equation}
+    2P(\omega_1|x)P(\omega_2|x) \ge P(\omega_1|x)
+\end{equation}
+Substitute \(P(error|x)\)
+\begin{equation}
+    2P(\omega_1|x)P(\omega_2|x) \ge P(error|x)
+\end{equation}
+Thus, \(2P(\omega_1|x)P(\omega_2|x)\) is an upper bound for \(P(error|x)\).
+% }}}
+
+\newpage
+
+% Problem 1a {{{
+\section{Problem 1b}
+Show that for \(P(error|x) = \alpha P(\omega_1|x)P(\omega_2|x)\), for \(\alpha < 2\), an upper bound
+is not guaranteed.
+\subsection{Solution}
+Assume
+\begin{equation}\label{eq:alpha}
+    \alpha P(\omega_1|x)P(\omega_2|x) \ge P(\omega_1|x)
+\end{equation}
+Given
+\begin{equation}
+    \frac{1}{2} \le P(\omega_2|x) \le \frac{1}{\alpha}
+\end{equation}
+Let \(\alpha = 1.7\). Then \(\frac{1}{\alpha} = 0.588\).
+Let \(P(\omega_2|x) = 0.52\). Then \(P(\omega_1|x) = 0.48\). Plug into \ref{eq:alpha}:
+\begin{align}
+    \alpha P(\omega_1|x)P(\omega_2|x) &\ge P(\omega_1|x) \\
+    1.7 \times 0.48 \times 0.52 &\ge 0.48 \nonumber      \\
+    0.42 &\ge 0.48 \nonumber
+\end{align}
+This is a contradiction.
+
+% }}}
+\end{document}
+
