@@ -1,4 +1,5 @@
 \documentclass{IEEEtran}
+\usepackage{amsmath}
 
 %\newcommand{\Vector}{\textbf{#1}}
 
@@ -19,9 +20,35 @@
 \end{abstract}
 
 \section{Introduction}
+\subsection{Fuzzy SVM} %{{{
+Fuzzy SVM reformulates the SVM to incorporate fuzzy membership data for the classes \cite{}. The
+traditional SVM formula
+\begin{align}
+    \min_w & \frac{1}{2}\|w\|^2 + C\sum_{i=1}^n\xi_i \\
+    \text{s.t. } & \forall i \xi_i \ge 0 \nonumber \\
+                 & \forall i y_i \left(w \cdot x_i + b\right) \ge 1 - \xi_i \nonumber
+\end{align}
 
-\section{F-Struck}
-\subsection{Struck}
+becomes
+\begin{align}
+    \min_w & \frac{1}{2}\|w\|^2 + C\sum_{i=1}^ns_i\xi_i \\
+    \text{s.t. } & \forall i \xi_i \ge 0 \nonumber \\
+                 & \forall i y_i \left(w \cdot x_i + b\right) \ge 1 - \xi_i \nonumber
+\end{align}
+where \(s_i\) is the fuzzy membership.
+
+The dual problem is then
+\begin{align}
+    \max_\alpha & \sum_{i=1}^n \alpha_i - \frac{1}{2} \sum_{i=1}^n \sum_{j=1}^n \alpha_i \alpha_j y_i y_j K\left(x_i, x_j\right) \\
+    \text{s.t. } & \sum_{i=1}^n y_i \alpha_i = 0 \nonumber \\
+                 & 0 \le \alpha_i \le s_iC \nonumber
+\end{align}
+
+Fuzzy membership is calculated by a function \(s_i = f(\cdot)\). The exact function depends on the
+classification problem to be solved, but should satisfy \(0 \le \theta \le f(\cdot) \le 1\).
+\(theta\) is a predefined lower bound, also dependent on the classification problem.
+
+\subsection{Struck} %{{{
 Struck is an adaptive tracking algorithm developed by Hare, et. al. \cite{6126251}. For frame N, the
 algorithm samples radially around the object location in frame N-1. A structured output SVM is used
 to predict the location of the object in frame N. Once the object is found, the SVM is updated; thus
@@ -30,19 +57,32 @@ it learns as the object is tracked in the sequence.
 A traditional SVM takes, as training input, data of the form \((\textbf{x}, y)\), where
 \(\textbf{x}\) is a feature vector, and \(y \in \{-1, +1\}\) is a class label. The training input of
 a structured output SVM takes the form \((\textbf{x}, \textbf{y})\). As in a traditional SVM,
-\(\textbf{x}\) is a feature vector. In this case, however, \(\textbf{y} \in need\_fancy\_font(Y)\) is a prediction
+\(\textbf{x}\) is a feature vector. In this case, however, \(\textbf{y} \in \mathcal{Y}\) is a prediction
 function. In Struck, the prediction function is a transformation from the object location, to the
 sample location.
+%}}}
+%}}}
 
-\subsection{Fuzzy SVM}
+\section{F-Struck}
 
 \subsection{Fuzzy Struck}
+
+\subsection{Fuzzy Membership}
+For F-Struck, the fuzzy membership function is defined as a function of bounding box overlap. In
+this context, a sample bounding box with high overlap will contain more of the target; low overlap
+will contain less of the target.
+
+\begin{displaymath}
+    s_i = f\left(b, b_i\right) = \frac{b \cap b_i}{b \cup b_i}
+\end{displaymath}
+
+where \(b\) defines the target bounding box, and \(b_i\) defines the sample bounding box.
 
 \section{Experiments}
 
 \section{Conclusion}
 
-%\bibliographystyle{IEEEtran}
-%\bibliography{references}
+\bibliographystyle{IEEEtran}
+\bibliography{references}
 
 \end{document}
