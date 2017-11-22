@@ -10,49 +10,28 @@
 % Problem 1a {{{
 \section{Problem 1a}
 From the book, on page 23:
-\begin{equation}
-    P(error|x) = min[P(\omega_1|x),P(\omega_2|x)]
-\end{equation}
+\[ P(error|x) = min[P(\omega_1|x),P(\omega_2|x)] \]
 Show that this can be replaced with
-\begin{equation}
-    P(error|x) = 2P(\omega_1|x)P(\omega_2|x)
-\end{equation}
+\[ P(error|x) = 2P(\omega_1|x)P(\omega_2|x) \]
 in
-\begin{equation}
-    P(error) = \int_{-\infty}^\infty P(error|x)p(x)dx
-\end{equation}
+\[ P(error) = \int_{-\infty}^\infty P(error|x)p(x)dx \]
 to get an upper bound on \(P(error|x)\).
 \subsection{Solution}
-Assume
-\begin{equation}
-    P(\omega_1|x) \le P(\omega_2|x)
-\end{equation}
+Assume \( P(\omega_1|x) \le P(\omega_2|x) \). \\
+Then \( P(error|x) = P(\omega_1|x) \). \\
+Given \( P(\omega_1|x) + P(\omega_2|x) = 1 \). \\
 Then
-\begin{equation}
-    P(error|x) = P(\omega_1|x)
-\end{equation}
-Given
-\begin{equation}
-    P(\omega_1|x) + P(\omega_2|x) = 1
-\end{equation}
-Then
-\begin{equation}
-    2P(\omega_2|x) \ge 1
-\end{equation}
-Multiply both sides by \(P(\omega_1|x)\)
-\begin{equation}
-    2P(\omega_1|x)P(\omega_2|x) \ge P(\omega_1|x)
-\end{equation}
-Substitute \(P(error|x)\)
-\begin{equation}
-    2P(\omega_1|x)P(\omega_2|x) \ge P(error|x)
-\end{equation}
+\begin{align*}
+    2P(\omega_2|x) &\ge 1 \\
+    2P(\omega_1|x)P(\omega_2|x) &\ge P(\omega_1|x) \\
+    2P(\omega_1|x)P(\omega_2|x) & \ge P(error|x)
+\end{align*}
 Thus, \(2P(\omega_1|x)P(\omega_2|x)\) is an upper bound for \(P(error|x)\).
 % }}}
 
 \newpage
 
-% Problem 1a {{{
+% Problem 1b {{{
 \section{Problem 1b}
 Show that for \(P(error|x) = \alpha P(\omega_1|x)P(\omega_2|x)\), for \(\alpha < 2\), an upper bound
 is not guaranteed.
@@ -65,15 +44,154 @@ Given
 \begin{equation}
     \frac{1}{2} \le P(\omega_2|x) \le \frac{1}{\alpha}
 \end{equation}
-Let \(\alpha = 1.7\). Then \(\frac{1}{\alpha} = 0.588\).
-Let \(P(\omega_2|x) = 0.52\). Then \(P(\omega_1|x) = 0.48\). Plug into \ref{eq:alpha}:
-\begin{align}
+Let \(\alpha = 1.7\). \\
+Then \(\frac{1}{\alpha} = 0.588\). \\
+Let \(P(\omega_2|x) = 0.52\). \\
+Then \(P(\omega_1|x) = 0.48\). \\
+Plug into \ref{eq:alpha}:
+\begin{align*}
     \alpha P(\omega_1|x)P(\omega_2|x) &\ge P(\omega_1|x) \\
-    1.7 \times 0.48 \times 0.52 &\ge 0.48 \nonumber      \\
-    0.42 &\ge 0.48 \nonumber
-\end{align}
+    1.7 \times 0.48 \times 0.52 &\ge 0.48 \\
+    0.42 &\ge 0.48
+\end{align*}
 This is a contradiction.
-
 % }}}
+
+\newpage
+
+% Problem 2a {{{
+\section{Problem 2a}
+\subsection{Solution}
+\begin{align*}
+    p(x|\omega_1) &= k e^{-\frac{|x-a_i|}{b_i}} \\
+    1 &= k e^{-\frac{|x-a_i|}{b_i}} \\
+    &= \int\limits_{-\infty}^{a_i} e^{\frac{x-a_i}{b_i}}dx + \int\limits_{a_i}^{\infty} e^{-\frac{x-a_i}{b_i}}dx \\
+    &= e^{\frac{a_i-a_i}{b_i}} - e^{\frac{\infty-a_i}{b_i}} + e^{-\frac{\infty-a_i}{b_i}} - e^{-\frac{a_i-a_i}{b_i}}
+\end{align*}
+% }}}
+
+\newpage
+
+% Problem 2b {{{
+\section{Problem 2b}
+\subsection{Solution}
+Given
+\begin{equation}
+    p(x|\omega_i) = \frac{1}{2b_i}e^{\frac{-|x-a_i|}{b_i}}
+\end{equation}
+Then
+\begin{align*}
+    \frac{p(x|\omega_1)}{px|\omega_2)} &= \frac{\frac{1}{2b_1}e^{\frac{-|x-a_1|}{b_1}} }
+                                               {\frac{1}{2b_2}e^{\frac{-|x-a_2|}{b_2}} } \\
+                                       &= \frac{\frac{1}{b_1}e^{\frac{-|x-a_1|}{b_1}} }
+                                               {\frac{1}{b_2}e^{\frac{-|x-a_2|}{b_2}} } \\
+                                       &= \frac{b_1}{b_2}\frac{e^{\frac{-|x-a_1|}{b_1}} }
+                                                              {e^{\frac{-|x-a_2|}{b_2}} } \\
+                                       &= \frac{b_1}{b_2}e^{\frac{-|x-a_1|}{b_1} - \frac{-|x-a_2|}{b_2}} \\
+                                       &= \frac{b_1}{b_2}e^{\frac{|x-a_2|}{b_2} - \frac{|x-a_1|}{b_1}}
+\end{align*}
+% }}}
+
+\newpage
+
+% Problem 4a {{{
+\section{Problem 4a}
+\begin{align*}
+    R = & \int_{R_1}\left[\lambda_{11}P(\omega_1)p(x|\omega_1) + \lambda_{12}P(\omega_2)p(x|\omega_2)\right]dx + \\
+        & \int_{R_2}\left[\lambda_{21}P(\omega_1)p(x|\omega_1) + \lambda_{22}P(\omega_2)p(x|\omega_2)\right]dx \\
+    R = & \int_{R_1}\lambda_{11}P(\omega_1)p(x|\omega_1)dx + \int_{R_1}\lambda_{12}P(\omega_2)p(x|\omega_2)dx + \\
+        & \int_{R_2}\lambda_{21}P(\omega_1)p(x|\omega_1)dx + \int_{R_2}\lambda_{22}P(\omega_2)p(x|\omega_2)dx \\
+    R = & \lambda_{11}P(\omega_1)\int_{R_1}p(x|\omega_1)dx + \lambda_{12}P(\omega_2)\int_{R_1}p(x|\omega_2)dx + \\
+        & \lambda_{21}P(\omega_1)\int_{R_2}p(x|\omega_1)dx + \lambda_{22}P(\omega_2)\int_{R_2}p(x|\omega_2)dx
+\end{align*}
+
+Given
+\begin{align}
+    \int_{R_2}p(x|\omega_2)dx &= 1 - \int_{R_1}p(x|\omega_1)dx \\
+    P(\omega_2) &= 1 - P(\omega_1)
+\end{align}
+
+\subsubsection{Lanbda 11 term}
+\begin{align*}
+    &= \lambda_{11}P(\omega_1)\int_{R_1}p(x|\omega_1)dx \\
+    &= \lambda_{11}P(\omega_1)\left[1 - \int_{R_2}p(x|\omega_2)dx \right] \\
+    &= \lambda_{11}\left[P(\omega_1) - P(\omega_1)\int_{R_2}p(x|\omega_2)dx \right]
+\end{align*}
+
+\subsubsection{Lanbda 12 term}
+\begin{align*}
+    &= \lambda_{12}P(\omega_2)\int_{R_1}p(x|\omega_2)dx \\
+    &= \lambda_{12}\left[1 - P(\omega_2)\right]\int_{R_1}p(x|\omega_2)dx \\
+    &= \lambda_{12}\left[\int_{R_1}p(x|\omega_2)dx - P(\omega_2)\int_{R_1}p(x|\omega_2)dx \right]
+\end{align*}
+
+\subsubsection{Lanbda 22 term}
+\begin{align*}
+    &= \lambda_{22}P(\omega_2)\int_{R_2}p(x|\omega_2)dx \\
+    &= \lambda_{22}\left[1 - P(\omega_1)\right] \left[1 - \int_{R_1}p(x|\omega_1)dx \right] \\
+    &= \lambda_{22}\left[1 - P(\omega_1) - \int_{R_1}p(x|\omega_1)dx + P(\omega_1)\int_{R_1}p(x|\omega_1)dx \right]
+\end{align*}
+
+\subsubsection{Combined}
+\begin{align*}
+    R = & \lambda_{11}\left[P(\omega_1) - P(\omega_1)\int_{R_2}p(x|\omega_2)dx \right] + \\
+        & \lambda_{12}\left[\int_{R_1}p(x|\omega_2)dx - P(\omega_2)\int_{R_1}p(x|\omega_2)dx \right] + \\
+        & \lambda_{21}P(\omega_1)\int_{R_2}p(x|\omega_1)dx + \\
+        & \lambda_{22}\left[1 - P(\omega_1) - \int_{R_1}p(x|\omega_1)dx + P(\omega_1)\int_{R_1}p(x|\omega_1)dx \right] \\
+    R = & \lambda_{11}P(\omega_1) - \lambda_{11}P(\omega_1)\int_{R_2}p(x|\omega_2)dx + \\
+        & \lambda_{12}\int_{R_1}p(x|\omega_2)dx - \lambda_{12}P(\omega_2)\int_{R_1}p(x|\omega_2)dx + \\
+        & \lambda_{21}P(\omega_1)\int_{R_2}p(x|\omega_1)dx + \\
+        & \lambda_{22} - \lambda_{22}P(\omega_1) - \lambda_{22}\int_{R_1}p(x|\omega_1)dx + \lambda_{22}P(\omega_1)\int_{R_1}p(x|\omega_1)dx \\
+    R = & \lambda_{11}P(\omega_1) - \lambda_{11}P(\omega_1)\int_{R_2}p(x|\omega_2)dx + \\
+        & \lambda_{21}P(\omega_1)\int_{R_2}p(x|\omega_1)dx - \lambda_{22}P(\omega_1) + \\
+        & \lambda_{22}P(\omega_1)\int_{R_1}p(x|\omega_1)dx \\
+        & \lambda_{12}\int_{R_1}p(x|\omega_2)dx - \lambda_{12}P(\omega_2)\int_{R_1}p(x|\omega_2)dx + \\
+        & \lambda_{22} - \lambda_{22}\int_{R_1}p(x|\omega_1)dx \\
+    R = & \left[\lambda_{11} - \lambda_{11}\int_{R_2}p(x|\omega_2)dx + \lambda_{21}\int_{R_2}p(x|\omega_1)dx - \lambda_{22} + \lambda_{22}\int_{R_1}p(x|\omega_1)dx \right] \\
+        & P(\omega_1) +\\
+        & \lambda_{12}\int_{R_1}p(x|\omega_2)dx - \lambda_{12}P(\omega_2)\int_{R_1}p(x|\omega_2)dx + \\
+        & \lambda_{22} - \lambda_{22}\int_{R_1}p(x|\omega_1)dx \\
+    R = & \left[\left(\lambda_{11} - \lambda_{22}\right) - \lambda_{11}\int_{R_2}p(x|\omega_2)dx + \lambda_{21}\int_{R_2}p(x|\omega_1)dx + \lambda_{22}\int_{R_1}p(x|\omega_1)dx \right] \\
+        & P(\omega_1) +\\
+        & \lambda_{12}\int_{R_1}p(x|\omega_2)dx - \lambda_{12}P(\omega_2)\int_{R_1}p(x|\omega_2)dx + \\
+        & \lambda_{22} - \lambda_{22}\int_{R_1}p(x|\omega_1)dx
+\end{align*}
+% }}}
+
+\newpage
+
+% Problem 12a {{{
+\section{Problem 12a}
+\subsection{Solution}
+If \(P(\omega_i|\textbf{x}) = P(\omega_j|\textbf{x})\), for all i and j, then \(P(\omega_{max}|\textbf{x}) = \frac{1}{c}\).
+If any \(P(\omega_i|\textbf{x} < \frac{1}{c}\), then some \(P(\omega_j|\textbf{x}) > \frac{1}{c}, i \ne j\).
+% }}}
+
+\newpage
+
+% Problem 12b {{{
+\section{Problem 12b}
+\subsection{Solution}
+\begin{align*}
+    P(correct) &= \int P(\omega_{max}|\textbf{x})p(\textbf{x})d\textbf{x} \\
+    P(error) &= 1 - P(correct) \\
+    &= 1 - \int P(\omega_{max}|\textbf{x})p(\textbf{x})d\textbf{x}
+\end{align*}
+% }}}
+
+\newpage
+
+% Problem 12c {{{
+\section{Problem 12c}
+\subsection{Solution}
+\begin{align*}
+    P(error) &= 1 - \int P(\omega_{max}|\textbf{x})p(\textbf{x})d\textbf{x} \\
+    &\le 1 - \int \frac{1}{c} p(\textbf{x})d\textbf{x} \\
+    &\le 1 - \frac{1}{c} \int p(\textbf{x})d\textbf{x} \\
+    &\le 1 - \frac{1}{c} 1 \\
+    &\le 1 - \frac{1}{c}
+\end{align*}
+% }}}
+
 \end{document}
 
