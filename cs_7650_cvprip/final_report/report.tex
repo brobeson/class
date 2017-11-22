@@ -1,0 +1,48 @@
+\documentclass{IEEEtran}
+
+%\newcommand{\Vector}{\textbf{#1}}
+
+\begin{document}
+\title{Fuzzy Structured Output Tracking with Kernels}
+\author{Brendan Robeson}
+\date{\today}
+\maketitle
+
+\begin{abstract}
+    Tracking an object in a video or image stream has many practical applications, from enhancing a
+    sports video broadcast, to military surveillance and reconnaissance. A common approach to the
+    problem of object tracking is tracking-by-detection. This involves the use of pattern
+    recognition techniques to classify samples of the current frame as the target object, or not the
+    target object. Object occlusion is frequently an area which causes tracking-by-detection
+    algorithms to fail. In this paper, I build on a fairly robust tracking algorithm, introducing
+    fuzzy logic to the employed SVM.
+\end{abstract}
+
+\section{Introduction}
+
+\section{F-Struck}
+\subsection{Struck}
+Struck is an adaptive tracking algorithm developed by Hare, et. al. \cite{6126251}. For frame N, the
+algorithm samples radially around the object location in frame N-1. A structured output SVM is used
+to predict the location of the object in frame N. Once the object is found, the SVM is updated; thus
+it learns as the object is tracked in the sequence.
+
+A traditional SVM takes, as training input, data of the form \((\textbf{x}, y)\), where
+\(\textbf{x}\) is a feature vector, and \(y \in \{-1, +1\}\) is a class label. The training input of
+a structured output SVM takes the form \((\textbf{x}, \textbf{y})\). As in a traditional SVM,
+\(\textbf{x}\) is a feature vector. In this case, however, \(\textbf{y} \in need\_fancy\_font(Y)\) is a prediction
+function. In Struck, the prediction function is a transformation from the object location, to the
+sample location.
+
+\subsection{Fuzzy SVM}
+
+\subsection{Fuzzy Struck}
+
+\section{Experiments}
+
+\section{Conclusion}
+
+%\bibliographystyle{IEEEtran}
+%\bibliography{references}
+
+\end{document}
