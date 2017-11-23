@@ -105,21 +105,29 @@ b_i\right) = 0\), and thus \(s_i = 0\). If the bounding boxes coincide exactly,
 \subsection{LaGrange}
 \begin{align}
     f &= \frac{1}{2} w \cdot w + C \sum_{i=1}^n \textcolor{red}{s_i} \xi_i \\
-    g_1 &= \textcolor{red}{s_i} \xi_i \ge 0 \\
+    g_1 &= \xi_i \ge 0 \\
     g_2 &= w \cdot \delta \Phi\left(y_i\right) + \textcolor{red}{s_i} \xi_i - \Delta\left(y_i, y\right) \ge 0 \\
-    &= w \cdot \left(\Phi\left(y_i\right) - \Phi(y)\right) + \textcolor{red}{s_i} \xi_i - \Delta\left(y_i, y\right) \ge 0 \nonumber \\
+    &= w \cdot \left(\Phi\left(y_i\right) - \Phi(y)\right) + \textcolor{red}{s_i} \xi_i - \Delta\left(y_i, y\right) \ge 0 \nonumber
+\end{align}
+\begin{align}
+    J &= f - \alpha g_i - \beta g_2 \\
     J &= \frac{1}{2} w \cdot w + C \sum_{i=1}^n \textcolor{red}{s_i} \xi_i -
-    \alpha \sum_i \textcolor{red}{s_i} \xi_i -
-    \beta \sum_i \left[w \cdot \delta \Phi\left(y_i\right) + \textcolor{red}{s_i} \xi_i - \Delta\left(y_i,
-    y\right)\right] \\
-    %--------------------------------------------------------------------------------------------------------------------
-    \frac{\partial J}{\partial w} = 0 &= w + 0 - 0 - \beta \sum_i \left[\delta \Phi\left(y_i\right) + 0 + 0\right] \\
-    &= w - \beta \sum_i \left[\delta \Phi\left(y_i\right)\right] \nonumber \\
-    w &= \beta \sum_i \left[\delta \Phi\left(y_i\right)\right] \nonumber \\
-    %--------------------------------------------------------------------------------------------------------------------
-    \frac{\partial J}{\partial \xi_i} = 0 &= 0 + C \textcolor{red}{s_i} - \alpha_i \textcolor{red}{s_i}
-    - \beta \left(0 + 1 \textcolor{red}{s_i} - 0\right) \\
-    &= C \textcolor{red}{s_i} - \alpha_i \textcolor{red}{s_i} - \beta \textcolor{red}{s_i} \nonumber
+        \sum_i \alpha_i \xi_i -
+        \sum_i \beta_i \left[w \cdot \delta \Phi\left(y_i\right) + \textcolor{red}{s_i} \xi_i - \Delta\left(y_i, y\right)\right] \nonumber \\
+    J &= \frac{1}{2} w \cdot w + C \sum_{i=1}^n \textcolor{red}{s_i} \xi_i -
+        \sum_i \alpha_i \xi_i -
+        \sum_i \left[ \beta_i w \cdot \delta \Phi\left(y_i\right) + \beta_i \textcolor{red}{s_i} \xi_i - \beta_i \Delta\left(y_i, y\right)\right] \nonumber \nonumber
+\end{align}
+
+% derivative with respect to w
+\begin{align}
+    \frac{\partial J}{\partial w} = 0 &= w - \sum_i \beta_i \delta \Phi\left(y_i\right) \\
+    w &= \sum_i \beta_i \delta \Phi\left(y_i\right) \nonumber
+\end{align}
+
+% derivative with respect to ξ
+\begin{align}
+    \frac{\partial J}{\partial \xi_i} = 0 &= C \textcolor{red}{s_i} - \alpha_i - \beta_i \textcolor{red}{s_i}
 \end{align}
 \section{Conclusion}
 
