@@ -2,6 +2,7 @@
 \usepackage{amsmath}
 
 %\newcommand{\Vector}{\textbf{#1}}
+%\newcommand{\vector}[1]{\textbf{#1}}
 
 \begin{document}
 \title{Fuzzy Structured Output Tracking with Kernels}
@@ -21,32 +22,33 @@
 
 \section{Introduction}
 \subsection{Fuzzy SVM} %{{{
-Fuzzy SVM reformulates the SVM to incorporate fuzzy membership data for the classes \cite{}. The
+Fuzzy SVM reformulates the SVM to incorporate fuzzy membership data for the classes \cite{991432}. The
 traditional SVM formula
 \begin{align}
-    \min_w & \frac{1}{2}\|w\|^2 + C\sum_{i=1}^n\xi_i \\
+    \min_w & \frac{1}{2}\|\textbf{w}\|^2 + C\sum_{i=1}^n\xi_i \\
     \text{s.t. } & \forall i \xi_i \ge 0 \nonumber \\
-                 & \forall i y_i \left(w \cdot x_i + b\right) \ge 1 - \xi_i \nonumber
+                 & \forall i y_i \left(\textbf{w} \cdot \textbf{x}_i + b\right) \ge 1 - \xi_i \nonumber
 \end{align}
 
 becomes
 \begin{align}
-    \min_w & \frac{1}{2}\|w\|^2 + C\sum_{i=1}^ns_i\xi_i \\
+    \min_w & \frac{1}{2}\|\textbf{w}\|^2 + C\sum_{i=1}^ns_i\xi_i \\
     \text{s.t. } & \forall i \xi_i \ge 0 \nonumber \\
-                 & \forall i y_i \left(w \cdot x_i + b\right) \ge 1 - \xi_i \nonumber
+                 & \forall i y_i \left(\textbf{w} \cdot \textbf{x}_i + b\right) \ge 1 - \xi_i \nonumber
 \end{align}
 where \(s_i\) is the fuzzy membership.
 
 The dual problem is then
 \begin{align}
-    \max_\alpha & \sum_{i=1}^n \alpha_i - \frac{1}{2} \sum_{i=1}^n \sum_{j=1}^n \alpha_i \alpha_j y_i y_j K\left(x_i, x_j\right) \\
+    \max_\alpha & \sum_{i=1}^n \alpha_i - \frac{1}{2} \sum_{i=1}^n \sum_{j=1}^n \alpha_i \alpha_j
+    y_i y_j K\left(\textbf{x}_i, \textbf{x}_j\right) \\
     \text{s.t. } & \sum_{i=1}^n y_i \alpha_i = 0 \nonumber \\
                  & 0 \le \alpha_i \le s_iC \nonumber
 \end{align}
 
 Fuzzy membership is calculated by a function \(s_i = f(\cdot)\). The exact function depends on the
 classification problem to be solved, but should satisfy \(0 \le \theta \le f(\cdot) \le 1\).
-\(theta\) is a predefined lower bound, also dependent on the classification problem.
+\(\theta\) is a predefined lower bound, also dependent on the classification problem.
 
 \subsection{Struck} %{{{
 Struck is an adaptive tracking algorithm developed by Hare, et. al. \cite{6126251}. For frame N, the
@@ -73,10 +75,13 @@ this context, a sample bounding box with high overlap will contain more of the t
 will contain less of the target.
 
 \begin{displaymath}
-    s_i = f\left(b, b_i\right) = \frac{b \cap b_i}{b \cup b_i}
+    s_i = f\left(b, b_i\right) = \frac{A(b \cap b_i)}{A(b \cup b_i)}
 \end{displaymath}
 
-where \(b\) defines the target bounding box, and \(b_i\) defines the sample bounding box.
+where \(b\) defines the target bounding box, and \(b_i\) defines the sample bounding box, and
+\(A(x)\) is the area of \(x\). If the two bounding boxes do not intersect, then \(A\left(b \cap
+b_i\right) = 0\), and thus \(s_i = 0\). If the bounding boxes coincide exactly,
+\(A\left(b \cap b_i\right) = A\left(b \cup b_i\right)\), and \(s_i = 1\).
 
 \section{Experiments}
 

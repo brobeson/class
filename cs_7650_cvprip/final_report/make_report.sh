@@ -6,9 +6,9 @@
 
 # first pass through the document
 #pdflatex -output-directory ${output_directory} -file-line-error -halt-on-error "$1.tex"
-pdflatex -file-line-error -halt-on-error report.tex && \
-    bibtex -min-crossrefs=0 report.aux && \
-    pdflatex -file-line-error -halt-on-error report.tex
+pdflatex -file-line-error -halt-on-error report.tex
+bibtex -min-crossrefs=0 report.aux
+pdflatex -file-line-error -halt-on-error report.tex
 exit $?
 
 # run bibtex. need to do this in the output directory
