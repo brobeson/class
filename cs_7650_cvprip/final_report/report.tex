@@ -1,4 +1,5 @@
 \documentclass{IEEEtran}
+\usepackage{color}
 \usepackage{amsmath}
 
 %\newcommand{\Vector}{\textbf{#1}}
@@ -85,6 +86,41 @@ b_i\right) = 0\), and thus \(s_i = 0\). If the bounding boxes coincide exactly,
 
 \section{Experiments}
 
+\section{Notes}
+\begin{align*}
+    \min_w & \frac{1}{2} w \cdot w + C \sum_{i=1}^n \textcolor{red}{s_i} \xi_i \\
+    \text{s.t. } & \textcolor{red}{s_i} \xi_i \ge 0 \\
+    & w \cdot \delta \Phi_i(y) \ge \Delta\left(y_i, y\right) - \textcolor{red}{s_i} \xi_i
+\end{align*}
+
+\begin{align*}
+    \max_\alpha & \sum_i \Delta\left(y_i, y\right) \alpha_i^y - \frac{1}{2} \sum_{i,j} \alpha_i^y
+    \alpha_j^{\bar{y}} \delta \Phi_i(y) \cdot \delta \Phi(\bar{y}) \\
+    \text{s.t. } & \forall y \ne y_i : \alpha_i^y \ge 0 \\
+    & \sum_{y \ne y_i} \alpha_i^y \le C
+\end{align*}
+
+\newpage
+
+\subsection{LaGrange}
+\begin{align}
+    f &= \frac{1}{2} w \cdot w + C \sum_{i=1}^n \textcolor{red}{s_i} \xi_i \\
+    g_1 &= \textcolor{red}{s_i} \xi_i \ge 0 \\
+    g_2 &= w \cdot \delta \Phi\left(y_i\right) + \textcolor{red}{s_i} \xi_i - \Delta\left(y_i, y\right) \ge 0 \\
+    &= w \cdot \left(\Phi\left(y_i\right) - \Phi(y)\right) + \textcolor{red}{s_i} \xi_i - \Delta\left(y_i, y\right) \ge 0 \nonumber \\
+    J &= \frac{1}{2} w \cdot w + C \sum_{i=1}^n \textcolor{red}{s_i} \xi_i -
+    \alpha \sum_i \textcolor{red}{s_i} \xi_i -
+    \beta \sum_i \left[w \cdot \delta \Phi\left(y_i\right) + \textcolor{red}{s_i} \xi_i - \Delta\left(y_i,
+    y\right)\right] \\
+    %--------------------------------------------------------------------------------------------------------------------
+    \frac{\partial J}{\partial w} = 0 &= w + 0 - 0 - \beta \sum_i \left[\delta \Phi\left(y_i\right) + 0 + 0\right] \\
+    &= w - \beta \sum_i \left[\delta \Phi\left(y_i\right)\right] \nonumber \\
+    w &= \beta \sum_i \left[\delta \Phi\left(y_i\right)\right] \nonumber \\
+    %--------------------------------------------------------------------------------------------------------------------
+    \frac{\partial J}{\partial \xi_i} = 0 &= 0 + C \textcolor{red}{s_i} - \alpha_i \textcolor{red}{s_i}
+    - \beta \left(0 + 1 \textcolor{red}{s_i} - 0\right) \\
+    &= C \textcolor{red}{s_i} - \alpha_i \textcolor{red}{s_i} - \beta \textcolor{red}{s_i} \nonumber
+\end{align}
 \section{Conclusion}
 
 \bibliographystyle{IEEEtran}
