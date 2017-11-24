@@ -6,6 +6,8 @@
 \newcommand{\half}{\frac{1}{2}}
 \newcommand{\loss}{\Delta\left(\vec{y}, \vec{y}_i\right)}
 
+\include{equations}
+
 \begin{document}
 \title{Fuzzy Structured Output Tracking with Kernels}
 \author{Brendan Robeson}
@@ -26,18 +28,15 @@
 \subsection{Fuzzy SVM} %start_fold_2
 Fuzzy SVM reformulates the SVM to incorporate fuzzy membership data for the classes \cite{991432}. The
 traditional SVM formula
-\begin{align}
-    \min_\vec{w} & \half \vec{w} \cdot \vec{w} + C\sum_{i=1}^n\xi_i \\
-    \text{s.t. } & \forall i \xi_i \ge 0 \nonumber \\
-                 & \forall i y_i \left(\vec{w} \cdot \vec{x}_i + b\right) \ge 1 - \xi_i \nonumber
-\end{align}
+\svmEquation
 
 becomes
-\begin{align}
-    \min_\vec{w} & \half \vec{w} \cdot \vec{w} + C\sum_{i=1}^ns_i\xi_i \\
-    \text{s.t. } & \forall i \xi_i \ge 0 \nonumber \\
-                 & \forall i y_i \left(\vec{w} \cdot \vec{x}_i + b\right) \ge 1 - \xi_i \nonumber
-\end{align}
+\fuzzySvmEquation
+%\begin{align}
+%    \min_\vec{w} & \half \vec{w} \cdot \vec{w} + C\sum_{i=1}^ns_i\xi_i \\
+%    \text{s.t. } & \forall i \xi_i \ge 0 \nonumber \\
+%                 & \forall i y_i \left(\vec{w} \cdot \vec{x}_i + b\right) \ge 1 - \xi_i \nonumber
+%\end{align}
 where \(s_i\) is the fuzzy membership.
 
 The dual problem is then

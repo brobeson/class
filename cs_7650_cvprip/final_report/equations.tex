@@ -1,0 +1,17 @@
+\def\svmEquation
+{
+\begin{align}
+    \min_\vec{w} & \half \vec{w} \cdot \vec{w} + C\sum_{i=1}^n\xi_i \\
+    \text{s.t. } & \forall i \xi_i \ge 0 \nonumber \\
+                 & \forall i y_i \left(\vec{w} \cdot \vec{x}_i + b\right) \ge 1 - \xi_i \nonumber
+\end{align}
+}
+
+\def\fuzzySvmEquation
+{
+\begin{align}
+    \min_\vec{w} & \half \vec{w} \cdot \vec{w} + C\sum_{i=1}^ns_i\xi_i \\
+    \text{s.t. } & \forall i \xi_i \ge 0 \nonumber \\
+                 & \forall i y_i \left(\vec{w} \cdot \vec{x}_i + b\right) \ge 1 - \xi_i \nonumber
+\end{align}
+}
