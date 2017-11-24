@@ -2,8 +2,9 @@
 \usepackage{color}
 \usepackage{amsmath}
 
-%\newcommand{\Vector}{\textbf{#1}}
-%\newcommand{\vector}[1]{\textbf{#1}}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand{\half}{\frac{1}{2}}
+\newcommand{\loss}{\Delta\left(\vec{y}, \vec{y}_i\right)}
 
 \begin{document}
 \title{Fuzzy Structured Output Tracking with Kernels}
@@ -11,7 +12,7 @@
 \date{\today}
 \maketitle
 
-\begin{abstract}
+\begin{abstract} %start_fold_1
     Tracking an object in a video or image stream has many practical applications, from enhancing a
     sports video broadcast, to military surveillance and reconnaissance. A common approach to the
     problem of object tracking is tracking-by-detection. This involves the use of pattern
@@ -21,28 +22,28 @@
     fuzzy logic to the employed SVM.
 \end{abstract}
 
-\section{Introduction}
-\subsection{Fuzzy SVM} %{{{
+\section{Introduction} %start_fold_1
+\subsection{Fuzzy SVM} %start_fold_2
 Fuzzy SVM reformulates the SVM to incorporate fuzzy membership data for the classes \cite{991432}. The
 traditional SVM formula
 \begin{align}
-    \min_w & \frac{1}{2}\|\textbf{w}\|^2 + C\sum_{i=1}^n\xi_i \\
+    \min_\vec{w} & \half \vec{w} \cdot \vec{w} + C\sum_{i=1}^n\xi_i \\
     \text{s.t. } & \forall i \xi_i \ge 0 \nonumber \\
-                 & \forall i y_i \left(\textbf{w} \cdot \textbf{x}_i + b\right) \ge 1 - \xi_i \nonumber
+                 & \forall i y_i \left(\vec{w} \cdot \vec{x}_i + b\right) \ge 1 - \xi_i \nonumber
 \end{align}
 
 becomes
 \begin{align}
-    \min_w & \frac{1}{2}\|\textbf{w}\|^2 + C\sum_{i=1}^ns_i\xi_i \\
+    \min_\vec{w} & \half \vec{w} \cdot \vec{w} + C\sum_{i=1}^ns_i\xi_i \\
     \text{s.t. } & \forall i \xi_i \ge 0 \nonumber \\
-                 & \forall i y_i \left(\textbf{w} \cdot \textbf{x}_i + b\right) \ge 1 - \xi_i \nonumber
+                 & \forall i y_i \left(\vec{w} \cdot \vec{x}_i + b\right) \ge 1 - \xi_i \nonumber
 \end{align}
 where \(s_i\) is the fuzzy membership.
 
 The dual problem is then
 \begin{align}
-    \max_\alpha & \sum_{i=1}^n \alpha_i - \frac{1}{2} \sum_{i=1}^n \sum_{j=1}^n \alpha_i \alpha_j
-    y_i y_j K\left(\textbf{x}_i, \textbf{x}_j\right) \\
+    \max_\alpha & \sum_{i=1}^n \alpha_i - \half \sum_{i=1}^n \sum_{j=1}^n \alpha_i \alpha_j
+    y_i y_j K\left(\vec{x}_i, \vec{x}_j\right) \\
     \text{s.t. } & \sum_{i=1}^n y_i \alpha_i = 0 \nonumber \\
                  & 0 \le \alpha_i \le s_iC \nonumber
 \end{align}
@@ -51,26 +52,75 @@ Fuzzy membership is calculated by a function \(s_i = f(\cdot)\). The exact funct
 classification problem to be solved, but should satisfy \(0 \le \theta \le f(\cdot) \le 1\).
 \(\theta\) is a predefined lower bound, also dependent on the classification problem.
 
-\subsection{Struck} %{{{
+\subsection{Struck} %start_fold_2
 Struck is an adaptive tracking algorithm developed by Hare, et. al. \cite{6126251}. For frame N, the
 algorithm samples radially around the object location in frame N-1. A structured output SVM is used
 to predict the location of the object in frame N. Once the object is found, the SVM is updated; thus
 it learns as the object is tracked in the sequence.
 
-A traditional SVM takes, as training input, data of the form \((\textbf{x}, y)\), where
-\(\textbf{x}\) is a feature vector, and \(y \in \{-1, +1\}\) is a class label. The training input of
-a structured output SVM takes the form \((\textbf{x}, \textbf{y})\). As in a traditional SVM,
-\(\textbf{x}\) is a feature vector. In this case, however, \(\textbf{y} \in \mathcal{Y}\) is a prediction
+A traditional SVM takes, as training input, data of the form \((\vec{x}, y)\), where
+\(\vec{x}\) is a feature vector, and \(y \in \{-1, +1\}\) is a class label. The training input of
+a structured output SVM takes the form \((\vec{x}, \vec{y})\). As in a traditional SVM,
+\(\vec{x}\) is a feature vector. In this case, however, \(\vec{y} \in \mathcal{Y}\) is a prediction
 function. In Struck, the prediction function is a transformation from the object location, to the
 sample location.
-%}}}
-%}}}
 
-\section{F-Struck}
+\begin{align}
+    \min_\vec{w} & \half \vec{w} \cdot \vec{w} + C \sum_{i=1}^n \xi_i \\
+    \text{s.t. } & \forall i : \xi_i \ge 0 \nonumber \\
+    & \forall i, \forall \vec{y} \ne \vec{y}_i : \vec{w} \cdot \delta \vec{\Phi}_i(\vec{y})
+    \ge \delta(\vec{y}_i, \vec{y}) - \xi_i \nonumber
+\end{align}
 
-\subsection{Fuzzy Struck}
+Optimizing in terms of \(\alpha\)
 
-\subsection{Fuzzy Membership}
+\begin{align}
+    \max_\alpha & \sum_{i,\vec{y}\ne\vec{y}_i} \loss
+    \alpha_i^{\vec{y}} - \half \sum_{\substack{i,\vec{y}\ne\vec{y}_i \\ j,
+    \vec{y}\ne\vec{y}_j}} \alpha_i^\vec{y} \alpha_j^{\bar{\vec{y}}} \delta
+    \vec{\Phi}_i(\vec{y}) \cdot \delta \vec{\Phi}(\bar{\vec{y}}) \\
+    % subject to...
+    \text{s.t. } & \forall i, \forall \vec{y} \ne \vec{y}_i : \alpha_i^\vec{y} \ge 0 \nonumber \\
+    & \forall i : \sum_{\vec{y} \ne \vec{y}_i} \alpha_i^\vec{y} \le C \nonumber
+\end{align}
+
+Reparametrizing in terms of \(\beta\)
+
+\begin{align}
+    \max_\beta & -\sum_{i,\vec{y}} \loss \beta_i^\vec{y} - \half
+    \sum_{i,\vec{y},j,\vec{\bar{y}}} \beta_i^\vec{y} \beta_j^\vec{\bar{y}}
+    \vec{\Phi}\left(\vec{x}_i, \vec{y}\right) \cdot \vec{\Phi}\left(\vec{x}_j,
+    \vec{\bar{y}}\right) \\
+    % subject to...
+    \text{s.t. } & \forall i, \forall \vec{y} : \beta_i^\vec{y} \le
+    \begin{cases}
+        0 & \vec{y} \ne \vec{y}_i \\
+        C & \vec{y} = \vec{y}_i
+    \end{cases} \nonumber \\
+    & \forall i : \sum_\vec{y} \beta_i^\vec{y} = 0 \nonumber
+\end{align}
+
+Discriminant function
+
+\begin{displaymath}
+    F(\vec{x}, \vec{y}) = \sum_{i,\vec{\bar{y}}} \beta_i^\vec{\bar{y}}
+    \vec{\Phi}\left(\vec{x}_i, \vec{\bar{y}}\right) \cdot \vec{\Phi}\left(\vec{x},
+    \vec{y}\right)
+\end{displaymath}
+
+Gradient
+\begin{align}
+    g_i\left(\vec{y}\right) &= - \loss - \sum_{j,\vec{\bar{y}}} \beta_j^\vec{\bar{y}}
+    \vec{\Phi}\left(\vec{x}_i, \vec{y}\right) \cdot \vec{\Phi}\left(\vec{x}_j,
+    \vec{y}\right) \\
+    &= - \loss - F\left(\vec{x}_i, \vec{y}\right) \nonumber
+\end{align}
+
+\section{F-Struck} %start_fold_1
+
+\subsection{Fuzzy Structured Output SVM}
+
+\subsection{Fuzzy Membership} %start_fold_2
 For F-Struck, the fuzzy membership function is defined as a function of bounding box overlap. In
 this context, a sample bounding box with high overlap will contain more of the target; low overlap
 will contain less of the target.
@@ -86,52 +136,56 @@ b_i\right) = 0\), and thus \(s_i = 0\). If the bounding boxes coincide exactly,
 
 \section{Experiments}
 
-\section{Notes}
+\section{Notes} %start_fold_1
 \begin{align*}
-    \min_w & \frac{1}{2} w \cdot w + C \sum_{i=1}^n \textcolor{red}{s_i} \xi_i \\
+    \min_\vec{w} & \half \vec{w} \cdot \vec{w} + C \sum_{i=1}^n \textcolor{red}{s_i} \xi_i \\
     \text{s.t. } & \textcolor{red}{s_i} \xi_i \ge 0 \\
-    & w \cdot \delta \Phi_i(y) \ge \Delta\left(y_i, y\right) - \textcolor{red}{s_i} \xi_i
+    & \vec{w} \cdot \delta \vec{\Phi}_i(y) \ge \loss - \textcolor{red}{s_i} \xi_i
 \end{align*}
 
 \begin{align*}
-    \max_\alpha & \sum_i \Delta\left(y_i, y\right) \alpha_i^y - \frac{1}{2} \sum_{i,j} \alpha_i^y
-    \alpha_j^{\bar{y}} \delta \Phi_i(y) \cdot \delta \Phi(\bar{y}) \\
+    \max_\alpha & \sum_i \loss \alpha_i^y - \half \sum_{i,j} \alpha_i^y
+    \alpha_j^{\bar{y}} \delta \vec{\Phi}_i(y) \cdot \delta \vec{\Phi}(\bar{y}) \\
     \text{s.t. } & \forall y \ne y_i : \alpha_i^y \ge 0 \\
     & \sum_{y \ne y_i} \alpha_i^y \le C
 \end{align*}
 
 \newpage
 
-\subsection{LaGrange}
+\subsection{LaGrange} %start_fold_2
 \begin{align}
-    f &= \frac{1}{2} w \cdot w + C \sum_{i=1}^n \textcolor{red}{s_i} \xi_i \\
+    f &= \half \vec{w} \cdot \vec{w} + C \sum_{i=1}^n \textcolor{red}{s_i} \xi_i \\
     g_1 &= \xi_i \ge 0 \\
-    g_2 &= w \cdot \delta \Phi\left(y_i\right) + \textcolor{red}{s_i} \xi_i - \Delta\left(y_i, y\right) \ge 0 \\
-    &= w \cdot \left(\Phi\left(y_i\right) - \Phi(y)\right) + \textcolor{red}{s_i} \xi_i - \Delta\left(y_i, y\right) \ge 0 \nonumber
+    g_2 &= \vec{w} \cdot \delta \vec{\Phi}\left(y_i\right) + \textcolor{red}{s_i} \xi_i - \loss \ge 0 \\
+    &= \vec{w} \cdot \left(\vec{\Phi}\left(y_i\right) - \vec{\Phi}(y)\right) + \textcolor{red}{s_i} \xi_i
+    - \loss \ge 0 \nonumber
 \end{align}
 \begin{align}
-    J &= f - \alpha g_i - \beta g_2 \\
-    J &= \frac{1}{2} w \cdot w + C \sum_{i=1}^n \textcolor{red}{s_i} \xi_i -
-        \sum_i \alpha_i \xi_i -
-        \sum_i \beta_i \left[w \cdot \delta \Phi\left(y_i\right) + \textcolor{red}{s_i} \xi_i - \Delta\left(y_i, y\right)\right] \nonumber \\
-    J &= \frac{1}{2} w \cdot w + C \sum_{i=1}^n \textcolor{red}{s_i} \xi_i -
-        \sum_i \alpha_i \xi_i -
-        \sum_i \left[ \beta_i w \cdot \delta \Phi\left(y_i\right) + \beta_i \textcolor{red}{s_i} \xi_i - \beta_i \Delta\left(y_i, y\right)\right] \nonumber \nonumber
+    J &= f - \alpha g_1 - \beta g_2 \\
+    J &= \half \vec{w} \cdot \vec{w} + C \sum_{i=1}^n \textcolor{red}{s_i} \xi_i -
+        \sum_i \alpha_i \xi_i \nonumber \\ & -
+        \sum_i \beta_i \left[\vec{w} \cdot \delta \vec{\Phi}\left(y_i\right) + \textcolor{red}{s_i} \xi_i
+        - \loss\right] \nonumber \\
+    J &= \half \vec{w} \cdot \vec{w} + C \sum_{i=1}^n \textcolor{red}{s_i} \xi_i -
+        \sum_i \alpha_i \xi_i \nonumber \\ & -
+        \sum_i \left[ \beta_i \vec{w} \cdot \delta \vec{\Phi}\left(y_i\right) + \beta_i
+        \textcolor{red}{s_i} \xi_i - \beta_i \loss\right] \nonumber \nonumber
 \end{align}
 
 % derivative with respect to w
 \begin{align}
-    \frac{\partial J}{\partial w} = 0 &= w - \sum_i \beta_i \delta \Phi\left(y_i\right) \\
-    w &= \sum_i \beta_i \delta \Phi\left(y_i\right) \nonumber
+    \frac{\partial J}{\partial \vec{w}} = 0 &= \vec{w} - \sum_i \beta_i \delta \vec{\Phi}\left(y_i\right) \\
+    \vec{w} &= \sum_i \beta_i \delta \vec{\Phi}\left(y_i\right) \nonumber
 \end{align}
 
 % derivative with respect to ξ
 \begin{align}
     \frac{\partial J}{\partial \xi_i} = 0 &= C \textcolor{red}{s_i} - \alpha_i - \beta_i \textcolor{red}{s_i}
 \end{align}
-\section{Conclusion}
 
-\bibliographystyle{IEEEtran}
+\section{Conclusion} %start_fold_1
+
+\bibliographystyle{IEEEtran} %start_fold_1
 \bibliography{references}
 
 \end{document}
