@@ -1,5 +1,6 @@
 \documentclass{IEEEtran}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \title{CS 7650 Assignment 3}
 \author{Brendan Robeson}
 \date{2017 Fall}
@@ -7,51 +8,186 @@
 \begin{document}
 \maketitle
 
-% Problem 1a {{{
-\section{Problem 1a}
+\section{Problem 1} % start_fold_1
+\begin{align}
+    \lim_{n \to \infty} \bar{p}_n(x) &= p(x) \\
+    \lim_{n \to \infty} \sigma_n^2(x) &= 0 \\
+    \sup_u \phi(u) &< \infty \\
+    \lim_{\|u\| \to \infty} \phi(u) \prod_{i=1}^d u_i &= 0 \\
+    \lim_{n \to \infty} V_n &= 0 \\
+    \lim_{n \to \infty} n V_n &= \infty
+\end{align}
+Show that equations 3-6 are sufficient to assure convergence in equations 1 \& 2.
+
 \subsection{Solution}
-% }}}
+\begin{align*}
+    \delta_n(X) &= \frac{1}{V_n} \varphi \left( \frac{X}{h_n} \right) \\
+    &= \frac{1}{\prod_{i=1}^d x_i} \prod_{i=1}^d \frac{x_i}{h_n} \varphi \left( \frac{X}{h_n} \right)
+\end{align*}
+
+\begin{align*}
+    V_n &= h_n^d \\
+    \delta_n(X) &= 0 \\
+    \int \delta_n(X) dX &= 1
+\end{align*}
+
+\begin{align*}
+    n &\to \infty, \delta_n(X) \to \delta(X) \\
+    \lim_{n \to \infty} \bar{p_n} &= \varepsilon \left[ \bar{p(X)} \right] \\
+    &= \int \delta(X - V) p(V) dV \\
+    &= p(X)
+\end{align*}
+
+\begin{align*}
+    \sigma_n^2(\textbf{x}) &= \sum_{i=1}^n \varepsilon \left[ \left( \frac{1}{nV_n} \varphi \left( \frac{\textbf{x} - \textbf{x}_i}{h_n} - \frac{1}{n} \bar{p}_n(\textbf{x}) \right) \right)^2 \right] \\
+    &= n \varepsilon \left[ \frac{1}{n^2 V_n^2} \varphi^2 \left( \frac{\textbf{x} - \textbf{x}_i}{h_n} \right) \right] - \frac{1}{n} \bar{p}_n^2(\textbf{x}) \\
+    &= \frac{1}{n V_n} \int \frac{1}{V_n} \varphi^2 \left( \frac{\textbf{x} - \textbf{v}}{h_n} \right) p(\textbf{v}) d\textbf{v} - \frac{1}{n} \bar{p}_n^2(\textbf{x}) \\
+    &\le \frac{1}{n V_n} \int \frac{1}{V_n} \varphi^2 \left( \frac{X - V}{h_n} \right) p(V) dV \\
+    &\le \frac{sup(\varphi)}{n V_n} \int \frac{1}{V_n} \varphi \left( \frac{X - V}{h_n} \right) p(V) dV = \frac{sup(\varphi) \overline{p_n(X)}}{n V_n}
+\end{align*}
+
+Since \(sup(\varphi) < \infty\), and \(n \to \infty\), \(\overline{p_n(X)} = p(X)\)
+\begin{align*}
+    \lim_{n \to \infty} n V_n &= \infty \\
+    \lim_{n \to \infty} \delta_n^2(X) = 0
+\end{align*}
 
 \newpage
 
-% Problem 1b {{{
-\section{Problem 1b}
+\section{Problem 2} % start_fold_1
+Given each of \(c\) categories has the same distribution and prior \(P(\omega_i) = \frac{1}{c}\).
+Prove the upper bound \[P \le P^*\left( 2 - \frac{c}{c - 1}P^*\right)\]
+
 \subsection{Solution}
-% }}}
+\begin{align*}
+    p(X) &= \sum_{i=1}^c p\left(X|\omega_i\right) P\left(\omega_i\right) \\
+    &= \sum_{i=1}^c p\left(X|\omega_i\right) \frac{1}{c} \\
+    &= p(X|\omega)
+\end{align*}
+
+\begin{align*}
+    P &= \lim_{n \to \infty} P_n(e) \\
+    &= \lim_{n \to \infty} \int P_n(e|X) p(X) dX \\
+    &= \int \left[ 1 - \sum_{i=1}^c P^2\left(\omega_i|X\right) \right] p(X) dX \\
+    &= \int \left[ 1 - \sum_{i=1}^c \frac{1}{c^2} \right] p(X) dX \\
+    &= \left( 1 - \frac{1}{c^2} \right) \int p(X) dX \\
+    &= \left( 1 - \frac{1}{c^2} \right) 1 \\
+    &= 1 - \frac{1}{c^2}
+\end{align*}
+
+Bayes error is \(P^* = 1 - P(\omega_i)\), if \(P(\omega_i) = max P(\omega_j) \forall j\).
+\(P(\omega_j) = \frac{1}{c}\). \(\therefore P^* = 1 - \frac{1}{c} = P\).
+
+Upper bound:
+\begin{align*}
+    & P^* \left( 2 - \frac{c}{c - 1} P^*\right) \\
+    = &\left( 1 - \frac{1}{c} \right) \left[ 2 - \frac{c}{c - 1} \left( 1 - \frac{1}{c} \right) \right] \\
+    = &\left( 1 - \frac{1}{c} \right) \left[ 2 - \frac{c}{c - 1} \left( \frac{c}{c} - \frac{1}{c} \right) \right] \\
+    = &\left( 1 - \frac{1}{c} \right) \left[ 2 - \frac{c}{c - 1} \left( \frac{c - 1}{c} \right) \right] \\
+    = &\left( 1 - \frac{1}{c} \right) (2 - 1) \\
+    = &\left( 1 - \frac{1}{c} \right) (1) \\
+    = &1 - \frac{1}{c} \\
+\end{align*}
 
 \newpage
 
-% Problem 1c {{{
-\section{Problem 1c}
+\section{Problem 3} % start_fold_1
+Prove the Minkowski metric indeed possesses the four properties required for all metrics.
+
 \subsection{Solution}
-% }}}
+\[D(\mathbf{a}, \mathbf{b}) = \sqrt[k]{\sum_{i=1}^d\left|a_i - b_i\right|^k}\]
+
+\textbf{nonnegativity} % start_fold_2
+\begin{align*}
+    \left|a_i - b_i\right| &\ge 0 \\
+    \left|a_i - b_i\right|^k & \ge 0 \\
+    \sum_i \left|a_i - b_i\right|^k & \ge 0 \\
+    \sqrt[k]{\sum_i \left|a_i - b_i\right|^k} & \ge 0 \\
+\end{align*}
+
+\textbf{reflexivity} % start_fold_2
+\begin{align*}
+    D(\mathbf{a}, \mathbf{b}) &= 0 \text{ iff } \mathbf{a} = \mathbf{b} \\
+\end{align*}
+For \(\mathbf{a} = \mathbf{b}\):
+\begin{align*}
+    D(\mathbf{a}, \mathbf{b}) &= \sqrt[k]{\sum_{i=1}^d\left|a_i - b_i\right|^k} \\
+    &= \sqrt[k]{\sum_{i=1}^d\left|b_i - b_i\right|^k} \\
+    &= \sqrt[k]{\sum_{i=1}^d|0|^k} \\
+    &= \sqrt[k]{\sum_{i=1}^d0} \\
+    &= \sqrt[k]{0} \\
+    &= 0
+\end{align*}
+
+For \(\mathbf{a} \ne \mathbf{b}\):
+\begin{enumerate}
+    \item Let \(x_i = \left|a_i - b_i\right|\).
+    \item \(\forall i: x_i \ge 0\).
+    \item For some \(j : 1 \le j \le i\), \(x_j > 0\).
+    \item \(\therefore x_j^k > 0\)
+    \item and \(\sum x_i^k > 0\)
+    \item and \(\sqrt[k]{\sum x_i^k} > 0\)
+\end{enumerate}
+
+\textbf{symmetry} % start_fold_2
+\begin{align*}
+    D(\mathbf{a}, \mathbf{b}) &= D(\mathbf{b}, \mathbf{a}) \\
+    \sqrt[k]{\sum_{i=1}^d\left|a_i - b_i\right|^k} &= \sqrt[k]{\sum_{i=1}^d\left|b_i - a_i\right|^k} \\
+    \sum_{i=1}^d\left|a_i - b_i\right|^k &= \sum_{i=1}^d\left|b_i - a_i\right|^k \\
+    \left|a_i - b_i\right|^k &= \left|b_i - a_i\right|^k \\
+    \left|a_i - b_i\right| &= \left|b_i - a_i\right| \\
+\end{align*}
+
+\textbf{triangle inequality} % start_fold_2
+\begin{align*}
+    \text{let } & \mathbf{a} - \mathbf{b} = X \\
+    & \mathbf{b} - \mathbf{c} = Y \\
+    \text{then } X + Y &= \mathbf{a} - \mathbf{b} + \mathbf{b} - \mathbf{c} \\
+    &= \mathbf{a} - \mathbf{c}
+\end{align*}
+
+\begin{align*}
+    D(\mathbf{a}, \mathbf{b}) + D(\mathbf{b}, \mathbf{c}) &\ge D(\mathbf{a}, \mathbf{c}) \\
+    \|\mathbf{a} - \mathbf{b}\|_k + \|\mathbf{b} - \mathbf{c}\|_k &\ge \|\mathbf{a} - \mathbf{c}\|_k \\
+    \|X\|_k + \|Y\|_k &\ge \|X + Y\|_k \\
+    \left(\|X\|_k + \|Y\|_k\right)^k &\ge \left(\|X + Y\|_k\right)^k
+\end{align*}
+\begin{align*}
+    & \sum_{i=1}^d \left|X_i\right|^k + \sum_{i=1}^d \left|Y_i\right|^k + \sum_{j=1}^{k-1}\binom{k}{j} \|X\|_k^{k-j} \|Y\|_k^j \\
+    \ge & \sum_{i=1}^d \left|X_i\right|^k + \sum_{i=1}^d \left|Y_i\right|^k +
+    \sum_{j=1}^{k-1}\binom{k}{j} \sum_{i=1}^d \left|X_i\right|_k^{k-j} \left|Y_i\right|_k^j
+\end{align*}
+\begin{align*}
+    \sum_{j=1}^{k-1}\binom{k}{j} \|X\|_k^{k-j} \|Y\|_k^j \ge \sum_{j=1}^{k-1}\binom{k}{j}
+    \sum_{i=1}^d \left|X_i\right|_k^{k-j} \left|Y_i\right|_k^j
+\end{align*}
+
+Now, prove \[ \|X\|_k^{k-j} \|Y\|_k^j \ge \sum_{i=1}^d \left|X_i\right|_k^{k-j} \left|Y_i\right|_k^j \]
+
+\begin{align*}
+    \left( \sum x \right)^q &\ge \sum x^q \\
+    \therefore \|X\|_k^{k-j} &\ge \sum_{i=1}^d \left|X_i\right|^{k-j} \\
+    \|Y\|_k^j &\ge \sum_{i=1}^d \left|Y_i\right|^j \\
+    \therefore \|X\|_k^{k-j} \|Y\|_k^j &\ge \sum_{i=1}^d \left|X_i\right|^{k-j} \sum_{i=1}^d \left|Y_i\right|^j \\
+\end{align*}
 
 \newpage
 
-% Problem 2a {{{
-\section{Problem 2a}
+\section{Problem 4} % start_fold_1
+Prove the Euclidean metric \(d\) dimensions is a metric:
+\[D(a,b) = \sqrt{\sum_{i=1}^d \left(a_i - b_i\right)^2}\]
+
 \subsection{Solution}
-% }}}
+\begin{align*}
+    x^2 &= |x|^2 \\
+    \therefore \left(a_i - b_i\right)^2 &= \left|a_i - b_i\right|^2
+\end{align*}
 
-\newpage
+\begin{align*}
+    D(a,b) &= \sqrt{\sum_{i=1}^d \left(a_i - b_i\right)^2} \\
+    &= \sqrt{\sum_{i=1}^d \left|a_i - b_i\right|^2}
+\end{align*}
 
-% Problem 4 {{{
-\section{Problem 4}
-\subsection{Solution}
-% }}}
-
-\newpage
-
-% Problem 16a {{{
-\section{Problem 16a}
-\subsection{Solution}
-% }}}
-
-\newpage
-
-% Problem 16c {{{
-\section{Problem 16c}
-\subsection{Solution}
-% }}}
+Problem 3 showed this is a metric for general power \(k\).
 
 \end{document}
