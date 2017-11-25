@@ -2,10 +2,11 @@
 \usepackage{color}
 \usepackage{amsmath}
 
-\renewcommand{\vec}[1]{\mathbf{#1}}
-\newcommand{\half}{\frac{1}{2}}
-\newcommand{\loss}{\Delta\left(\vec{y}, \vec{y}_i\right)}
+%\renewcommand{\vec}[1]{\mathbf{#1}}
+%\newcommand{\half}{\frac{1}{2}}
+%\newcommand{\loss}{\Delta\left(\vec{y}, \vec{y}_i\right)}
 
+\newcommand{\alert}[1]{}
 \include{equations}
 
 \begin{document}
@@ -29,23 +30,18 @@
 Fuzzy SVM reformulates the SVM to incorporate fuzzy membership data for the classes \cite{991432}. The
 traditional SVM formula
 \svmEquation
-
 becomes
 \fuzzySvmEquation
-%\begin{align}
-%    \min_\vec{w} & \half \vec{w} \cdot \vec{w} + C\sum_{i=1}^ns_i\xi_i \\
-%    \text{s.t. } & \forall i \xi_i \ge 0 \nonumber \\
-%                 & \forall i y_i \left(\vec{w} \cdot \vec{x}_i + b\right) \ge 1 - \xi_i \nonumber
-%\end{align}
 where \(s_i\) is the fuzzy membership.
 
 The dual problem is then
-\begin{align}
-    \max_\alpha & \sum_{i=1}^n \alpha_i - \half \sum_{i=1}^n \sum_{j=1}^n \alpha_i \alpha_j
-    y_i y_j K\left(\vec{x}_i, \vec{x}_j\right) \\
-    \text{s.t. } & \sum_{i=1}^n y_i \alpha_i = 0 \nonumber \\
-                 & 0 \le \alpha_i \le s_iC \nonumber
-\end{align}
+\fuzzyDual
+%\begin{align}
+%    \max_\alpha & \sum_{i=1}^n \alpha_i - \half \sum_{i=1}^n \sum_{j=1}^n \alpha_i \alpha_j
+%    y_i y_j K\left(\vec{x}_i, \vec{x}_j\right) \\
+%    \text{s.t. } & \sum_{i=1}^n y_i \alpha_i = 0 \nonumber \\
+%    & 0 \le \alpha_i \le s_iC \nonumber
+%\end{align}
 
 Fuzzy membership is calculated by a function \(s_i = f(\cdot)\). The exact function depends on the
 classification problem to be solved, but should satisfy \(0 \le \theta \le f(\cdot) \le 1\).

@@ -1,0 +1,49 @@
+\section{Fuzzy SVM}
+
+\begin{frame}
+    \frametitle{What is a fuzzy SVM?}
+    \begin{itemize}
+        \item Add fuzzy class membership to SVMs \cite{991432}
+        \item Input data becomes \(\left(\vec{x}_i, y_i, s_i\right)\)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Converting traditional SVM to fuzzy SVM}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            Traditional SVM
+            \svmEquation
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            Fuzzy SVM
+            \fuzzySvmEquation
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Converting traditional SVM to fuzzy SVM}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            Traditional SVM Dual Optimization
+            \traditionalDual
+            If \(\alpha_i = C\), \(\left(\vec{x}_i, y_i\right)\) is misclassified.
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            Fuzzy SVM Dual Optimization
+            \fuzzyDual
+            As \(s_i \to 0\), the bound on \(\alpha_i\) tightens.
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Defining fuzzy membership}
+    \begin{itemize}
+        \item Fuzzy membership is dependent on the classification problem
+        \item Define a lower bound, \(\theta \in [0, 1]\)
+        \item Define \(f(\cdot) \in [\theta, 1]\) based on a property of the data
+        \item \(s_i = f(\cdot)\)
+    \end{itemize}
+\end{frame}
