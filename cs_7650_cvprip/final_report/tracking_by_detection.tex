@@ -1,6 +1,24 @@
 \section{Tracking by Detection}
 
 \begin{frame}
+    \frametitle{How do we track an object from frame to frame?}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \begin{figure}
+                \includegraphics[width=0.9\textwidth]{surfer_marked}
+                \caption{Initial frame: The surfer location is known.}
+            \end{figure}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{figure}
+                \includegraphics[width=0.9\textwidth]{surfer_unmarked}
+                \caption{Subsequent frame: Where is the surfer?}
+            \end{figure}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
     \frametitle{Tracking can be treated as an object detection problem.}
     \begin{columns}[T]
         \begin{column}{0.5\textwidth}
@@ -19,4 +37,3 @@
         \end{column}
     \end{columns}
 \end{frame}
-
