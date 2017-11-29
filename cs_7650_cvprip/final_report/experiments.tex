@@ -20,9 +20,9 @@
         \item Set up as described in their paper:
             \begin{itemize}
                 \item Haar features
-                \item Gaussian kernel \(\sigma\) = 0.2
-                \item \(C \in [1, 100]\)
-                \item Search radius \(r\) = 30 pixels
+                \item Gaussian kernel with \(\sigma\) = 0.2
+                \item \(C \in \{1, 2, ..., 100\}\)
+                \item Search radius = 30 pixels
                 \item SVM budget = 100
                 \item Frame size = 320 x 240
                 \item Random seed = 0
@@ -37,10 +37,11 @@
         \KwIn{Sequences}
         \Begin(Run experiments)
         {
-            \ForEach{\(C \in [1, 100]\)}
+            \ForEach{\(C \in \{1, 100\}\)}
             {
                 \ForEach{Sequence}
                 {
+                    Update configuration file\;
                     Run Struck\;
                     Compare output with ground truth\;
                     Record mean IoU\;
@@ -55,20 +56,6 @@
     \frametitle{Results}
     \begin{center}
         \input{results}
-        %\begin{tabular}{l c c c }
-        %    \toprule
-        %    Video & Struck\textsubscript{\cite{6126251}} & Struck\textsubscript{Mine} & Weighted Struck \\
-        %    \midrule
-        %    Coke      &         0.57  & \textbf{0.88} &         0.84  \\
-        %    David     &         0.80  & \textbf{0.86} &         0.48  \\
-        %    Face 1    & \textbf{0.86} & \textbf{0.86} &         0.81  \\
-        %    Face 2    & \textbf{0.86} &         0.80  &         0.80  \\
-        %    Girl      & \textbf{0.80} &         0.68  &         0.67  \\
-        %    Sylvester &         0.68  & \textbf{0.86} & \textbf{0.86} \\
-        %    Tiger 1   &         0.70  &         0.67  & \textbf{0.74} \\
-        %    Tiger 2   &         0.57  &         0.67  & \textbf{0.68} \\
-        %    \bottomrule
-        %\end{tabular}
     \end{center}
 \end{frame}
 
