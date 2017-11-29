@@ -1,0 +1,130 @@
+\documentclass{IEEEtran}
+\usepackage{amsmath}
+\title{CS 7650 Assignment 2}
+\author{Brendan Robeson}
+\date{2017 Fall}
+
+\begin{document}
+\maketitle
+
+% Problem 1a {{{
+\section{Problem 1a}
+% }}}
+
+\newpage
+
+% Problem 1b {{{
+\section{Problem 1b}
+\[p(x|\theta) = \begin{cases}
+    \theta e^{-\theta x} & x \ge 0 \\
+    0 & \text{otherwise}
+\end{cases}\]
+\subsection{Solution}
+\begin{align*}
+    \l(\theta) &= \sum_{k=1}^n \ln p\left(x_k|\theta\right) \\
+    &= \sum_k \left(\ln \theta - \theta x_k\right) \\
+    &= n \ln \theta - \theta \sum_k x_k
+\end{align*}
+\[\nabla_\theta l(\theta) = \frac{n}{\theta} - \sum_k x_k - 0\]
+\[\hat{\theta} = \frac{1}{\frac{1}{n} \sum_k x_k}\]
+% }}}
+
+\newpage
+
+% Problem 1c {{{
+\section{Problem 1c}
+\begin{align*}
+    p(x|\theta) &= \theta e^{-\theta x} \quad\text{for}\quad x \ge 0 \\
+    &= e^{-x} \quad\text{for}\quad \theta = 1
+\end{align*}
+\subsection{Solution}
+\begin{align*}
+    \frac{1}{n} \sum_k x_k &\approx \int\limits_0^\infty xp(x)dx \\
+    &= \int\limits_0^\infty xe^{-x}dx \\
+    &= 1
+\end{align*}
+\[\hat{\theta} = 1\]
+% }}}
+
+\newpage
+
+% Problem 2a {{{
+\section{Problem 2a}
+\subsection{Solution}
+\begin{align*}
+    p(D|\theta) &= \prod_{k=1}^{n}p(x_k|\theta) \\
+    &= \prod_k \frac{1}{\theta} \\
+    &= \frac{1}{\theta^n}
+\end{align*}
+\(p(D|\theta)\) will decrease as \(\theta\) increases, therefore use \(\theta_{min}\). \(\theta_{min} \ge \max_k x_k\). \(\max_k x_k\) is \(max\left(D\right)\).
+% }}}
+
+\newpage
+
+% Problem 4 {{{
+\section{Problem 4}
+\[P(x|\theta) = \prod_{i=1}^d \theta_i^{x_i} \left(1 - \theta_i\right)^{1 - x_i}\]
+\subsection{Solution}
+\begin{align*}
+    p(X_1, X_2, ..., X_n|\theta) &= \prod_{k=1}^n \prod_i \theta_i^{x_i} \left(1 - \theta_i\right)^{1 - x_i} \\
+    l(\theta) &= \sum_k \sum_i x_{ki} \ln \theta_i + \left(1 - x_{ki}\right) \ln\left(1 - \theta_i\right) \\
+\end{align*}
+\begin{align*}
+    \nabla l(\theta) &= 0 \\
+    \left[\nabla l(\theta)\right]_i &= \frac{1}{\theta_i} \sum_k x_{ki} - \frac{1}{1 - \theta_i} \sum_k \left(1 - x_{ki}\right) = 0 \\
+    \frac{1}{\theta_i} \sum_k x_{ki} &= \frac{1}{1 - \theta_i} \sum_k \left(1 - x_{ki}\right) \\
+    \left(1 - \theta_i\right) \sum_k x_{ki} &= \theta_i \sum_k \left(1 - x_{ki}\right) \\
+    \left(1 - \theta_i\right) \sum_k x_{ki} &= \theta_i \left(n - \sum_k x_{ki}\right) \\
+\end{align*}
+\begin{align*}
+    \hat{\theta}_i &= \frac{1}{n}\sum_k x_{ki} \\
+    \hat{\theta} &=  \frac{1}{n}\sum_k x_{k}
+\end{align*}
+% }}}
+
+\newpage
+
+% Problem 16a {{{
+\section{Problem 16a}
+\begin{align*}
+    \left(\textbf{A}^{-1} + \textbf{B}^{-1}\right)^{-1} &= \textbf{A} \left(\textbf{A} + \textbf{B}\right)^{-1}\textbf{B} \\
+                                                        &= \textbf{B} \left(\textbf{A} + \textbf{B}\right)^{-1}\textbf{A}
+\end{align*}
+
+\subsection{Solution}
+\begin{align*}
+    \textbf{A} \left(\textbf{A} + \textbf{B}\right)^{-1}\textbf{B} &= \textbf{A} \left[\left(\textbf{A} + \textbf{B}\right)^{-1} \left(\textbf{B}^{-1}\right)^{-1}\right] \\
+    &= \textbf{A} \left[\textbf{B}^{-1} \left(\textbf{A} + \textbf{B}\right)\right]^{-1} \\
+    &= \textbf{A} \left(\textbf{B}^{-1}\textbf{A} + \textbf{B}^{-1}\textbf{B}\right)^{-1} \\
+    &= \textbf{A} \left(\textbf{B}^{-1}\textbf{A} + \textbf{I}\right)^{-1} \\
+    &= \left(\textbf{A}^{-1}\right)^{-1} \left(\textbf{B}^{-1}\textbf{A} + \textbf{I}\right)^{-1} \\
+    &= \left[\left(\textbf{B}^{-1}\textbf{A} + \textbf{I}\right)^{-1} \left(\textbf{A}^{-1}\right)^{-1}\right]^{-1} \\
+    &= \left(\textbf{B}^{-1}\textbf{A}\textbf{A}^{-1} + \textbf{A}^{-1}\right)^{-1} \\
+    &= \left(\textbf{B}^{-1}\textbf{I} + \textbf{A}^{-1}\right)^{-1} \\
+    &= \left(\textbf{B}^{-1} + \textbf{A}^{-1}\right)^{-1} \\
+    &= \left(\textbf{A}^{-1} + \textbf{B}^{-1}\right)^{-1} 
+\end{align*}
+% }}}
+
+\newpage
+
+% Problem 16c {{{
+\section{Problem 16c}
+\begin{align}
+    \tag{42} \Sigma_n^{-1} = n\Sigma^{-1} + \Sigma_0^{-1}
+\end{align}
+\subsection{Solution}
+\begin{align*}
+    \Sigma_n^{-1} &= n\Sigma^{-1} + \Sigma_0^{-1} \\
+    \left(\Sigma_n^{-1}\right)^{-1} &= \left(n\Sigma^{-1} + \Sigma_0^{-1}\right)^{-1} \\
+    \Sigma_n &= \left(n\Sigma^{-1} + \Sigma_0^{-1}\right)^{-1}
+\end{align*}
+Let \(A = \frac{1}{n}\Sigma\) and \(B = \Sigma_0\). Then
+\begin{align*}
+    \Sigma_n &= \left(A^{-1} + B^{-1}\right)^{-1} \\
+    &= A \left(A + B\right)^{-1} B \\
+    &= \frac{1}{n} \Sigma \left(\frac{1}{n} \Sigma + \Sigma_0\right)^{-1} \Sigma_0
+\end{align*}
+% }}}
+
+\end{document}
