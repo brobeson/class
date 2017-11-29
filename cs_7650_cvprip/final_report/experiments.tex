@@ -1,0 +1,88 @@
+\section{Experiments}
+
+\begin{frame}
+    \frametitle{Data sets}
+    \url{http://vision.ucsd.edu/~bbabenko/project_miltrack.html}
+    \begin{itemize}
+        \item 12 sequences
+        \item 8 used in \cite{6126251}.
+    \end{itemize}
+    \url{http://alov300.org/}
+    \begin{itemize}
+        \item 314 sequences used in \cite{6671560}.
+        \item Categorized to test various object tracking challenges.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Experimental Setup}
+    \begin{itemize}
+        \item Set up as described in their paper:
+            \begin{itemize}
+                \item Haar features
+                \item Gaussian kernel \(\sigma\) = 0.2
+                \item \(C \in [1, 100]\)
+                \item Search radius \(r\) = 30 pixels
+                \item SVM budget = 100
+                \item Frame size = 320 x 240
+                \item Random seed = 0
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Scripting the Experiments}
+    \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \KwIn{Sequences}
+        \Begin(Run experiments)
+        {
+            \ForEach{\(C \in [1, 100]\)}
+            {
+                \ForEach{Sequence}
+                {
+                    Run Struck\;
+                    Compare output with ground truth\;
+                    Record mean IoU\;
+                }
+            }
+        }
+        \KwOut{IoU results}
+    \end{algorithm}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Results}
+    \begin{center}
+        \input{results}
+        %\begin{tabular}{l c c c }
+        %    \toprule
+        %    Video & Struck\textsubscript{\cite{6126251}} & Struck\textsubscript{Mine} & Weighted Struck \\
+        %    \midrule
+        %    Coke      &         0.57  & \textbf{0.88} &         0.84  \\
+        %    David     &         0.80  & \textbf{0.86} &         0.48  \\
+        %    Face 1    & \textbf{0.86} & \textbf{0.86} &         0.81  \\
+        %    Face 2    & \textbf{0.86} &         0.80  &         0.80  \\
+        %    Girl      & \textbf{0.80} &         0.68  &         0.67  \\
+        %    Sylvester &         0.68  & \textbf{0.86} & \textbf{0.86} \\
+        %    Tiger 1   &         0.70  &         0.67  & \textbf{0.74} \\
+        %    Tiger 2   &         0.57  &         0.67  & \textbf{0.68} \\
+        %    \bottomrule
+        %\end{tabular}
+    \end{center}
+\end{frame}
+
+%\begin{frame}
+%    \frametitle{Continous IoU}
+%    \begin{center}
+%        \includegraphics[height=0.8\textheight]{ious}
+%    \end{center}
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{Sample frame}
+%    \begin{center}
+%        \includegraphics[height=0.9\textheight]{tiger1_210}
+%    \end{center}
+%\end{frame}
+
