@@ -19,7 +19,7 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Tracking can be treated as an object detection problem. \cite{6671560}}
+    \frametitle{Tracking can be treated as an object detection problem.}
     \begin{columns}[T]
         \begin{column}{0.5\textwidth}
             \begin{description}
@@ -45,4 +45,21 @@
             \end{itemize}
         \end{column}
     \end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Proposal: Fuzzy Struck}
+    \begin{itemize}
+        \item Fuzzy SVM incorporates fuzzy logic membership into an SVM. \cite{991432}
+        \item Struck uses a structured output SVM. \cite{6126251} \cite{Schwenker2014}
+        \item Overall, best performance in a recent survey. \cite{6671560}
+        \item Two issues:
+            \begin{itemize}
+                \item Training samples often contain some object features and some background
+                    features.
+                \item Target object can change appearance over time, but this is not considered in
+                    Struck.
+            \end{itemize}
+        \item Combine fuzzy SVM with Struck's SVM.
+    \end{itemize}
 \end{frame}

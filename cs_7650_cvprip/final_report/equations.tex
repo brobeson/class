@@ -58,7 +58,30 @@
         \text{s.t. } & \xi_i \ge 0 \nonumber \\
         & \forall \vec{y} \ne \vec{y}_i : \langle \vec{w}, \delta \vec{\Phi}_i(\vec{y}) \rangle \ge \loss - \xi_i \nonumber
     \end{align}
-    %\begin{align}
-    %    \delta \vec{\Phi}_i \left( \vec{y} \right) &= \vec{\Phi} \left( \vec{x}_i, \vec{y}_i \right) - \vec{\Phi} \left( \vec{x}_i, \vec{y} \right)
-    %\end{align}
+}
+
+\def\struckDualAlpha
+{
+    \begin{align}
+        \max_\alpha & \sum_{i,\vec{y} \ne \vec{y}_i} \loss \alpha_i^\vec{y} - \half
+        \sum_{i, \vec{y} \ne \vec{y}_i} \sum_{j, \vec{y} \ne \vec{y}_j} \alpha_i^\vec{y}
+        \alpha_j^\vec{\bar{y}} \delta \vec{\Phi}_i( \vec{y} ) \cdot \delta \vec{\Phi}_j(
+        \vec{\bar{y}} ) \\
+        \text{s.t. } & \forall \vec{y} \ne \vec{y}_i : \alpha_i^\vec{y} \ge 0 \nonumber \\
+        & \sum_{\vec{y} \ne \vec{y}_i} \alpha_i^\vec{y} \le C \nonumber
+    \end{align}
+}
+
+\def\struckDualBeta
+{
+    \begin{align}
+        \max_\beta & - \sum_{i, \vec{y}} \loss \beta_i^\vec{y} - \half \sum_{i, \vec{y}, j,
+        \vec{\bar{y}}} \beta_i^\vec{y} \beta_j^\vec{\bar{y}} \vec{\Phi} \left( \vec{x}_i, \vec{y}
+        \right) \cdot \vec{\Phi} \left( \vec{x}_j, \vec{\bar{y}} \right) \\
+        \text{s.t. } & \forall \vec{y} : \beta_i^\vec{y} \le \begin{cases}
+            0 & \vec{y} \ne \vec{y}_i \\
+            C & \vec{y} = \vec{y}_i
+        \end{cases} \nonumber \\
+        & \sum_\vec{y} \beta_i^\vec{y} = 0 \nonumber
+    \end{align}
 }

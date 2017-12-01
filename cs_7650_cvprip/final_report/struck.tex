@@ -9,19 +9,6 @@
         \item \(f\) is learned in a structured output SVM.
         \item Use a discriminant function \(F : \mathcal{X} \times \mathcal{Y} \to \mathbb{R}\)
             \struckDiscriminant
-            %\struckEquation
-
-            %\begin{align}
-            %    F &: \mathcal{X} \times \mathcal{Y} \rightarrow \mathbb{R} \\
-            %    F\left(\mathbf{x}, \mathbf{y}\right) &= \sum_{i, \mathbf{\bar{y}}} \beta_i^\mathbf{\bar{y}}
-            %        \langle \mathbf{\Phi}\left(\mathbf{x}_i, \mathbf{\bar{y}}\right),
-            %        \mathbf{\Phi}\left(\mathbf{x}, \mathbf{y}\right) \rangle \\
-            %    \label{eq:discriminant_function}
-            %    F\left(\mathbf{x}, \mathbf{y}\right) &= \sum_{i, \mathbf{\bar{y}}} \beta_i^\mathbf{\bar{y}}
-            %        \langle \kappa\left(\mathbf{x}_i, \mathbf{\bar{y}}\right),
-            %        \kappa\left(\mathbf{x}, \mathbf{y}\right) \rangle \\
-            %    \mathbf{y}_t &= \argmax\limits_{y \in \mathcal{Y}} F \left( \mathbf{x}_t^{\mathbf{p}_{t-1}}, \mathbf{y} \right)
-            %\end{align}
     \end{itemize}
 \end{frame}
 
@@ -40,8 +27,24 @@
                 \item \(\Delta \left(\vec{y}, \bar{\vec{y}} \right) \to 0\) as \(\vec{y} \to
                     \bar{\vec{y}}\)
                 \item For Struck, \(\loss = 1 - s_{\vec{p}_t}^o \left( \vec{y}, \vec{\bar{y}}
-                    \right) \)
+                    \right) \) (1 - bounding box overlap)
             \end{itemize}
         \end{column}
     \end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Optimizing Struck SVM}
+    Optimizing according to LaRank \cite{Bordes:2007:SMS:1273496.1273508}
+    \struckDualAlpha
+\end{frame}
+
+\begin{frame}
+    \frametitle{Reparametrizing the Optimization}
+    Reparametrizing in terms of \(\beta\) \cite{Bordes:2007:SMS:1273496.1273508}
+    \[ \beta_i^\vec{y} = \begin{cases}
+        -\alpha_i^\vec{y} & \vec{y} \ne \vec{y}_i \\
+        \sum_{\vec{\bar{y}} \ne \vec{y}_i} \alpha_i^\vec{\bar{y}} & \vec{y} = \vec{y}_i
+    \end{cases} \]
+    \struckDualBeta
 \end{frame}

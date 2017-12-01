@@ -1,11 +1,12 @@
 \section{Fuzzy SVM}
 
 \begin{frame}
-    \frametitle{What is a fuzzy SVM?}
+    \frametitle{What is a fuzzy SVM? \cite{991432}}
     \begin{itemize}
         \item Add fuzzy class membership to SVMs
-        \item Input data becomes \(\left(\vec{x}_i, y_i, s_i\right)\) where \(s_i \in [0, 1]\)
-        \item From Lin \& Wang, 2002 \cite{991432}
+        \item Training data becomes \(\left(\vec{x}_i, y_i, s_i\right)\)
+        \item \(s_i\) is the fuzzy membership of feature vector \(\vec{x}_i\) in class \(y_i\).
+        \item \(s_i \in [0, 1]\)
     \end{itemize}
 \end{frame}
 
@@ -29,7 +30,9 @@
         \begin{column}{0.5\textwidth}
             Traditional SVM Dual Optimization
             \traditionalDual
-            If \(\alpha_i = C\), \(\left(\vec{x}_i, y_i\right)\) is misclassified.
+            For \(\vec{x}_i\) with \(0 < \alpha_i < C\), \(\vec{x}_i\) is a support vector.
+
+            If \(\alpha_i = C\), \(\vec{x}_i\) is erroneous.
         \end{column}
         \begin{column}{0.5\textwidth}
             Fuzzy SVM Dual Optimization
