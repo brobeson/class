@@ -43,3 +43,22 @@
     & 0 \le \alpha_i \le \alert{s_i} C \nonumber
 \end{align}
 }
+
+\def\struckDiscriminant
+{
+    \begin{align}
+        \vec{y}_t = \argmax_{\vec{y} \in \mathcal{Y}} F\left(\vec{x}_t^{\vec{p}_{t-1}}, \vec{y}\right)
+    \end{align}
+}
+
+\def\struckEquation
+{
+    \begin{align}
+        \min_\vec{w} & \half \vec{w} \cdot \vec{w} + C \sum_{i=1}^n \xi_i \\
+        \text{s.t. } & \xi_i \ge 0 \nonumber \\
+        & \forall \vec{y} \ne \vec{y}_i : \langle \vec{w}, \delta \vec{\Phi}_i(\vec{y}) \rangle \ge \loss - \xi_i \nonumber
+    \end{align}
+    %\begin{align}
+    %    \delta \vec{\Phi}_i \left( \vec{y} \right) &= \vec{\Phi} \left( \vec{x}_i, \vec{y}_i \right) - \vec{\Phi} \left( \vec{x}_i, \vec{y} \right)
+    %\end{align}
+}

@@ -1,0 +1,47 @@
+\section{Struck}
+
+\begin{frame}
+    \frametitle{Structured output tracking with kernels \cite{6126251}}
+    \begin{itemize}
+        \item Don't learn a binary classifier. Learn a prediction function: \(f : \mathcal{X} \rightarrow \mathcal{Y}\).
+        \item Labelled sample is \((\mathbf{x}, \mathbf{y})\).
+        \item \(\mathbf{y}\) is a translation in image space.
+        \item \(f\) is learned in a structured output SVM.
+        \item Use a discriminant function \(F : \mathcal{X} \times \mathcal{Y} \to \mathbb{R}\)
+            \struckDiscriminant
+            %\struckEquation
+
+            %\begin{align}
+            %    F &: \mathcal{X} \times \mathcal{Y} \rightarrow \mathbb{R} \\
+            %    F\left(\mathbf{x}, \mathbf{y}\right) &= \sum_{i, \mathbf{\bar{y}}} \beta_i^\mathbf{\bar{y}}
+            %        \langle \mathbf{\Phi}\left(\mathbf{x}_i, \mathbf{\bar{y}}\right),
+            %        \mathbf{\Phi}\left(\mathbf{x}, \mathbf{y}\right) \rangle \\
+            %    \label{eq:discriminant_function}
+            %    F\left(\mathbf{x}, \mathbf{y}\right) &= \sum_{i, \mathbf{\bar{y}}} \beta_i^\mathbf{\bar{y}}
+            %        \langle \kappa\left(\mathbf{x}_i, \mathbf{\bar{y}}\right),
+            %        \kappa\left(\mathbf{x}, \mathbf{y}\right) \rangle \\
+            %    \mathbf{y}_t &= \argmax\limits_{y \in \mathcal{Y}} F \left( \mathbf{x}_t^{\mathbf{p}_{t-1}}, \mathbf{y} \right)
+            %\end{align}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Struck SVM}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \struckEquation
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{itemize}
+                \item \(\delta \vec{\Phi}_i \left( \vec{y} \right) = \vec{\Phi} \left( \vec{x}_i, \vec{y}_i \right) - \vec{\Phi} \left( \vec{x}_i, \vec{y} \right)\)
+                \item \(\Delta\) is a loss function
+                \item \(\Delta \left(\vec{y}, \bar{\vec{y}} \right) = 0\) iff \(\vec{y} =
+                    \bar{\vec{y}}\)
+                \item \(\Delta \left(\vec{y}, \bar{\vec{y}} \right) \to 0\) as \(\vec{y} \to
+                    \bar{\vec{y}}\)
+                \item For Struck, \(\loss = 1 - s_{\vec{p}_t}^o \left( \vec{y}, \vec{\bar{y}}
+                    \right) \)
+            \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}

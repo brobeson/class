@@ -19,20 +19,28 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Tracking can be treated as an object detection problem.}
+    \frametitle{Tracking can be treated as an object detection problem. \cite{6671560}}
     \begin{columns}[T]
         \begin{column}{0.5\textwidth}
             \begin{description}
-                \item [Tracking by detection] Object detection in each frame.
-                \item [Adaptive tracking by detection] Update the classifier online.
+                \item [Tracking by detection] Attempt to detect the object in each frame.
+                %\item [Adaptive tracking by detection] Update the classifier online.
             \end{description}
+            \begin{itemize}
+                \item Transform a tracking problem into an object detection problem.
+                \item Can use prior knowledge to assist the detection.
+                \item For example, in the previous frame, the object was here. In this frame, it's
+                    unlikely to be way over there.
+            \end{itemize}
         \end{column}
         \begin{column}{0.5\textwidth}
             \begin{itemize}
                 \item The algorithm operates on frame \(f_t\), for \(t \in \{1, 2, ..., T\}\).
                 \item The tracker estimates a bounding box position, \(\mathbf{p}\).
-                \item Extract features \(\mathbf{x}_t^\mathbf{p}\) from patches within the bounding box.
-                \item Train the classifier with \((\mathbf{x}, y)\), where \(y = \pm1\).
+                \item Extract features \(\mathbf{x}_t^\mathbf{p}\) from patches within the bounding
+                    box. \alert{Is this correct?}
+                \item Train the classifier with \((\mathbf{x}, y)\), where \(y \in \{-1, 1\}\).
+                \item \alert{Enumerate some of the solution classes.}
             \end{itemize}
         \end{column}
     \end{columns}
