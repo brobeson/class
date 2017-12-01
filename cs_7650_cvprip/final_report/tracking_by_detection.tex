@@ -36,11 +36,12 @@
         \begin{column}{0.5\textwidth}
             \begin{itemize}
                 \item The algorithm operates on frame \(f_t\), for \(t \in \{1, 2, ..., T\}\).
-                \item The tracker estimates a bounding box position, \(\mathbf{p}\).
-                \item Extract features \(\mathbf{x}_t^\mathbf{p}\) from patches within the bounding
-                    box. \alert{Is this correct?}
-                \item Train the classifier with \((\mathbf{x}, y)\), where \(y \in \{-1, 1\}\).
-                \item \alert{Enumerate some of the solution classes.}
+                \item Sample \(f_t\) around position \(\vec{p}_{t-1}\).
+                \item Extract features \(\vec{x}_i\) for each sample.
+                \item Input features to a classifier.
+                \item Classifier determines which feature corresponds to the tracked object.
+                \item Determine new position \(\vec{p}_t\).
+                \item Retrain the classifier with new features. \alert{optional}
             \end{itemize}
         \end{column}
     \end{columns}
