@@ -56,7 +56,7 @@
     \begin{align}
         \min_\vec{w} & \half \vec{w} \cdot \vec{w} + C \sum_{i=1}^n \xi_i \\
         \text{s.t. } & \xi_i \ge 0 \nonumber \\
-        & \forall \vec{y} \ne \vec{y}_i : \langle \vec{w}, \delta \vec{\Phi}_i(\vec{y}) \rangle \ge \loss - \xi_i \nonumber
+        & \forall \vec{y} \ne \vec{y}_i : \vec{w} \cdot \delta \vec{\Phi}_i(\vec{y}) \ge \loss - \xi_i \nonumber
     \end{align}
 }
 
@@ -84,4 +84,126 @@
         \end{cases} \nonumber \\
         & \sum_\vec{y} \beta_i^\vec{y} = 0 \nonumber
     \end{align}
+}
+
+\def\struckNewDiscriminant
+{
+    \[ F(\vec{x}, \vec{y}) = \sum_{j, \vec{\bar{y}}} \beta_j^\vec{\bar{y}} \vec{\Phi} \left( \vec{x}_i, \vec{y}
+        \right) \cdot \vec{\Phi} \left( \vec{x}_j, \vec{\bar{y}} \right) \]
+}
+
+\def\struckGradients
+{
+    \begin{align}
+        g_i(\vec{y}) &= -\loss - \sum_{j, \vec{\bar{y}}} \beta_j^\vec{\bar{y}} \vec{\Phi} \left( \vec{x}_i, \vec{y}
+        \right) \cdot \vec{\Phi} \left( \vec{x}_j, \vec{\bar{y}} \right) \nonumber \\
+        &= -\loss -F \left( \vec{x}_i, \vec{y} \right)
+    \end{align}
+}
+
+\def\struckWeightChange
+{
+    \begin{align*}
+        \vec{\bar{w}} &= \vec{w} - \beta_r^\vec{y} \vec{\Phi} \left( \vec{x}_r, \vec{y} \right) +
+        \beta_r^\vec{y} \vec{\Phi} \left( \vec{x}_r, \vec{y}_r \right) \\
+        \|\Delta \vec{w}\|^2 &= \beta_r^{\vec{y}^2} \left[ \vec{\Phi} \left( \vec{x}_r, \vec{y}
+        \right) \cdot \vec{\Phi} \left( \vec{x}_r, \vec{y} \right) + \vec{\Phi} \left( \vec{x}_r,
+        \vec{y}_r \right) \cdot \vec{\Phi} \left( \vec{x}_r, \vec{y}_r \right) - 2 \vec{\Phi} \left(
+        \vec{x}_r, \vec{y} \right) \cdot \vec{\Phi} \left( \vec{x}_r, \vec{y}_r \right) \right]
+    \end{align*}
+}
+
+\def\struckSmo
+{
+    \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \KwIn{\(i, \vec{y}_-, \vec{y}_+\)}
+        \Begin(SMO Step)
+        {
+            \(\lambda^u = \frac{g_i(\vec{y}_+) - g_i(\vec{y}_-)}{K_{++} + K_{--} -2K_{+-}}\)\;
+            \(\lambda = max(0, min(\lambda^u, C \delta (\vec{y}_+, \vec{y}_-) - \beta_i^{\vec{y}_+})) \)\;
+            \(\beta_i^{\vec{y}_+} \gets \beta_i{\vec{y}_+} + \lambda\)\;
+            \(\beta_i^{\vec{y}_-} \gets \beta_i{\vec{y}_-} - \lambda\)\;
+            \ForEach{\((\vec{x}_j, \vec{y}) \in \mathcal{S}\)}
+            {
+                \(K_0 = \vec{\Phi} (\vec{x}_j, \vec{y}) \cdot \vec{\Phi} (\vec{x}_i, \vec{y}_+)\)\;
+                \(K_1 = \vec{\Phi} (\vec{x}_j, \vec{y}) \cdot \vec{\Phi} (\vec{x}_i, \vec{y}_-)\)\;
+                \(g_j(\vec{y}) \gets g_j(\vec{y}) - \lambda (K_0 - K_1)\)\;
+            }
+        }
+    \end{algorithm}
+}
+
+\def\fuzzyStruckEquation
+{
+    \begin{align}
+        \min_\vec{w} & \half \vec{w} \cdot \vec{w} + C \sum_{i=1}^n \alert{s_i} \xi_i \\
+        \text{s.t. } & \alert{s_i} \xi_i \ge 0 \nonumber \\
+        & \forall \vec{y} \ne \vec{y}_i : \vec{w} \cdot \delta \vec{\Phi}_i(\vec{y}) \ge
+        \loss - \alert{s_i} \xi_i \nonumber
+    \end{align}
+}
+
+\def\fuzzyStruckDualAlpha
+{
+    \begin{align}
+        \max_\alpha & \sum_{i,\vec{y} \ne \vec{y}_i} \loss \alpha_i^\vec{y} - \half
+        \sum_{i, \vec{y} \ne \vec{y}_i} \sum_{j, \vec{y} \ne \vec{y}_j} \alpha_i^\vec{y}
+        \alpha_j^\vec{\bar{y}} \delta \vec{\Phi}_i( \vec{y} ) \cdot \delta \vec{\Phi}_j(
+        \vec{\bar{y}} ) \\
+        \text{s.t. } & \forall \vec{y} \ne \vec{y}_i : \alpha_i^\vec{y} \ge 0 \nonumber \\
+        & \sum_{\vec{y} \ne \vec{y}_i} \alpha_i^\vec{y} \le \alert{s_i} C \nonumber
+    \end{align}
+}
+
+\def\fuzzyStruckDualBeta
+{
+    \begin{align}
+        \max_\beta & - \sum_{i, \vec{y}} \loss \beta_i^\vec{y} - \half \sum_{i, \vec{y}, j,
+        \vec{\bar{y}}} \beta_i^\vec{y} \beta_j^\vec{\bar{y}} \vec{\Phi} \left( \vec{x}_i, \vec{y}
+        \right) \cdot \vec{\Phi} \left( \vec{x}_j, \vec{\bar{y}} \right) \\
+        \text{s.t. } & \forall \vec{y} : \beta_i^\vec{y} \le \begin{cases}
+            0 & \vec{y} \ne \vec{y}_i \\
+            \alert{s_i} C & \vec{y} = \vec{y}_i
+        \end{cases} \nonumber \\
+        & \sum_\vec{y} \beta_i^\vec{y} = 0 \nonumber
+    \end{align}
+}
+
+\def\fuzzyStruckFuzziness
+{
+    \[ s_i = \frac{\vec{p}_t \cap \vec{p}_i}{\vec{p}_t \cup \vec{p}_i} \]
+}
+
+\def\fuzzyStruckWeightChange
+{
+    \begin{align*}
+        \vec{\bar{w}} &= \vec{w} - \beta_r^\vec{y} \vec{\Phi} \left( \vec{x}_r, \vec{y} \right) +
+        \beta_r^\vec{y} \vec{\Phi} \left( \vec{x}_r, \vec{y}_r \right) \\
+        &= \vec{w} + \beta_r^\vec{y} \left[ \vec{\Phi} \left( \vec{x}_r, \vec{y}_r \right) -
+        \vec{\Phi} \left( \vec{x}_r, \vec{y} \right) \right] \\
+        \|\Delta \vec{w}\|^2 &= \beta_r^\vec{y} \left[ \vec{\Phi} \left( \vec{x}_r, \vec{y}_r \right) -
+        \vec{\Phi} \left( \vec{x}_r, \vec{y} \right) \right]
+    \end{align*}
+}
+
+\def\fuzzyStruckSmo
+{
+    \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \KwIn{\(i, \vec{y}_-, \vec{y}_+\)}
+        \Begin(SMO Step)
+        {
+            \(\lambda^u = \frac{g_i(\vec{y}_+) - g_i(\vec{y}_-)}{K_{++} + K_{--} -2K_{+-}}\)\;
+            \(\lambda = max(0, min(\lambda^u, \alert{s_i} C \delta (\vec{y}_+, \vec{y}_-) - \beta_i^{\vec{y}_+})) \)\;
+            \(\beta_i^{\vec{y}_+} \gets \beta_i{\vec{y}_+} + \lambda\)\;
+            \(\beta_i^{\vec{y}_-} \gets \beta_i{\vec{y}_-} - \lambda\)\;
+            \ForEach{\((\vec{x}_j, \vec{y}) \in \mathcal{S}\)}
+            {
+                \(K_0 = \vec{\Phi} (\vec{x}_j, \vec{y}) \cdot \vec{\Phi} (\vec{x}_i, \vec{y}_+)\)\;
+                \(K_1 = \vec{\Phi} (\vec{x}_j, \vec{y}) \cdot \vec{\Phi} (\vec{x}_i, \vec{y}_-)\)\;
+                \(g_j(\vec{y}) \gets g_j(\vec{y}) - \lambda (K_0 - K_1)\)\;
+            }
+        }
+    \end{algorithm}
 }

@@ -7,7 +7,10 @@
 %\newcommand{\half}{\frac{1}{2}}
 %\newcommand{\loss}{\Delta\left(\vec{y}, \vec{y}_i\right)}
 
-\newcommand{\alert}[1]{}
+% i have equations defined in a .tex file, which is used by this report, and the presentation. the
+% presentation makes use of beamer's \alert{} macro. but here, \alert{} is not defined. define it so
+% that it just passes through the argument without any additional formatting.
+\newcommand{\alert}[1]{#1}
 \include{equations}
 
 \begin{document}

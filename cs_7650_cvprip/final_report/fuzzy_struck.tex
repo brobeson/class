@@ -1,0 +1,47 @@
+\Group{Fuzzy Struck}
+
+\begin{frame}
+    \frametitle{Fuzzy Struck}
+    \begin{itemize}
+        \item Add fuzziness to the Struck SVM
+    \end{itemize}
+    \fuzzyStruckEquation
+\end{frame}
+
+\begin{frame}
+    \frametitle{Optimizing Fuzzy Struck}
+    Optimizing in terms of \(\alpha\)
+    \fuzzyStruckDualAlpha
+\end{frame}
+
+\begin{frame}
+    \frametitle{Optimizing Fuzzy Struck}
+    Reparametrizing in terms of \(\beta\)
+    \fuzzyStruckDualBeta
+\end{frame}
+
+\begin{frame}
+    \frametitle{Sequential Minimal Optimization Step}
+    \fuzzyStruckSmo
+\end{frame}
+
+\begin{frame}
+    \frametitle{Support vector budget}
+    \struckWeightChange
+    \begin{itemize}
+        \item Remove support vectors with smallest \(s_i\)
+        \item For Struck, minimum change in \(\vec{w}\) can occur due to minimum \(\beta\), or
+            minimum sum of the dot products.
+        \item For Fuzzy Struck, minimum change only comes (indirectly) from minimum \(\beta\).
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{What is the fuzziness membership function?}
+    \fuzzyStruckFuzziness
+    \begin{itemize}
+        \item \(\vec{p}_t\) is the current bounding box of the target
+        \item \(\vec{p}_i\) is the bounding box of sample location \(i\)
+        \item \(s_i \in [0, 1]\)
+    \end{itemize}
+\end{frame}

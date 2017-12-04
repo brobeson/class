@@ -1,4 +1,4 @@
-\section{Struck}
+\Group{Struck}
 
 \begin{frame}
     \frametitle{Structured output tracking with kernels \cite{6126251}}
@@ -47,4 +47,62 @@
         \sum_{\vec{\bar{y}} \ne \vec{y}_i} \alpha_i^\vec{\bar{y}} & \vec{y} = \vec{y}_i
     \end{cases} \]
     \struckDualBeta
+\end{frame}
+
+\begin{frame}
+    \frametitle{Struck terminology}
+    \begin{description}
+        \item [Support vector] \( \left( \vec{x}_i, \vec{y} \right) \) for which \(\beta_i^\vec{y}
+            \ne 0 \)
+        \item [Support pattern] \(\vec{x}_i\) in at least one support vector
+        \item [Positive support vector] Support vector \( \left( \vec{x}_i, \vec{y}_i \right) \)
+            with \( \beta_i^{\vec{y}_i} > 0 \)
+        \item [Negative support vector] Support vector \( \left( \vec{x}_i, \vec{y} \right), \vec{y}
+            \ne \vec{y}_i \) with \( \beta_i^\vec{y} < 0 \)
+    \end{description}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Sequential Minimal Optimization Step}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \struckSmo
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{align*}
+                K_{++} &= \vec{\Phi} (\vec{x}_i, \vec{x}_+) \cdot \vec{\Phi} (\vec{x}_i, \vec{y}_+) \\
+                K_{--} &= \vec{\Phi} (\vec{x}_i, \vec{x}_-) \cdot \vec{\Phi} (\vec{x}_i, \vec{y}_-) \\
+                K_{+-} &= \vec{\Phi} (\vec{x}_i, \vec{x}_-) \cdot \vec{\Phi} (\vec{x}_i, \vec{y}_-) \\
+                \delta(\vec{y}_+, \vec{y}_-) &= \begin{cases}
+                    0 & \vec{y}_+ \ne \vec{y}_- \\
+                    1 & \vec{y}_+ = \vec{y}_-
+                \end{cases}
+            \end{align*}
+            Adapted from \cite{sequential-minimal-optimization-a-fast-algorithm-for-training-support-vector-machines}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+%\begin{frame}
+%    \frametitle{What is the new discriminant function?}
+%    \struckNewDiscriminant
+%\end{frame}
+%
+%\begin{frame}
+%    \frametitle{Calculating the Gradients}
+%    \struckGradients
+%\end{frame}
+
+\begin{frame}
+    \frametitle{Support vector budget}
+    \begin{itemize}
+        \item With each frame, new support vectors are added to the SVM.
+        \item Unbounded number of support vectors increases computation time, and can lead to
+            overfitting.
+        \item Struck imposes a limit on the number of support vectors.
+        \item If the bound is to be exceeded, support vectors are removed, and coefficients are
+            updated.
+        \item Remove vectors which result in the smallest \(\|\Delta \vec{w}\|^2\)
+        \item According to \cite{6126251}: \struckWeightChange
+    \end{itemize}
 \end{frame}

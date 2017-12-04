@@ -5,10 +5,22 @@
 \usepackage{algorithm2e}
 \usepackage{mathtools}
 \usepackage{booktabs}
-\usetheme{metropolis}
-%\usetheme{usu}
+%\usetheme{metropolis}
+\usetheme{usu}
 \setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{}
 %\mode{presentation}
+
+\newcommand{\Group}[1]
+{
+    \section{}
+    \begin{frame}
+        \huge{#1}
+        %\textcolor{aggieblue}{\huge{#1}}
+        \rule[0.5em]{\textwidth}{0.5mm}
+    \end{frame}
+    \section{#1}
+}
 
 \DeclareMathOperator{\struckDelta}{\Delta \left( \mathbf{y}, \mathbf{y}_i \right)}
 \DeclareMathOperator*{\argmax}{arg\,max}
@@ -42,20 +54,18 @@
 \input{tracking_by_detection}
 \input{fuzzy_svm}
 \input{struck}
-%\input{fuzzy_struck}
+\input{fuzzy_struck}
 \input{experiments}
 %\input{conclusion}
 
-% references
-\begin{frame}
-    Source code: \url{https://github.com/brobeson/struck}
-\end{frame}
-
-\begin{frame}
+\section{}
+\begin{frame}[allowframebreaks]
     \frametitle{References}
     %\nocite{*}
     \bibliographystyle{IEEEtran}
     \bibliography{references}
+
+    Source code: \url{https://github.com/brobeson/struck}
 \end{frame}
 
 \end{document}
