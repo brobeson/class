@@ -106,15 +106,16 @@
 
 \def\struckWeightChange
 {
-    \begin{align*}
+    \begin{align}
+        \label{eq:struck_weights}
         \vec{\bar{w}} &= \vec{w} - \beta_r^\vec{y} \vec{\Phi} \left( \vec{x}_r, \vec{y} \right) +
         \beta_r^\vec{y} \vec{\Phi} \left( \vec{x}_r, \vec{y}_r \right) \\
         \|\Delta \vec{w}\|^2 &= \beta_r^{\vec{y}^2} [ \vec{\Phi} \left( \vec{x}_r, \vec{y}
-        \right) \cdot \vec{\Phi} \left( \vec{x}_r, \vec{y} \right) + \\
+        \right) \cdot \vec{\Phi} \left( \vec{x}_r, \vec{y} \right) + \nonumber \\
         & \vec{\Phi} \left( \vec{x}_r,
         \vec{y}_r \right) \cdot \vec{\Phi} \left( \vec{x}_r, \vec{y}_r \right) - 2 \vec{\Phi} \left(
-        \vec{x}_r, \vec{y} \right) \cdot \vec{\Phi} \left( \vec{x}_r, \vec{y}_r \right) ]
-    \end{align*}
+        \vec{x}_r, \vec{y} \right) \cdot \vec{\Phi} \left( \vec{x}_r, \vec{y}_r \right) ] \nonumber
+    \end{align}
 }
 
 \def\struckSmo
