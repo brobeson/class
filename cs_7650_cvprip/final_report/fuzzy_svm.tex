@@ -12,34 +12,30 @@
 
 \begin{frame}
     \frametitle{Converting traditional SVM to fuzzy SVM}
-    \begin{columns}[T]
-        \begin{column}{0.5\textwidth}
-            Traditional SVM
-            \svmEquation
-        \end{column}
-        \begin{column}{0.5\textwidth}
-            Fuzzy SVM
-            \fuzzySvmEquation
-        \end{column}
-    \end{columns}
+    Traditional SVM
+    \svmEquation
 \end{frame}
 
 \begin{frame}
     \frametitle{Converting traditional SVM to fuzzy SVM}
-    \begin{columns}[T]
-        \begin{column}{0.5\textwidth}
-            Traditional SVM Dual Optimization
-            \traditionalDual
-            For \(\vec{x}_i\) with \(0 < \alpha_i < C\), \(\vec{x}_i\) is a support vector.
+    Fuzzy SVM
+    \fuzzySvmEquation
+\end{frame}
 
-            If \(\alpha_i = C\), \(\vec{x}_i\) is erroneous.
-        \end{column}
-        \begin{column}{0.5\textwidth}
-            Fuzzy SVM Dual Optimization
-            \fuzzyDual
-            As \(s_i \to 0\), the bound on \(\alpha_i\) tightens.
-        \end{column}
-    \end{columns}
+\begin{frame}
+    \frametitle{Converting traditional SVM to fuzzy SVM}
+    Traditional SVM Dual Optimization
+    \traditionalDual
+    For \(\vec{x}_i\) with \(0 < \alpha_i < C\), \(\vec{x}_i\) is a support vector.
+
+    If \(\alpha_i = C\), \(\vec{x}_i\) is erroneous.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Converting traditional SVM to fuzzy SVM}
+    Fuzzy SVM Dual Optimization
+    \fuzzyDual
+    As \(s_i \to 0\), the bound on \(\alpha_i\) tightens.
 \end{frame}
 
 \begin{frame}
@@ -51,3 +47,11 @@
         \item \(s_i = f(\cdot)\)
     \end{itemize}
 \end{frame}
+
+\note
+{
+    \begin{align}
+        s_i = f(t_i, t) &= \frac{t_i}{t} \\
+        &= 3\left(\frac{t_i}{t}\right)^2 - 2\left(\frac{t_i}{t}\right)^3
+    \end{align}
+}

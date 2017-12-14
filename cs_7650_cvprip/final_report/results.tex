@@ -1,4 +1,4 @@
-\begin{center}
+%\begin{center}
 %\begin{tabular}{l r r r}
 %    \toprule
 %    Sequence & Struck & \(s_{min}\) removal & no \(s_i = 0\) \\
@@ -18,22 +18,68 @@
 %    \bottomrule
 %\end{tabular}
 
-\begin{tabular}{l r r}
-    \toprule
-    Sequence & Struck & Fuzzy Struck \\
-    \midrule
-    girl     &         0.681729  & \textbf{0.681821} \\
-    surfer   &         0.787232  & \textbf{0.811688} \\
-    tiger1   &         0.674713  & \textbf{0.746060} \\
-    tiger2   &         0.667268  & \textbf{0.679176} \\
-    twinings &         0.903097  & \textbf{0.907482} \\
-    dollar   &         0.765203  &         0.765203  \\
-    faceocc  &         0.853354  &         0.853354  \\
-    cliffbar & \textbf{0.894553} &         0.717940  \\
-    coke11   & \textbf{0.883395} &         0.841359  \\
-    david    & \textbf{0.800847} &         0.434802  \\
-    faceocc2 & \textbf{0.790128} &         0.789270  \\
-    sylv     & \textbf{0.861525} &         0.858211  \\
-    \bottomrule
-\end{tabular}
-\end{center}
+%\begin{tabular}{l r r}
+%    \toprule
+%    Sequence & Struck & Fuzzy Struck \\
+%    \midrule
+%    girl     &         0.681729  & \textbf{0.681821} \\
+%    surfer   &         0.787232  & \textbf{0.811688} \\
+%    tiger1   &         0.674713  & \textbf{0.746060} \\
+%    tiger2   &         0.667268  & \textbf{0.679176} \\
+%    twinings &         0.903097  & \textbf{0.907482} \\
+%    dollar   &         0.765203  &         0.765203  \\
+%    faceocc  &         0.853354  &         0.853354  \\
+%    cliffbar & \textbf{0.894553} &         0.717940  \\
+%    coke11   & \textbf{0.883395} &         0.841359  \\
+%    david    & \textbf{0.800847} &         0.434802  \\
+%    faceocc2 & \textbf{0.790128} &         0.789270  \\
+%    sylv     & \textbf{0.861525} &         0.858211  \\
+%    \bottomrule
+%\end{tabular}
+
+% haar
+%\begin{tabular}{l r r}
+%    \toprule
+%    Sequence & Struck & Fuzzy Struck \\
+%    \midrule
+%    surfer   &         0.78  & \textbf{0.81} \\
+%    tiger1   &         0.67  & \textbf{0.74} \\
+%    tiger2   &         0.66  & \textbf{0.67} \\
+%    girl     &         0.68  &         0.68  \\
+%    twinings &         0.90  &         0.90  \\
+%    dollar   &         0.76  &         0.76  \\
+%    faceocc  &         0.85  &         0.85  \\
+%    cliffbar & \textbf{0.89} &         0.71  \\
+%    coke11   & \textbf{0.88} &         0.84  \\
+%    david    & \textbf{0.80} &         0.43  \\
+%    faceocc2 & \textbf{0.79} &         0.78  \\
+%    sylv     & \textbf{0.86} &         0.85  \\
+%    \bottomrule
+%\end{tabular}
+
+
+% histogram
+\begin{table}[!t]
+    \caption{Averange Bounding Box Overlap}
+    \label{tab:results}
+    \centering
+    \begin{tabular}{l r r}
+        \toprule
+        Sequence & Fuzzy Struck & Struck \\
+        \midrule
+        cliffbar &  \textbf{0.94} &         0.91  \\
+        coke11   &  \textbf{0.94} &         0.93  \\
+        faceocc  &  \textbf{0.89} &         0.88  \\
+        sylv     &  \textbf{0.89} &         0.74  \\
+        tiger1   &  \textbf{0.87} &         0.82  \\
+        tiger2   &  \textbf{0.80} &         0.66  \\
+        twinings &  \textbf{0.92} &         0.87  \\
+        surfer   &          0.86  &         0.86  \\
+        david    &          0.81  & \textbf{0.83} \\
+        dollar   &          0.89  & \textbf{0.90} \\
+        faceocc2 &          0.73  & \textbf{0.76} \\
+        girl     &          0.54  & \textbf{0.60} \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+%\end{center}

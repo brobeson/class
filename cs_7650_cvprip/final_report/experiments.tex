@@ -7,11 +7,6 @@
         \item 12 sequences
         \item 8 used in \cite{6126251}.
     \end{itemize}
-    %\url{http://alov300.org/}
-    %\begin{itemize}
-    %    \item 314 sequences used in \cite{6671560}.
-    %    \item Categorized to test various object tracking challenges.
-    %\end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -60,15 +55,51 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{What went wrong?}
-    \begin{description}
-        \item [cliffbar] The target is lost when it is rotated about Y.
-        \item [coke11] The target is briefly lost when it is rotate about Z.
-        \item [david] Unknown
-        \item [faceocc2] Occluding object "pushes" the bounding box when the face is rotated.
-            Problem with feature vector orientation?
-    \end{description}
+    \frametitle{Experimental Samples}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \begin{figure}
+                \includegraphics[width=0.9\textwidth]{sylv.png}
+                \caption{Blue: Struck, Green: Fuzzy Struck}
+            \end{figure}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{figure}
+                \includegraphics[width=0.9\textwidth]{faceocc2.png}
+                \caption{Blue: Struck, Green: Fuzzy Struck}
+            \end{figure}
+        \end{column}
+    \end{columns}
 \end{frame}
+
+\begin{frame}
+    \frametitle{What else can be done?}
+    \begin{itemize}
+        \item Experiment with different fuzziness functions.
+            \begin{itemize}
+                \item Time: Calculate fuzziness based on current frame number.
+                \item Velocity: Calculate fuzziness based on the target bounding box velocity.
+            \end{itemize}
+        \item Benchmark
+            \begin{itemize}
+                \item \url{http://alov300.org/}
+                \item 314 sequences used in \cite{6671560}.
+                \item Categorized to test various object tracking challenges.
+                \item \alert{Haven't been successful downloading this data set!}
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+%\begin{frame}
+%    \frametitle{What went wrong?}
+%    \begin{description}
+%        \item [cliffbar] The target is lost when it is rotated about Y.
+%        \item [coke11] The target is briefly lost when it is rotate about Z.
+%        \item [david] Unknown
+%        \item [faceocc2] Occluding object "pushes" the bounding box when the face is rotated.
+%            Problem with feature vector orientation?
+%    \end{description}
+%\end{frame}
 
 %\begin{frame}
 %    \frametitle{Continous IoU}

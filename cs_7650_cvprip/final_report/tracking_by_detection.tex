@@ -1,9 +1,3 @@
-%\section{Tracking by Detection}
-%
-%\begin{frame}
-%    \huge{Tracking by Detection}
-%\end{frame}
-
 \Group{Tracking by Detection}
 
 \begin{frame}
@@ -25,32 +19,33 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Tracking can be treated as an object detection problem.}
-    \begin{columns}[T]
-        \begin{column}{0.5\textwidth}
-            \begin{description}
-                \item [Tracking by detection] Attempt to detect the object in each frame.
-                %\item [Adaptive tracking by detection] Update the classifier online.
-            \end{description}
+    \frametitle{What is tracking by detection?}
+    \begin{description}
+        \item [Tracking by detection] Attempt to detect the object in each frame.
+    \end{description}
+    \begin{itemize}
+        \item Transform a tracking problem into an object detection problem.
+        \item Can use prior knowledge to assist the detection.
             \begin{itemize}
-                \item Transform a tracking problem into an object detection problem.
-                \item Can use prior knowledge to assist the detection.
+                \item Previous position
+                \item History of features
                 \item For example, in the previous frame, the object was here. In this frame, it's
                     unlikely to be way over there.
             \end{itemize}
-        \end{column}
-        \begin{column}{0.5\textwidth}
-            \begin{itemize}
-                \item The algorithm operates on frame \(f_t\), for \(t \in \{1, 2, ..., T\}\).
-                \item Sample \(f_t\) around position \(\vec{p}_{t-1}\).
-                \item Extract features \(\vec{x}_i\) for each sample.
-                \item Input features to a classifier.
-                \item Classifier determines which feature corresponds to the tracked object.
-                \item Determine new position \(\vec{p}_t\).
-                \item Retrain the classifier with new features. \alert{optional}
-            \end{itemize}
-        \end{column}
-    \end{columns}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{General tracking by detection algorithm}
+    \begin{itemize}
+        \item The algorithm operates on frame \(f_t\), for \(t \in \{1, 2, ..., T\}\).
+        \item Sample \(f_t\) around position \(\vec{p}_{t-1}\).
+        \item Extract features \(\vec{x}_i\) for each sample.
+        \item Input features to a classifier.
+        \item Classifier determines which feature corresponds to the tracked object.
+        \item Determine new position \(\vec{p}_t\).
+        \item Retrain the classifier with new features. \alert{optional}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -65,6 +60,8 @@
                     features.
                 \item Target object can change appearance over time, but this is not considered in
                     Struck.
+                \item Tricky situation, though. What if the appearance changes, then reverts back to
+                    the original?
             \end{itemize}
         \item Combine fuzzy SVM with Struck's SVM.
     \end{itemize}

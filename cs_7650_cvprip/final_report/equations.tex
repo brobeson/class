@@ -54,35 +54,38 @@
 \def\struckEquation
 {
     \begin{align}
+        \label{eq:struck_svm}
         \min_\vec{w} & \half \vec{w} \cdot \vec{w} + C \sum_{i=1}^n \xi_i \\
-        \text{s.t. } & \xi_i \ge 0 \nonumber \\
-        & \forall \vec{y} \ne \vec{y}_i : \vec{w} \cdot \delta \vec{\Phi}_i(\vec{y}) \ge \loss - \xi_i \nonumber
+        \text{s.t. } & \forall i : \xi_i \ge 0 \nonumber \\
+        & \forall i : \forall \vec{y} \ne \vec{y}_i : \vec{w} \cdot \delta \vec{\Phi}_i(\vec{y}) \ge \loss - \xi_i \nonumber
     \end{align}
 }
 
 \def\struckDualAlpha
 {
     \begin{align}
+        \label{eq:struck_dual_alpha}
         \max_\alpha & \sum_{i,\vec{y} \ne \vec{y}_i} \loss \alpha_i^\vec{y} - \half
-        \sum_{i, \vec{y} \ne \vec{y}_i} \sum_{j, \vec{y} \ne \vec{y}_j} \alpha_i^\vec{y}
+        \sum_{\substack{i, \vec{y} \ne \vec{y}_i \\ j, \vec{y} \ne \vec{y}_j}} \alpha_i^\vec{y}
         \alpha_j^\vec{\bar{y}} \delta \vec{\Phi}_i( \vec{y} ) \cdot \delta \vec{\Phi}_j(
         \vec{\bar{y}} ) \\
-        \text{s.t. } & \forall \vec{y} \ne \vec{y}_i : \alpha_i^\vec{y} \ge 0 \nonumber \\
-        & \sum_{\vec{y} \ne \vec{y}_i} \alpha_i^\vec{y} \le C \nonumber
+        \text{s.t. } & \forall i, \forall \vec{y} \ne \vec{y}_i : \alpha_i^\vec{y} \ge 0 \nonumber \\
+        & \forall i : \sum_{\vec{y} \ne \vec{y}_i} \alpha_i^\vec{y} \le C \nonumber
     \end{align}
 }
 
 \def\struckDualBeta
 {
     \begin{align}
+        \label{eq:struck_dual_beta}
         \max_\beta & - \sum_{i, \vec{y}} \loss \beta_i^\vec{y} - \half \sum_{i, \vec{y}, j,
         \vec{\bar{y}}} \beta_i^\vec{y} \beta_j^\vec{\bar{y}} \vec{\Phi} \left( \vec{x}_i, \vec{y}
         \right) \cdot \vec{\Phi} \left( \vec{x}_j, \vec{\bar{y}} \right) \\
-        \text{s.t. } & \forall \vec{y} : \beta_i^\vec{y} \le \begin{cases}
+        \text{s.t. } & \forall i, \forall \vec{y} : \beta_i^\vec{y} \le \begin{cases}
             0 & \vec{y} \ne \vec{y}_i \\
             C & \vec{y} = \vec{y}_i
         \end{cases} \nonumber \\
-        & \sum_\vec{y} \beta_i^\vec{y} = 0 \nonumber
+        & \forall i : \sum_\vec{y} \beta_i^\vec{y} = 0 \nonumber
     \end{align}
 }
 
@@ -106,16 +109,17 @@
     \begin{align*}
         \vec{\bar{w}} &= \vec{w} - \beta_r^\vec{y} \vec{\Phi} \left( \vec{x}_r, \vec{y} \right) +
         \beta_r^\vec{y} \vec{\Phi} \left( \vec{x}_r, \vec{y}_r \right) \\
-        \|\Delta \vec{w}\|^2 &= \beta_r^{\vec{y}^2} \left[ \vec{\Phi} \left( \vec{x}_r, \vec{y}
-        \right) \cdot \vec{\Phi} \left( \vec{x}_r, \vec{y} \right) + \vec{\Phi} \left( \vec{x}_r,
+        \|\Delta \vec{w}\|^2 &= \beta_r^{\vec{y}^2} [ \vec{\Phi} \left( \vec{x}_r, \vec{y}
+        \right) \cdot \vec{\Phi} \left( \vec{x}_r, \vec{y} \right) + \\
+        & \vec{\Phi} \left( \vec{x}_r,
         \vec{y}_r \right) \cdot \vec{\Phi} \left( \vec{x}_r, \vec{y}_r \right) - 2 \vec{\Phi} \left(
-        \vec{x}_r, \vec{y} \right) \cdot \vec{\Phi} \left( \vec{x}_r, \vec{y}_r \right) \right]
+        \vec{x}_r, \vec{y} \right) \cdot \vec{\Phi} \left( \vec{x}_r, \vec{y}_r \right) ]
     \end{align*}
 }
 
 \def\struckSmo
 {
-    \begin{algorithm}[H]
+    \begin{algorithm}%[H]
         \DontPrintSemicolon
         \KwIn{\(i, \vec{y}_-, \vec{y}_+\)}
         \Begin(SMO Step)
@@ -148,11 +152,11 @@
 {
     \begin{align}
         \max_\alpha & \sum_{i,\vec{y} \ne \vec{y}_i} \loss \alpha_i^\vec{y} - \half
-        \sum_{i, \vec{y} \ne \vec{y}_i} \sum_{j, \vec{y} \ne \vec{y}_j} \alpha_i^\vec{y}
+        \sum_{\substack{i, \vec{y} \ne \vec{y}_i \\ j, \vec{y} \ne \vec{y}_j}} \alpha_i^\vec{y}
         \alpha_j^\vec{\bar{y}} \delta \vec{\Phi}_i( \vec{y} ) \cdot \delta \vec{\Phi}_j(
         \vec{\bar{y}} ) \\
-        \text{s.t. } & \forall \vec{y} \ne \vec{y}_i : \alpha_i^\vec{y} \ge 0 \nonumber \\
-        & \sum_{\vec{y} \ne \vec{y}_i} \alpha_i^\vec{y} \le \alert{s_i} C \nonumber
+        \text{s.t. } & \forall i, \forall \vec{y} \ne \vec{y}_i : \alpha_i^\vec{y} \ge 0 \nonumber \\
+        & \forall i : \sum_{\vec{y} \ne \vec{y}_i} \alpha_i^\vec{y} \le \alert{s_i} C \nonumber
     \end{align}
 }
 
@@ -189,7 +193,7 @@
 
 \def\fuzzyStruckSmo
 {
-    \begin{algorithm}[H]
+    \begin{algorithm}%[H]
         \DontPrintSemicolon
         \KwIn{\(i, \vec{y}_-, \vec{y}_+\)}
         \Begin(SMO Step)
